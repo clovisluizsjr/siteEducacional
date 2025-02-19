@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta http-equiv="content-language" content="pt-br" />
+    <meta name="robots" content="index, follow" />
+
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+    <title>Cadastro Professor</title>
+  </head>
+
+  <body>
+    <header class="main_header container">
+      <div class="content">
+        <div class="main_header_logo">
+          <img src="img/logo.png" alt="logo.png" title="Logo" />
+        </div>
+      </div>
+    </header>
+
+    <main class="main_content container">
+      <section class="section-seu-codigo container">
+        <div class="content">
+          <div class="box-artigo">
+            <!--Inicio Formulário-->
+            <div class="container_form">
+              <h1>Cadastro de Professores</h1>
+              <p>* Obrigatório</p>
+
+              <form id="cadastro" class="form">
+                <!--Nome do aluno-->
+                <div class="form_grupo">
+                  <label for="nome" class="form_input"
+                    >Nome completo do Professor
+                    <span class="obrigatorio">*</span></label
+                  >
+                  <input
+                    type="text"
+                    name="nome"
+                    id="nome"
+                    class="form_input"
+                    placeholder="Nome"
+                    required
+                  />
+                  <span class="error-message">Este campo é obrigatório.</span>
+                </div>
+
+                <!--Data de nascimento-->
+                <div class="form_grupo">
+                  <label for="datanascimento" class="form_label"
+                    >Data de Nascimento
+                    <span class="obrigatorio">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="datanascimento"
+                    class="form_input"
+                    id="datanascimento"
+                    required
+                    onchange="validarIdade()"
+                  />
+                  <span
+                    class="error-message"
+                    id="erroIdade"
+                    style="display: none"
+                    >Você deve ter mais de 18 anos.</span
+                  >
+                </div>
+
+                <!--RG-->
+                <div class="form_grupo">
+                  <label for="rg" class="form_label"
+                    >RG do Professor <span class="obrigatorio">*</span></label
+                  >
+                  <input
+                    type="text"
+                    name="rg"
+                    class="form_input"
+                    id="rg"
+                    placeholder="RG do Professorr"
+                    maxlength="9"
+                    required
+                  />
+                  <span class="error-message">Este campo é obrigatório.</span>
+                </div>
+
+                <!--CPF-->
+                <div class="form_grupo">
+                  <label for="cpf" class="form_label"
+                    >CPF do Professor <span class="obrigatorio">*</span></label
+                  >
+                  <input
+                    type="text"
+                    name="cpf"
+                    class="form_input"
+                    id="cpf"
+                    placeholder="CPF do Professor"
+                    maxlength="14"
+                    required
+                  />
+                  <span
+                    class="error-message"
+                    id="cpfError"
+                    style="display: none; color: red"
+                    >O CPF deve ser válido e no formato 000.000.000-00.</span
+                  >
+                </div>
+
+                <!-- SEXO -->
+                <!-- Gênero -->
+                <div class="form_grupo">
+                  <label for="genero" class="form_label"
+                    >Gênero<span class="obrigatorio">*</span></label
+                  >
+                  <select name="genero" id="genero" class="form_input" required>
+                    <option value="" disabled selected>
+                      Selecione seu gênero
+                    </option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Outro">Outro</option>
+                    <option value="Prefiro não dizer">Prefiro não dizer</option>
+                  </select>
+                  <span class="error-message">Este campo é obrigatório.</span>
+                </div>
+
+                <!--FORMAÇÃO ACADEMICA-->
+                <div class="form_grupo">
+                  <label for="formacao" class="form_label"
+                    >Formação Acadêmica<span class="obrigatorio">*</span></label
+                  >
+                  <select
+                    name="formacao"
+                    id="formacao"
+                    class="form_input"
+                    required
+                  >
+                    <option value="" disabled selected>
+                      Selecione formação
+                    </option>
+                    <option value="graduacao">Graduação</option>
+                    <option value="pos">Pós Graducação</option>
+                    <option value="mestrado">Mestrado</option>
+                    <option value="doutorado">Doutorado</option>
+                  </select>
+                  <span class="error-message">Este campo é obrigatório.</span>
+                </div>
+
+                <div class="form_grupo">
+                  <label for="area" class="form_label"
+                    >Área de Especialização<span class="obrigatorio"
+                      >*</span
+                    ></label
+                  >
+                  <select name="area" id="area" class="form_input" required>
+                    <option value="" disabled selected>Selecione área</option>
+                    <option value="lingua portuguesa">Língua Portuguesa</option>
+                    <option value="literatura">Literatura</option>
+                    <option value="matematica">Matemática</option>
+                    <option value="fisica">Física</option>
+                    <option value="quimica">Química</option>
+                    <option value="biologia">Biologia</option>
+                    <option value="historia">História</option>
+                    <option value="geografia">Geografia</option>
+                    <option value="ingles">Inglês</option>
+                  </select>
+                  <span class="error-message">Este campo é obrigatório.</span>
+                </div>
+
+                <!--INSTITTUIÇÃO-->
+                <div class="form_grupo">
+                  <label for="instituicao" class="form_input"
+                    >Insituição de Ensino
+                    <span class="obrigatorio">*</span></label
+                  >
+                  <input
+                    type="text"
+                    name="instituicao"
+                    id="instituicao"
+                    class="form_input"
+                    placeholder="Instituição"
+                    required
+                  />
+                  <span class="error-message">Este campo é obrigatório.</span>
+                </div>
+
+                <!--DATA DE INÍCIO-->
+                <div class="form_grupo">
+                  <label for="dataInicio" class="form_label"
+                    >Data de Início<span class="obrigatorio">*</span></label
+                  >
+                  <input
+                    type="date"
+                    name="dataInicio"
+                    id="dataInicio"
+                    class="form_input"
+                    required
+                  />
+                  <span class="error-message">Este campo é obrigatório.</span>
+                </div>
+
+                <!--DATA DE TÉRMINO-->
+                <div class="form_grupo">
+                  <label for="dataTermino" class="form_label"
+                    >Data de Término<span class="obrigatorio">*</span></label
+                  >
+                  <input
+                    type="date"
+                    name="dataTermino"
+                    id="dataTermino"
+                    class="form_input"
+                    required
+                  />
+                  <span class="error-message">Este campo é obrigatório.</span>
+                </div>
+
+                <!--INFORMAÇÕES ACADEMICA-->
+
+                <!--PRETENSÃO SALARIAL-->
+                <div class="form_grupo">
+                  <label for="pretensaoSalarial" class="form_label"
+                    >Pretensão Salarial (R$)<span class="obrigatorio"
+                      >*</span
+                    ></label
+                  >
+                  <input
+                    type="range"
+                    name="pretensaoSalarial"
+                    id="pretensaoSalarial"
+                    class="form_input"
+                    min="1000"
+                    max="10000"
+                    step="500"
+                    value="5000"
+                    oninput="atualizaValor(this.value)"
+                    required
+                  />
+                  <span id="valorSalarial" class="form_label">R$ 5.000,00</span>
+                  <span class="error-message">Este campo é obrigatório.</span>
+                </div>
+
+                <script>
+                  function atualizaValor(valor) {
+                    // Formata o valor para exibição em Real (BRL)
+                    const valorFormatado = parseInt(valor).toLocaleString(
+                      "pt-BR",
+                      {
+                        style: "currency",
+                        currency: "BRL",
+                      }
+                    );
+                    // Atualiza o span com o valor formatado
+                    document.getElementById("valorSalarial").textContent =
+                      valorFormatado;
+                  }
+                </script>
+
+                <!--Email do Professor-->
+                <div class="form_grupo">
+                  <label for="e-mail" class="form_label"
+                    >Email do Professor<span class="obrigatorio">*</span></label
+                  >
+                  <input
+                    type="email"
+                    name="email"
+                    class="form_input"
+                    id="email"
+                    placeholder="email@email.com"
+                    required
+                  />
+
+                  <span
+                    id="emailError"
+                    class="error-message"
+                    style="display: none; color: red"
+                    >Por favor, insira um
+                    e-mail válido. O e-mail deve conter um @ e pelo menos um ponto "." </span
+                  >
+                </div>
+
+                <!--Telefone para contato-->
+                <div class="form_grupo">
+                  <label for="telefone" class="form_label"
+                    >Telefone para contato<span class="obrigatorio"
+                      >*</span
+                    ></label
+                  >
+                  <input
+                    type="text"
+                    name="telefone"
+                    class="form_input"
+                    id="telefone"
+                    placeholder="(99)99999-9999"
+                    maxlength="15"
+                    required
+                  />
+                  <span
+                    class="error-message"
+                    id="telefoneError"
+                    style="display: none; color: red"
+                    >O telefone deve ser válido e no formato (99)
+                    99999-9999.</span
+                  >
+                </div>
+
+                <!--ENDEREÇO COMPLETO-->
+                <div class="form_grupo">
+                  <label for="rua" class="form_label"
+                    >Endereço completo<span class="obrigatorio">*</span></label
+                  >
+                  <input
+                    type="text"
+                    name="rua"
+                    class="form_input"
+                    id="rua"
+                    placeholder="Rua"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="numero"
+                    class="form_input"
+                    id="numero"
+                    placeholder="Número"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="bairro"
+                    class="form_input"
+                    id="bairro"
+                    placeholder="Bairro"
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="cep"
+                    class="form_input"
+                    id="cep"
+                    placeholder="CEP"
+                    required
+                    maxlength="9"
+                  />
+                  <input
+                    type="text"
+                    name="cidade"
+                    class="form_input"
+                    id="cidade"
+                    placeholder="Cidade"
+                    required
+                  />
+
+                  <!--Estado-->
+                  <select class="form_input" id="uf" required>
+                    <option selected disabled value="">
+                      UF<span class="obrigatorio">*</span>
+                    </option>
+                    <option value="AC">AC</option>
+                    <option value="AL">AL</option>
+                    <option value="AP">AP</option>
+                    <option value="AM">AM</option>
+                    <option value="BA">BA</option>
+                    <option value="CE">CE</option>
+                    <option value="DF">DF</option>
+                    <option value="ES">ES</option>
+                    <option value="GO">GO</option>
+                    <option value="MA">MA</option>
+                    <option value="MT">MT</option>
+                    <option value="MS">MS</option>
+                    <option value="MG">MG</option>
+                    <option value="PA">PA</option>
+                    <option value="PB">PB</option>
+                    <option value="PR">PR</option>
+                    <option value="PE">PE</option>
+                    <option value="PI">PI</option>
+                    <option value="RJ">RJ</option>
+                    <option value="RN">RN</option>
+                    <option value="RS">RS</option>
+                    <option value="RO">RO</option>
+                    <option value="RR">RR</option>
+                    <option value="SC">SC</option>
+                    <option value="SP">SP</option>
+                    <option value="SE">SE</option>
+                    <option value="TO">TO</option>
+                  </select>
+                </div>
+
+                <!--BOTÃO FINALIZAR-->
+                <div class="submit">
+                  <input type="hidden" name="acao" value="enviar" />
+                  <button type="submit" name="Submit" class="submit_btn">
+                    Cadastrar
+                  </button>
+                </div>
+              </form>
+            </div>
+            <!--container_form-->
+            <!--Finaliza Formulário-->
+          </div>
+          <!--Box Artigo-->
+          <div class="clear"></div>
+        </div>
+      </section>
+      <!--FECHA BOX HTML-->
+    </main>
+
+    <footer class="main_footer container">
+      <div class="main_footer_copy">
+        <p class="m-b-footer">
+          Instituto Sementes do Futuro - 2021, todos os direitos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+const express = require('express');
+const expressEjsLayout = require('express-ejs-layouts');
+const rotaHome = require('./routes/rotaHome');
+const app = express();
+const porta = 5000;
+
+app.set('views engine', 'ejs');
+app.use(express.static('public'));
+app.set('layout', './layout.ejs');
+app.use(expressEjsLayout);
+app.use('/', rotaHome);
+
+app.listen(porta, function () {
+  console.log(`Servidor em execução na porta: ${porta}`);
+});

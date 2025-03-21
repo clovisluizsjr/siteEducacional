@@ -1,0 +1,150 @@
+<!-- Header Start -->
+<div class="container-fluid bg-primary mb-5">
+  <div
+    class="d-flex flex-column align-items-center justify-content-center"
+    style="min-height: 400px"
+  >
+    <h3 class="display-3 font-weight-bold text-white">Entre em Contato</h3>
+    <div class="d-inline-flex text-white">
+      <p class="m-0"><a class="text-white" href="/">Home</a></p>
+      <p class="m-0 px-2">/</p>
+      <p class="m-0">Contato</p>
+    </div>
+  </div>
+</div>
+<!-- Header End -->
+
+<!-- Contact Start -->
+<div class="container-fluid pt-5">
+  <div class="container">
+    <div class="text-center pb-2">
+      <p class="section-title px-5">
+        <span class="px-2">Apenas um toque</span>
+      </p>
+      <h1 class="mb-4">Entre em contato para qualquer dúvida</h1>
+    </div>
+    <div class="row">
+      <div class="col-lg-7 mb-5">
+        <div class="contact-form">
+          <div id="success"></div>
+          <form name="sentMessage" id="contactForm" novalidate="novalidate">
+            <div class="control-group">
+              <!--FOI ADICIONADO DATA-ERRO E UM SPAN COM ID ERRO-NOME-->
+              <label for="name">Nome</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Seu nome"
+                required="required"
+                data-validation-required-message="Por favor, digite seu nome"
+                data-erro="erro-nome"
+              />
+              <span id="erro-nome" class="text-danger"></span>
+            </div>
+            <div class="control-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="Seu Email"
+                required="required"
+                data-validation-required-message="Por favor, digite seu e-mail"
+                data-erro="erro-email"
+              />
+              <span id="erro-email" class="text-danger"></span>
+              <!-- Para erro -->
+            </div>
+            <div class="control-group">
+              <label for="subject">Título</label>
+              <input
+                type="text"
+                class="form-control"
+                id="subject"
+                placeholder="Título"
+                required="required"
+                data-validation-required-message="Por favor, digite o título"
+                data-erro="erro-titulo"
+              />
+              <span id="erro-titulo" class="text-danger"></span>
+              <!-- Para erro -->
+            </div>
+            <div class="control-group">
+              <label for="message">Mensagem</label>
+              <textarea
+                class="form-control"
+                rows="6"
+                id="message"
+                placeholder="Mensagem"
+                required="required"
+                data-validation-required-message="Por favor, digite sua mensagem"
+                data-erro="erro-mensagem"
+              ></textarea>
+              <span id="erro-mensagem" class="text-danger"></span>
+              <!-- Para erro -->
+            </div>
+            <div>
+              <button
+                class="btn btn-primary py-2 px-4"
+                type="submit"
+                id="sendMessageButton"
+              >
+                Envie uma mensagem
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-5 mb-5">
+        <p>
+          Venha conhecer a nossa escola! Aqui, juntos, construímos um ambiente
+          de aprendizado, amizade e oportunidades para o futuro. Estamos
+          ansiosos para recebê-lo!
+        </p>
+        <div class="d-flex">
+          <i
+            class="fa fa-map-marker-alt d-inline-flex align-items-center justify-content-center bg-primary text-secondary rounded-circle"
+            style="width: 45px; height: 45px"
+          ></i>
+          <div class="pl-3">
+            <h5>Endereço</h5>
+            <p>Avenida Brasil, 123. São Paulo, SP</p>
+          </div>
+        </div>
+        <div class="d-flex">
+          <i
+            class="fa fa-envelope d-inline-flex align-items-center justify-content-center bg-primary text-secondary rounded-circle"
+            style="width: 45px; height: 45px"
+          ></i>
+          <div class="pl-3">
+            <h5>Email</h5>
+            <p>sementes_escola@gmail.com</p>
+          </div>
+        </div>
+        <div class="d-flex">
+          <i
+            class="fa fa-phone-alt d-inline-flex align-items-center justify-content-center bg-primary text-secondary rounded-circle"
+            style="width: 45px; height: 45px"
+          ></i>
+          <div class="pl-3">
+            <h5>Telefone</h5>
+            <p>+55(18)99624-9591</p>
+          </div>
+        </div>
+        <div class="d-flex">
+          <i
+            class="far fa-clock d-inline-flex align-items-center justify-content-center bg-primary text-secondary rounded-circle"
+            style="width: 45px; height: 45px"
+          ></i>
+          <div class="pl-3">
+            <h5>Horário de funcionamento</h5>
+            <strong>Segunda - Sexta:</strong>
+            <p class="m-0">08:00 - 17:00</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Contact End -->

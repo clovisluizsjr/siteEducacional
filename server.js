@@ -1,6 +1,7 @@
 const express = require('express');
 const expressEjsLayout = require('express-ejs-layouts');
 const rotaHome = require('./routes/rotaHome');
+const rotaLogin = require('./routes/rotaLogin');
 const app = express();
 const porta = 5000;
 
@@ -9,6 +10,7 @@ app.use(express.static('public'));
 app.set('layout', './layout.ejs');
 app.use(expressEjsLayout);
 app.use('/', rotaHome);
+app.use('/login', rotaLogin);
 
 app.listen(porta, function () {
   console.log(`Servidor em execução na porta: ${porta}`);

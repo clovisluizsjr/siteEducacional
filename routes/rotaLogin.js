@@ -4,4 +4,6 @@ const rotaLogin = express.Router();
 
 const loginCtrl = new LoginController();
 
-rotaLogin('/', loginCtrl.loginView);
+rotaLogin.get('/', loginCtrl.loginView);
+
+module.exports = rotaLogin;

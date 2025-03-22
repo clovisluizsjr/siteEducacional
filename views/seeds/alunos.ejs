@@ -4,21 +4,23 @@
   <table class="mt-4 table table-striped">
     <thead>
       <tr>
-        <th>ID</th>
+        <th>RA</th>
         <th>Nome</th>
         <th>Email</th>
-        <th>Ativo</th>
-        <th>Média (0, 10)</th>
+        <th>Série</th>
+        <th>Turma</th>
       </tr>
     </thead>
     <tbody>
+      <% for(let i = 0; i< listaAlunos.length; i ++) { %>
       <tr>
-        <td>1</td>
-        <td>Aluno1</td>
-        <td>aluno@aluno.com</td>
-        <td>Ativo</td>
-        <td>9,9</td>
+        <td><%= listaAlunos[i].aluno_RA %></td>
+        <td><%= listaAlunos[i].aluno_nome %></td>
+        <td><%= listaAlunos[i].aluno_email %></td>
+        <td><%= listaSeries[listaAlunos[i].serie_id - 1].serie_nome %></td>
+        <td><%= listaTurmas[listaAlunos[i].turma_id - 1].turma_nome %></td>
       </tr>
+      <%} %>
     </tbody>
   </table>
 </div>

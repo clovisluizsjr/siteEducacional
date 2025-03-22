@@ -10,6 +10,8 @@ app.set('views engine', 'ejs');
 app.use(express.static('public'));
 app.set('layout', 'layouts/layout');
 app.use(expressEjsLayout);
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 app.use('/', rotaHome);
 app.use('/login', rotaLogin);
 app.use('/seeds/professor', rotaProfessor);

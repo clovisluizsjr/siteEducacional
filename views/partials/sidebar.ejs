@@ -1,0 +1,82 @@
+<div class="sidebar">
+  <!-- Sidebar user panel (optional) -->
+  <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="image">
+      <img
+        src="<%= imgUser %>"
+        class="img-circle elevation-2"
+        alt="User Image"
+      />
+    </div>
+    <div class="info">
+      <a href="#" class="d-block"><%= nomeUser%></a>
+    </div>
+  </div>
+
+  <!-- Sidebar Menu -->
+  <nav class="mt-2">
+    <ul
+      class="nav nav-pills nav-sidebar flex-column"
+      data-widget="treeview"
+      role="menu"
+      data-accordion="false"
+    >
+      <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+      <% if(rota == 'professor') {%>
+      <li class="nav-item">
+        <a href="/seeds/professor" class="nav-link">
+          <i class="fas fa-home"></i>
+          <p>Início</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/seeds/professor/disciplinas" class="nav-link">
+          <i class="fas fa-book"></i>
+          <p>Disciplinas</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/seeds/professor/alunos" class="nav-link">
+          <i class="fas fa-user"></i>
+          <p>Alunos</p>
+        </a>
+      </li>
+
+      <%} else { %>
+      <li class="nav-item">
+        <a href="/seeds/aluno" class="nav-link">
+          <i class="fas fa-home"></i>
+          <p>Início</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/seeds/aluno/disciplinas" class="nav-link">
+          <i class="fas fa-book"></i>
+          <p>Disciplinas</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/seeds/aluno/professores" class="nav-link">
+          <i class="fas fa-user"></i>
+          <p>Professores</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/seeds/aluno/notas" class="nav-link">
+          <i class="fas fa-user"></i>
+          <p>Notas</p>
+        </a>
+      </li>
+
+      <% }%>
+      <li class="nav-item">
+        <a href="/" class="nav-link">
+          <i class="fas fa-door-open"></i>
+          <p>Sair</p>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.sidebar-menu -->
+</div>

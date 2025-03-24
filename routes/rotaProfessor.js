@@ -6,6 +6,7 @@ const router = expess.Router();
 let ctrl = new ProfessorController();
 router.get('/', ctrl.homeSeed);
 router.get('/alunos', ctrl.listarAlunos);
-router.get('/disciplinas', ctrl.listarDisciplinas);
+router.get('/turmas', ctrl.listarDisciplinas);
+router.get('/disciplina/:id', ctrl.discipinaInfo)
 
 module.exports = router;

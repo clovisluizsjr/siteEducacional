@@ -24,7 +24,7 @@ class DisciplinaModel{
     this.serie_id = serie_id;
   }
 
-  async listar(id){
+  async listarProfessorPor(id){
     let sql = "SELECT * FROM Disciplinas WHERE professor_id = ?";
     let valores = [id]
     let banco = new Database();
@@ -43,6 +43,27 @@ class DisciplinaModel{
   
     return lista;
   }
+
+  async obter(id){
+    let sql = "SELECT * FROM Disciplinas WHERE disciplina_id = ?";
+    let valores = [id]
+    let banco = new Database();
+    let lista =[];
+    let rows = await banco.ExecutaComando(sql, valores);
+
+    for(let i= 0; i < rows.length; i++) {
+      lista.push(new DisciplinaModel(rows[i]["disciplina_id"],
+                                rows[i]["disciplina_nome"],
+                                rows[i]["disciplina_horario"],
+                                rows[i]["disciplina_categoria"],
+                                rows[i]["professor_id"],
+                                rows[i]["serie_id"],
+      ));
+    }
+  
+    return lista;
+  }
+
 }
 
 module.exports = DisciplinaModel;

@@ -16,13 +16,14 @@
       <% for(let i = 0; i< listaDisciplinas.length; i ++) { %>
       <tr
         class="disciplina-row"
-        data-id="<%= listaDisciplinas[i].disciplina_id %>"
-        style="cursor: pointer;"
+        data-disciplina_id="<%= listaDisciplinas[i].disciplina_id %>"
+        data-serie_id="<%= listaDisciplinas[i].serie_id %>"
+        style="cursor: pointer"
       >
         <td class="cursor-pointer">
           <%= listaDisciplinas[i].disciplina_nome %>
         </td>
-        <td><%= listaSeries[listaDisciplinas[i].serie_id -1].serie_nome%></td>
+        <td><%= listaSeries[listaDisciplinas[i].serie_id - 1].serie_nome%></td>
       </tr>
       <%} %>
     </tbody>

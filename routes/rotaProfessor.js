@@ -7,6 +7,6 @@ let ctrl = new ProfessorController();
 router.get('/', ctrl.homeSeed);
 router.get('/alunos', ctrl.listarAlunos);
 router.get('/turmas', ctrl.listarDisciplinas);
-router.get('/disciplina/:id', ctrl.discipinaInfo)
+router.get('/disciplina/:disciplinaId/:serieId', ctrl.discipinaInfo);
 
 module.exports = router;

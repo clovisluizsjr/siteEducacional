@@ -1,15 +1,20 @@
 const AlunoModel = require('../models/alunoModel');
 const DisciplinaModel = require('../models/disciplinaModel');
+const ProfessorModel = require('../models/professorModel');
 const SerieModel = require('../models/serieModel');
 const TurmaModel = require('../models/turmaModel');
 
 class ProfessorController {
   async homeSeed(req, res) {
+    let professorId = 1;
+    let professores = new ProfessorModel();
+    let professorInfo = await professores.obter(professorId);
+    console.log(professorInfo[0]);
     res.render('seeds/professor.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       rota: 'professor',
       imgUser: '/img/team-4.jpg', // Essas informações viram do login
-      nomeUser: 'Professor Pandur', // Essas informações viram do login
+      nomeUser: 'professorInfo.professor_nome', // Essas informações viram do login
     });
   }
 
@@ -34,7 +39,7 @@ class ProfessorController {
   async listarDisciplinas(req, res) {
     let professorId = 1; // Supor que foi o professor do id 1 que fez o login
     let disciplinas = new DisciplinaModel();
-    let listaDisciplinas = await disciplinas.listar(professorId); // será renderizado disciplinas apenas deste professor
+    let listaDisciplinas = await disciplinas.listarProfessorPor(professorId); // será renderizado disciplinas apenas deste professor
     let series = new SerieModel();
     let listaSeries = await series.listar();
     res.render('seeds/turmas.ejs', {
@@ -48,12 +53,20 @@ class ProfessorController {
   }
 
   async discipinaInfo(req, res) {
-    const id = req.params.id;
+    const disciplinaId = req.params.disciplinaId;
+
     let disciplinas = new DisciplinaModel();
-    let listaDisciplinas = await disciplinas.listar(professorId);
+    let listaDisciplinas = await disciplinas.obter(disciplinaId);
     let series = new SerieModel();
     let listaSeries = await series.listar();
-    res.render('seeds/disciplina.ejs');
+    res.render('seeds/disciplina.ejs', {
+      layout: './layouts/layoutSeeds.ejs',
+      rota: 'professor',
+      imgUser: '/img/team-4.jpg', // Essas informações viram do login
+      nomeUser: 'Professor Pandur', // Essas informações viram do login
+      listaDisciplinas: listaDisciplinas,
+      listaSeries: listaSeries,
+    });
   }
 }
 

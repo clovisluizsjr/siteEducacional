@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function redirecionaPagina() {
-    const disciplina_id = this.dataset.id;
-    window.location.href = `/seeds/professor/turmas/${disciplina_id}`;
+    const disciplina_id = this.dataset.disciplina_id;
+    const serie_id = this.dataset.serie_id;
+    window.location.href = `/seeds/professor/disciplina/${disciplina_id}/${serie_id}`;
   }
 });

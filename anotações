@@ -1,0 +1,6 @@
+CRIAR CAMPO DE SENHA NAS TABELAS ALUNOS E PROFESSOR PARA FAZeR O LOGIN
+
+pagina de login, puxar os dados e verificar no bando o email e senha
+dividir a tabela atividades em 2, 1º a tabela que registra a atividade de professor e qual série/turma é a atividade
+retirar a coluna atividade_status da tabela Atividades;
+tabela de aluno só colocar responsável(CPF);

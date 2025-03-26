@@ -1,18 +1,25 @@
 const express = require('express');
+const session = require('express-session');
 const expressEjsLayout = require('express-ejs-layouts');
-const cookieParser = require('cookie-parser');
 const rotaHome = require('./routes/rotaHome');
 const rotaLogin = require('./routes/rotaLogin');
 const rotaProfessor = require('./routes/rotaProfessor');
 const app = express();
 const porta = 5000;
 
+app.use(session({
+  secret: 'sementes_do_futuro',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 30 // 1000 milissegundos = 1 seg * 60 segundos = 1 minuto * 30 minutos 
+  }
+}));
 app.set('views engine', 'ejs');
 app.use(express.static('public'));
-app.use(cookieParser());
 app.set('layout', 'layouts/layout');
 app.use(expressEjsLayout);
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', rotaHome);
 app.use('/login', rotaLogin);

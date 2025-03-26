@@ -43,6 +43,9 @@
             required
           />
         </div>
+        <% if (typeof mensagem != 'undefined') {%>
+        <p style="color: <%=color %>"><span><%= mensagem %></span></p>
+        <% } %>
         <div class="mt-3">
           <button type="submit">Login</button>
         </div>

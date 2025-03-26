@@ -25,7 +25,7 @@ class DisciplinaModel{
   }
 
   async listarProfessorPor(id){
-    let sql = "SELECT * FROM Disciplinas WHERE professor_id = ?";
+    let sql = "SELECT * FROM Disciplinas WHERE professor_id = ?";       //filtra por id
     let valores = [id]
     let banco = new Database();
     let lista =[];

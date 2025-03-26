@@ -20,7 +20,7 @@ class Database {
     });
   }
 
-  ExecutaComando(sql, valores) {
+  ExecutaComando(sql, valores) {      //para fazer select
     var cnn = this.#conexao;
     return new Promise(function (res, rej) {
       cnn.query(sql, valores, function (error, results, fields) {
@@ -30,7 +30,7 @@ class Database {
     });
   }
 
-  ExecutaComandoNonQuery(sql, valores) {
+  ExecutaComandoNonQuery(sql, valores) {      //insert, update e delete
     var cnn = this.#conexao;
     return new Promise(function (res, rej) {
       cnn.query(sql, valores, function (error, results, fields) {

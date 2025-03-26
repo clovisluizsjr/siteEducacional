@@ -13,8 +13,8 @@ class ProfessorController {
     res.render('seeds/professor.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       rota: 'professor',
-      imgUser: '/img/team-4.jpg', // Essas informações viram do login
-      nomeUser: 'professorInfo.professor_nome', // Essas informações viram do login
+      imgUser: '/img/team-4.jpg', // Essas informações viram do login, ainda não tem imagem no banco
+      nomeUser: 'professorInfo', // Essas informações viram do login, para renderizar o nome na side bar
     });
   }
 

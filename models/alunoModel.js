@@ -77,7 +77,21 @@ class AlunoModel {
     let rows = await banco.ExecutaComando(sql, valores);
 
     if(rows.length > 0) {
-      return rows[0]["aluno_email"];     
+      let row = rows[0];
+      return new AlunoModel(row["aluno_RA"],
+                            row["aluno_nome"],
+                            row["aluno_CPF"],
+                            row["aluno_nasc"],
+                            row["aluno_fone"],
+                            row["aluno_email"],
+                            row["aluno_mae"],
+                            row["aluno_pai"],
+                            row["aluno_respCPF"],
+                            row["aluno_endereco"],
+                            row["aluno_senha"],
+                            row["aluno_statusFinanceiro"],
+                            row["serie_id"],
+      )    
     }
     return null;
   }

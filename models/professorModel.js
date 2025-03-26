@@ -79,7 +79,7 @@ class ProfessorModel {
 
     if(rows.length > 0) {
       let row = rows[0];
-      return new AlunoModel(row["professor_id"],
+      return new ProfessorModel(row["professor_id"],
                             row["professor_nome"],
                             row["professor_CPF"],
                             row["professor_nasc"],

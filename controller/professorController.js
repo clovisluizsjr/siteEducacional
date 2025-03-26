@@ -5,7 +5,6 @@ const SerieModel = require('../models/serieModel');
 
 class ProfessorController {
   home(req, res) {
-    console.log('DENTRO CONTROLLER <><><>', res.locals.usuario["professor_nome"]);
     res.render('seeds/main.ejs', { layout: './layouts/layoutSeeds.ejs' });
   }
 

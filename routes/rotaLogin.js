@@ -6,5 +6,6 @@ const loginCtrl = new LoginController();
 
 router.get('/', loginCtrl.loginView);
 router.post('/', loginCtrl.login);
+router.get('/logout', loginCtrl.logout);
 
 module.exports = router;

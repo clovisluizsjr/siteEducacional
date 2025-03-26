@@ -8,19 +8,26 @@ class LoginController {
 
   async login(req, res) {
     //post
-    const email = req.body.email;
-    const senha = req.body.senha;
-    let userResp = null;
+    const { email, senha} = req.body;
+    let userModel;
+    let direcionaRota;
     if (email.includes('@escola.com')) {
-      let professorModel = new ProfessorModel();
-      userResp = await professorModel.validar(email, senha);
+      userModel = new ProfessorModel();
+      direcionaRota = '/seeds/professor'
     } else if (email.includes('@aluno.com')) {
-      let alunoModel = new AlunoModel();
-      userResp = await alunoModel.validar(email, senha);
+      userModel = new AlunoModel();
+      direcionaRota = '/seeds/aluno'
     }
-    if (userResp) {
-      res.cookie('emailLogado', userResp);
-      res.redirect('/seeds/professor');
+    if (userModel) {
+      const user = await userModel.validar(email, senha);
+      if(user) {
+        req.session.usuario = {
+          email: email.includes('@escola.com') ? user.professor_email : user.aluno_email,
+          nome:  email.includes('@escola.com') ? user.professor_nome : user.aluno_nome,
+          tipo: email.includes('@escola.com') ? 'professor' : 'aluno',
+        }
+        return res.redirect(direcionaRota);
+      }
     }
 
     res.render('login.ejs', {
@@ -28,6 +35,11 @@ class LoginController {
       mensagem: 'Dados inválidos',
       color: 'red',
     });
+  }
+
+  logout(req, res) {
+    req.session.destroy();
+    res.redirect('/');
   }
 }
 

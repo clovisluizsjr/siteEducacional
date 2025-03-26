@@ -68,6 +68,42 @@ class ProfessorModel {
     }
     return lista;
   }
+
+  async validar(email, senha) { //    -- devolve o email do professor logado
+    let sql = `select * FROM Professores 
+              WHERE professor_email= ? AND professor_senha = ?`;
+    let valores = [email, senha];
+    let banco = new Database();
+
+    let rows = await banco.ExecutaComando(sql, valores);
+
+    if(rows.length > 0) {
+      return rows[0]["professor_email"];
+    }
+    return null;
+  }
+
+  async obterPor(email) {
+    let sql = `select * FROM Professores WHERE professor_email = ?`
+    let valores = [email]
+    let banco = new Database();
+    let rows = await banco.ExecutaComando(sql, valores);
+    let lista = [];
+    for(let i= 0; i < rows.length; i++) {
+      lista.push(new ProfessorModel(rows[i]["professor_id"],
+                                rows[i]["professor_nome"],
+                                rows[i]["professor_CPF"],
+                                rows[i]["professor_nasc"],
+                                rows[i]["professor_fone"],
+                                rows[i]["professor_email"],
+                                rows[i]["professor_endereco"],
+                                rows[i]["professor_senha"],
+      ));
+    }
+    return lista;
+
+  }
+
 }
 
 module.exports = ProfessorModel;

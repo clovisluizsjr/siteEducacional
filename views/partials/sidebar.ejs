@@ -3,13 +3,22 @@
   <div class="user-panel mt-3 pb-3 mb-3 d-flex">
     <div class="image">
       <img
-        src="<%= imgUser %>"
+        src="/img/team-4.jpg"
         class="img-circle elevation-2"
         alt="User Image"
       />
     </div>
     <div class="info">
-      <a href="#" class="d-block"><%= nomeUser%></a>
+      <a href="#" class="d-block">
+        <% if(email.includes('professor')) {%>
+        <%= JSON.stringify(usuario) %>
+        <%} else { %>
+        <%= usuario["aluno_nome"] %>
+        <%}%>
+      </a>
+      <h1>
+        <%= JSON.stringify(usuario) %>
+      </h1>
     </div>
   </div>
 
@@ -23,7 +32,7 @@
     >
       <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-      <% if(rota.includes('professor')) {%>
+      <% if(email.includes('professor')) {%>
       <li class="nav-item">
         <a href="/seeds/professor" class="nav-link">
           <i class="fas fa-home"></i>

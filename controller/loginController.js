@@ -1,30 +1,33 @@
+const AlunoModel = require('../models/alunoModel');
+const ProfessorModel = require('../models/professorModel');
+
 class LoginController {
   loginView(req, res) {
     res.render('login.ejs', { layout: false });
   }
 
-  login() {
+  async login(req, res) {
     //post
-    const user = req.body.usuario;
+    const email = req.body.email;
     const senha = req.body.senha;
+    let userResp = null;
+    if (email.includes('@escola.com')) {
+      let professorModel = new ProfessorModel();
+      userResp = await professorModel.validar(email, senha);
+    } else if (email.includes('@aluno.com')) {
+      let alunoModel = new AlunoModel();
+      userResp = await alunoModel.validar(email, senha);
+    }
+    if (userResp) {
+      res.cookie('emailLogado', userResp);
+      res.redirect('/seeds/professor');
+    }
 
-    /* Se for professor 
-      res.render('seeds/professor.ejs', {
-        layout: './layouts/layoutSeeds.ejs',
-        rota: 'professor',
-        imgUser: '../img/team-4.jpg',
-        nomeUser: 'Professor Pandur',
-      });
-    */
-
-    /* Se for aluno
-      res.render('seeds/aluno.ejs', {
-        layout: './layouts/layoutSeeds.ejs',
-        rota: 'aluno',
-        imgUser: '../img/class-4.jpg',
-        nomeUser: 'Aninha',
-      });
-    */
+    res.render('login.ejs', {
+      layout: false,
+      mensagem: 'Dados inválidos',
+      color: 'red',
+    });
   }
 }
 

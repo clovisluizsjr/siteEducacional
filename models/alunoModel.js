@@ -68,6 +68,46 @@ class AlunoModel {
     }
     return lista;
   }
+
+  async validar(email, senha) { //    -- devolve o email do aluno logado
+    let sql = `select * FROM Alunos WHERE aluno_email = ? AND aluno_senha = ?`;
+    let valores = [email, senha];
+    let banco = new Database();
+
+    let rows = await banco.ExecutaComando(sql, valores);
+
+    if(rows.length > 0) {
+      return rows[0]["aluno_email"];     
+    }
+    return null;
+  }
+
+  async obterPor(email) {
+    let sql = `select * FROM Alunos WHERE aluno_email = ?`
+    let valores = [email]
+    let banco = new Database();
+    let rows = await banco.ExecutaComando(sql, valores);
+    let lista = [];
+    for (let i = 0; i < rows.length; i++) {
+      lista.push(new AlunoModel(rows[i]["aluno_RA"],
+                                rows[i]["aluno_nome"],
+                                rows[i]["aluno_CPF"],
+                                rows[i]["aluno_nasc"],
+                                rows[i]["aluno_fone"],
+                                rows[i]["aluno_email"],
+                                rows[i]["aluno_mae"],
+                                rows[i]["aluno_pai"],
+                                rows[i]["aluno_respCPF"],
+                                rows[i]["aluno_endereco"],
+                                rows[i]["aluno_senha"],
+                                rows[i]["aluno_statusFinanceiro"],
+                                rows[i]["serie_id"],
+      ))
+    }
+    return lista;
+
+  }
+
 }
 
 module.exports = AlunoModel;

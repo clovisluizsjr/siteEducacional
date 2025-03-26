@@ -3,19 +3,19 @@ const Database = require('../utils/database');
 class SerieModel{
   #serie_id;
   #serie_nome;
-  #serie_quantidade;
-  #serie_quantidadeAluno;
+  #serie_quantMAX;
+  #serie_quantidadeALU;
 
   get serie_id() { return this.#serie_id } set serie_id(value) { this.#serie_id = value }
   get serie_nome() { return this.#serie_nome } set serie_nome(value) { this.#serie_nome = value }
-  get serie_quantidade() { return this.#serie_quantidade } set serie_quantidade(value) { this.#serie_quantidade = value }
-  get serie_quantidadeAluno() { return this.#serie_quantidadeAluno } set serie_quantidadeAluno(value) { this.#serie_quantidadeAluno = value }
+  get serie_quantMAX() { return this.#serie_quantMAX } set serie_quantMAX(value) { this.#serie_quantMAX = value }
+  get serie_quantidadeALU() { return this.#serie_quantidadeALU } set serie_quantidadeALU(value) { this.#serie_quantidadeALU = value }
 
-  constructor(serie_id, serie_nome, serie_quantidade, serie_quantidadeAluno){
+  constructor(serie_id, serie_nome, serie_quantMAX, serie_quantidadeAluno){
     this.serie_id = serie_id;
     this.serie_nome = serie_nome;
-    this.serie_quantidade = serie_quantidade;
-    this.serie_quantidadeAluno = serie_quantidadeAluno;
+    this.serie_quantMAX = serie_quantMAX;
+    this.serie_quantidadeALU = serie_quantidadeALU;
   }
 
   async listar(){
@@ -27,7 +27,8 @@ class SerieModel{
       lista.push(new SerieModel(rows[i]["serie_id"],
                                 rows[i]["serie_nome"],
                                 rows[i]["serie_quantidade"],
-                                rows[i]["serie_quantidadeAluno"],
+                                rows[i]["serie_quantMAX"],
+                                rows[i]["serie_quantidadeALU"],
       ));
     }
     return lista;

@@ -11,7 +11,7 @@ class SerieModel{
   get serie_quantMAX() { return this.#serie_quantMAX } set serie_quantMAX(value) { this.#serie_quantMAX = value }
   get serie_quantidadeALU() { return this.#serie_quantidadeALU } set serie_quantidadeALU(value) { this.#serie_quantidadeALU = value }
 
-  constructor(serie_id, serie_nome, serie_quantMAX, serie_quantidadeAluno){
+  constructor(serie_id, serie_nome, serie_quantMAX, serie_quantidadeALU){
     this.serie_id = serie_id;
     this.serie_nome = serie_nome;
     this.serie_quantMAX = serie_quantMAX;
@@ -26,7 +26,6 @@ class SerieModel{
     for(let i= 0; i < rows.length; i++) {
       lista.push(new SerieModel(rows[i]["serie_id"],
                                 rows[i]["serie_nome"],
-                                rows[i]["serie_quantidade"],
                                 rows[i]["serie_quantMAX"],
                                 rows[i]["serie_quantidadeALU"],
       ));

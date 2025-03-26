@@ -8,6 +8,7 @@ class ProfessorModel {
   #professor_fone;
   #professor_email;
   #professor_endereco;
+  #professor_senha;
 
   get professor_id(){ return this.#professor_id } set professor_id(value) { this.#professor_id = value }
   get professor_nome(){ return this.#professor_nome } set professor_nome(value) { this.#professor_nome = value }
@@ -16,8 +17,9 @@ class ProfessorModel {
   get professor_fone(){ return this.#professor_fone } set professor_fone(value) { this.#professor_fone = value }
   get professor_email(){ return this.#professor_email } set professor_email(value) { this.#professor_email = value }
   get professor_endereco(){ return this.#professor_endereco } set professor_endereco(value) { this.#professor_endereco = value }
+  get professor_senha(){ return this.#professor_senha } set professor_senha(value) { this.#professor_senha = value }
 
-  constructor(professor_id, professor_nome, professor_CPF, professor_nasc, professor_fone, professor_email, professor_endereco) {
+  constructor(professor_id, professor_nome, professor_CPF, professor_nasc, professor_fone, professor_email, professor_endereco, professor_senha) {
     this.professor_id = professor_id;
     this.professor_nome = professor_nome;
     this.professor_CPF = professor_CPF;
@@ -25,6 +27,7 @@ class ProfessorModel {
     this.professor_fone = professor_fone;
     this.professor_email = professor_email;
     this.professor_endereco = professor_endereco;
+    this.professor_senha = professor_senha;
   }
 
   async listar() {
@@ -40,6 +43,7 @@ class ProfessorModel {
                                 rows[i]["professor_fone"],
                                 rows[i]["professor_email"],
                                 rows[i]["professor_endereco"],
+                                rows[i]["professor_senha"],
       ));
     }
     return lista;
@@ -59,6 +63,7 @@ class ProfessorModel {
                                 rows[i]["professor_fone"],
                                 rows[i]["professor_email"],
                                 rows[i]["professor_endereco"],
+                                rows[i]["professor_senha"],
       ));
     }
     return lista;

@@ -21,7 +21,7 @@ function formatarData(data) {
   <hr />
   <div class="flex">
     <a
-      href="/seeds/professor/disciplina/:turmaId/:serieId/novaAtividade"
+      href="/disciplina/<%= listaDisciplinas[0].disciplina_id %>/<%= listaDisciplinas[0].serie_id %>/novaAtividade"
       class="btn btn-primary"
       >Cadastrar Nova atividade</a
     >
@@ -39,7 +39,7 @@ function formatarData(data) {
     <tbody>
       <% for(let i = 0; i < listaAtividades.length; i ++) { %>
       <tr style="cursor: pointer">
-        <td><%= listaAtividades[i].atividadeProf_nome %></td> <!-- Corrigido -->
+        <td><%= listaAtividades[i].atividadeProf_tituloProf %></td> <!-- Corrigido -->
         <td>0 - <%= listaAtividades[i].atividadeProf_notaProf %></td>
         <td
           style="color: <%= new Date(listaAtividades[i].atividadeProf_prazoProf) < new Date() ? 'red' : 'green' %>; font-style: italic;"

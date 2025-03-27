@@ -53,6 +53,12 @@ class ProfessorController {
       listaAtividades,
     });
   }
+
+  cadastrarAtividade(req, res) {
+    res.render('seeds/cadastrarAtividade.ejs', {
+      layout: './layouts/layoutSeeds.ejs',
+    });
+  }
 }
 
 module.exports = ProfessorController;

@@ -39,7 +39,8 @@ class LoginController {
   }
 
   logout(req, res) {
-    res.redirect('/');
+    req.session.destroy();
+    res.redirect('/login');
   }
 }
 

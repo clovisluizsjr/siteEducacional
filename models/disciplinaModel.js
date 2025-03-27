@@ -63,7 +63,45 @@ class DisciplinaModel{
   
     return lista;
   }
+  
 
+  // Adicione este método à sua classe DisciplinaModel
+  async listarPorAluno(alunoRA) {
+  
+    const sqlSerie = "SELECT serie_id FROM Alunos WHERE aluno_RA = ?";
+    
+   
+    const sqlDisciplinas = `
+        SELECT * 
+        FROM Disciplinas
+        WHERE Disciplinas.serie_id = ?
+    `;
+    
+    const banco = new Database();
+    
+   
+    const [aluno] = await banco.ExecutaComando(sqlSerie, [alunoRA]);
+    if (!aluno) return [];
+    
+    // Executa a segunda consulta para obter as disciplinas
+    const rows = await banco.ExecutaComando(sqlDisciplinas, [aluno.serie_id]);
+    
+    let lista = [];
+    for(let i = 0; i < rows.length; i++) {
+        lista.push(new DisciplinaModel(
+            rows[i]["disciplina_id"],
+            rows[i]["disciplina_nome"],
+            rows[i]["disciplina_horario"],
+            rows[i]["disciplina_categoria"],
+            rows[i]["professor_id"],
+            rows[i]["serie_id"]
+        ));
+    }
+    return lista;
+
+
+}
+ 
 }
 
 module.exports = DisciplinaModel;

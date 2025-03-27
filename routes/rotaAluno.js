@@ -1,14 +1,15 @@
 const express = require('express');
-const ProfessorController = require('../controller/professorController');
+const alunoController = require('../controller/alunoController');
 const AuthMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-let ctrl = new ProfessorController();
+let ctrl = new alunoController();
 let auth = new AuthMiddleware();
+
+// Rotas básicas do aluno
 router.get('/', auth.validar, ctrl.home);
-router.get('/series', auth.validar ,ctrl.listarSeries);
-// router.get('/turmas', ctrl.listarDisciplinas);
-router.get('/disciplina/:disciplinaId/:serieId', ctrl.discipinaInfo);
+router.get('/atividades', auth.validar, ctrl.listagemAlunoDisciplina);
+
 
 module.exports = router;

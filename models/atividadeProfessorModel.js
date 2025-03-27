@@ -23,13 +23,22 @@ class AtividadeProfessorModel {
 
   get serie_id() { return this.#serie_id } set serie_id(value) { this.#serie_id = value }
 
-  async listarAtividadesPorDisciplina(id){
-    let sql = "SELECT * FROM AtividadeProfessor WHERE disciplina_id = ?"; 
-    let valores = [id]
+  constructor(atividadeProf_idProf, atividadeProf_tituloProf, atividadeProf_descricaoProf, atividadeProf_notaProf, atividadeProf_prazoProf, disciplina_id, serie_id) {
+    this.atividadeProf_idProf = atividadeProf_idProf;
+    this.atividadeProf_tituloProf = atividadeProf_tituloProf;
+    this.atividadeProf_descricaoProf = atividadeProf_descricaoProf;
+    this.atividadeProf_notaProf = atividadeProf_notaProf;
+    this.atividadeProf_prazoProf = atividadeProf_prazoProf;
+    this.disciplina_id = disciplina_id;
+    this.serie_id = serie_id;
+  }
+
+  async listarAtividadesPor(disciplinaId, serieId){
+    let sql = "SELECT * FROM AtividadeProfessor WHERE disciplina_id = ? AND serie_id = ?"; 
+    let valores = [disciplinaId, serieId];
     let banco = new Database();
     let lista =[];
     let rows = await banco.ExecutaComando(sql, valores);
-
     for(let i= 0; i < rows.length; i++) {
       lista.push(new AtividadeProfessorModel(rows[i]["atividadeProf_idProf"],
                                 rows[i]["atividadeProf_tituloProf"],

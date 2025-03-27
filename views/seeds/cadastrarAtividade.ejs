@@ -1,1 +1,39 @@
-<h1>TESTEEEEE</h1>
+<script src="/js/seeds/cadastrarAtividade.js"></script>
+
+<div class="p-4">
+  <h1>Cadastrar nova atividade</h1>
+  <div>
+    <div class="form-group">
+      <label for="input-atv-nome">Titulo Atividade:</label>
+      <input id="input-atv-nome" class="form-control" type="text" />
+    </div>
+    <div class="form-group">
+      <label for="input-atv-desc">Descricao Atividade:</label>
+      <input type="emailtext" class="form-control" id="input-atv-desc" />
+    </div>
+    <div class="form-group">
+      <label for="input-atv-peso" >Peso Atividade:</label>
+      <input type="text" class="form-control" id="input-atv-peso" />
+    </div>
+    <div class="form-group">
+      <label for="input-atv-prazo" >Prazo Atividade:</label>
+      <input type="datetime" class="form-control" id="input-atv-prazo" />
+    </div>
+    <div class="form-group">
+      <label for="inpt-atv-serie">Serie:</label>
+      <select class="form-control" id="inpt-atv-serie">
+        <option selected value="<%= listaSeries[0].serie_id  %>"><%= listaSeries[0].serie_nome %></option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="inpt-atv-disciplina">Disciplina:</label>
+      <select class="form-control" id="inpt-atv-disciplina">
+        <option selected value="<%= listaDisciplinas[0].disciplina_id %>"><%= listaDisciplinas[0].disciplina_nome%></option>
+      </select>
+    </div>
+    <div style="margin-top: 30px">
+      <button class="btn btn-primary" id="btn-cadastrar">Cadastrar</button>
+      <a class="btn btn-default" href="/seeds/professor"> Voltar</a>
+    </div>
+  </div>
+</div>

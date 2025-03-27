@@ -21,7 +21,7 @@ function formatarData(data) {
   <hr />
   <div class="flex">
     <a
-      href="/disciplina/<%= listaDisciplinas[0].disciplina_id %>/<%= listaDisciplinas[0].serie_id %>/novaAtividade"
+       href="/seeds/professor/disciplina/<%= listaDisciplinas[0].disciplina_id %>/<%= listaSeries[listaDisciplinas[0].serie_id - 1].serie_id %>/novaAtividade"
       class="btn btn-primary"
       >Cadastrar Nova atividade</a
     >

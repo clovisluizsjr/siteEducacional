@@ -54,9 +54,17 @@ class ProfessorController {
     });
   }
 
-  cadastrarAtividade(req, res) {
+  async cadastrarAtividade(req, res) {
+    const {disciplinaId, serieId} = req.params;
+    let disciplinas = new DisciplinaModel();
+    let listaDisciplinas = await disciplinas.obter(disciplinaId);
+    let series = new SerieModel();
+    let listaSeries = await series.listar();
+
     res.render('seeds/cadastrarAtividade.ejs', {
       layout: './layouts/layoutSeeds.ejs',
+      listaDisciplinas,
+      listaSeries,
     });
   }
 }

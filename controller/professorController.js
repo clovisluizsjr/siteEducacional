@@ -9,23 +9,20 @@ class ProfessorController {
     res.render('seeds/main.ejs', { layout: './layouts/layoutSeeds.ejs' });
   }
 
-  // async listarAlunos(req, res) {
-  //   let alunos = new AlunoModel();
-  //   let listaAlunos = await alunos.listar();
-  //   let turmas = new TurmaModel();
-  //   let listaTurmas = await turmas.listar();
-  //   let series = new SerieModel();
-  //   let listaSeries = await series.listar();
-  //   res.render('seeds/alunos.ejs', {
-  //     layout: './layouts/layoutSeeds.ejs',
-  //     listaAlunos: listaAlunos,
-  //     listaTurmas: listaTurmas,
-  //     listaSeries: listaSeries,
-  //   });
-  // }
+  async listarAlunos(req, res) {
+    let alunos = new AlunoModel();
+    let listaAlunos = await alunos.listar();
+    let series = new SerieModel();
+    let listaSeries = await series.listar();
+    res.render('seeds/alunos.ejs', {
+      layout: './layouts/layoutSeeds.ejs',
+      listaAlunos: listaAlunos,
+      listaSeries: listaSeries,
+    });
+  }
 
   async listarSeries(req, res) {
-    let professorId = req.session.usuario.professorId;
+    let professorId = req.session.usuario.userId;
     let disciplinas = new DisciplinaModel();
     let listaDisciplinas = await disciplinas.listarProfessorPor(professorId); // será renderizado disciplinas apenas deste professor
     let series = new SerieModel();

@@ -11,7 +11,7 @@ class AlunoController {
   }
 
   async listagemAlunoDisciplina(req, res) {
-    let alunoRA = req.params.usuario.alunoRA;
+    let alunoRA = req.session.usuario.userId;
     let atividadesModel = new AtividadeAlunoModel();
     let listaAtividades = await atividadesModel.listarAtividades(alunoRA);
     let disciplinasModel = new DisciplinaModel();
@@ -25,8 +25,8 @@ class AlunoController {
 }
 
   async listagemProfessores(req, res) {
-    let alunoRA = req.params.usuario.alunoRA;
-    console.log("Aluno RA recebido:", alunoRA);
+    let alunoRA = req.session.usuario.userId;
+
     let alunoModel = new AlunoModel();
     let professoresDisciplinas = await alunoModel.listarProfessoresEDisciplinas(alunoRA);
 

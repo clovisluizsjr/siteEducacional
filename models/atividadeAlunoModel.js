@@ -42,7 +42,7 @@ class AtividadeAlunoModel {
         let lista = [];
     
         for (let i = 0; i < rows.length; i++) {
-            lista.push(new AtividadeAlunoDisciplinaModel(
+            lista.push(new AtividadeAlunoModel(
                 rows[i]["atividadeAluno_id"],
                 rows[i]["aluno_RA"],
                 rows[i]["atividadeAluno_notaAluno"],
@@ -50,7 +50,6 @@ class AtividadeAlunoModel {
                 rows[i]["atividadeAluno_prazoEntrega"],
                 rows[i]["atividadeProf_idProf"],
                 rows[i]["disciplina_id"],
-                rows[i]["disciplina_nome"]
             ));
         }
     

@@ -6,9 +6,9 @@
         <div class="card mb-3">
           <div class="card-body">
             <h5 class="card-title">
-              <%= listaAtividades[0].disciplina_nome %>
+              <%= listaDisciplinas[listaAtividades[0].disciplina_id].disciplina_nome %>
               <span class="badge <%= listaAtividades[0].atividadeAluno_notaAluno ? 'bg-success' : 'bg-secondary' %> float-end">
-                <%= listaAtividades[0].atividadeAluno_notaAluno || 'Pendente' %>
+                Nota: <%= listaAtividades[0].atividadeAluno_notaAluno || 'Pendente' %>
               </span>
             </h5>
             <h6 class="card-subtitle mb-2 text-muted">

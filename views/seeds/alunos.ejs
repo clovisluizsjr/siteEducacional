@@ -8,7 +8,6 @@
         <th>Nome</th>
         <th>Email</th>
         <th>Série</th>
-        <th>Turma</th>
       </tr>
     </thead>
     <tbody>
@@ -18,7 +17,6 @@
         <td><%= listaAlunos[i].aluno_nome %></td>
         <td><%= listaAlunos[i].aluno_email %></td>
         <td><%= listaSeries[listaAlunos[i].serie_id - 1].serie_nome %></td>
-        <td><%= listaTurmas[listaAlunos[i].turma_id - 1].turma_nome %></td>
       </tr>
       <%} %>
     </tbody>

@@ -139,7 +139,7 @@ class AlunoModel {
     let lista = [];
 
     for (let i = 0; i < rows.length; i++) {
-        lista.push(new ProfessorDisciplinaModel(
+        lista.push(new AlunoModel(
             rows[i]["professor_id"],
             rows[i]["professor_nome"],
             rows[i]["disciplina_id"],

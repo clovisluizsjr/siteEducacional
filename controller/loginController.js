@@ -25,6 +25,7 @@ class LoginController {
           email: email.includes('@escola.com') ? user.professor_email : user.aluno_email,
           nome:  email.includes('@escola.com') ? user.professor_nome : user.aluno_nome,
           tipo: email.includes('@escola.com') ? 'professor' : 'aluno',
+          professorId: email.includes('@escola.com') && user.professor_id,
         }
         return res.redirect(direcionaRota);
       }

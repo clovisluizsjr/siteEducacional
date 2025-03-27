@@ -1,19 +1,53 @@
-<div class="flex" class="p-4">
-  <h3><%=listaDisciplinas[0].disciplina_nome %></h3>
+<%
+function formatarData(data) {
+    const d = new Date(data);
+    const dia = String(d.getDate()).padStart(2, '0');
+    const mes = String(d.getMonth() + 1).padStart(2, '0'); // Meses começam do zero
+
+    const horas = String(d.getHours()).padStart(2, '0');
+    const minutos = String(d.getMinutes()).padStart(2, '0');
+
+    return `${dia}/${mes} ${horas}:${minutos}`;
+}
+%>
+
+<div class="p-4">
+  <h3><%= listaDisciplinas[0].disciplina_nome %></h3>
   <p>Turma: <%= listaSeries[listaDisciplinas[0].serie_id -1].serie_nome %></p>
   <p>
-    Alunos: <%= listaSeries[listaDisciplinas[0].serie_id
-    -1].serie_quantidadeAluno %>
+    Alunos : <%= listaSeries[listaDisciplinas[0].serie_id -1].serie_quantMAX %>
   </p>
 
   <hr />
-  <a
-    href="/seeds/professor/disciplina/:turmaId/:serieId/novaAtividade"
-    class="btn btn-primary"
-    >Cadastrar Nova atividade</a
-  >
-  <hr>
-  <table>
-    
+  <div class="flex">
+    <a
+       href="/seeds/professor/disciplina/<%= listaDisciplinas[0].disciplina_id %>/<%= listaSeries[listaDisciplinas[0].serie_id - 1].serie_id %>/novaAtividade"
+      class="btn btn-primary"
+      >Cadastrar Nova atividade</a
+    >
+    <a href="#" class="btn btn-info">Registrar Presença</a>
+  </div>
+  <hr />
+  <table class="mt-4 table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Atividade</th>
+        <th>Peso</th>
+        <th>Prazo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(let i = 0; i < listaAtividades.length; i ++) { %>
+      <tr style="cursor: pointer">
+        <td><%= listaAtividades[i].atividadeProf_tituloProf %></td> <!-- Corrigido -->
+        <td>0 - <%= listaAtividades[i].atividadeProf_notaProf %></td>
+        <td
+          style="color: <%= new Date(listaAtividades[i].atividadeProf_prazoProf) < new Date() ? 'red' : 'green' %>; font-style: italic;"
+        >
+          <%= formatarData(listaAtividades[i].atividadeProf_prazoProf) %>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
   </table>
 </div>

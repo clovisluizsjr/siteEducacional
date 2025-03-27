@@ -1,5 +1,5 @@
 const AlunoModel = require('../models/alunoModel');
-const AtividadeProfessorModel = require("../models/atividadeProfessorModel");
+const AtividadeProfessorModel = require('../models/atividadeProfessorModel');
 const DisciplinaModel = require('../models/disciplinaModel');
 const ProfessorModel = require('../models/professorModel');
 const SerieModel = require('../models/serieModel');
@@ -37,21 +37,43 @@ class ProfessorController {
     });
   }
 
-  async discipinaInfo(req, res) { // renderiza info das disciplinas + atividades já existentes
-    const disciplinaId = req.params.disciplinaId;
+  async discipinaInfo(req, res) {
+    // renderiza info das disciplinas + atividades já existentes
+    const { disciplinaId, serieId } = req.params;
 
     let disciplinas = new DisciplinaModel();
     let listaDisciplinas = await disciplinas.obter(disciplinaId);
     let series = new SerieModel();
     let listaSeries = await series.listar();
-    let atividas = new AtividadeProfessorModel();
-    let listaAtividades = await atividas.listarAtividadesPorDisciplina(disciplinaId);
+    let atividades = new AtividadeProfessorModel();
+    let listaAtividades = await atividades.listarAtividadesPor(disciplinaId, serieId);
     res.render('seeds/disciplina.ejs', {
       layout: './layouts/layoutSeeds.ejs',
-      listaDisciplinas: listaDisciplinas,
-      listaSeries: listaSeries,
+      listaDisciplinas,
+      listaSeries,
       listaAtividades,
     });
+  }
+
+  async cadastrarAtividadeView(req, res) {
+    const { disciplinaId, serieId } = req.params;
+    let disciplinas = new DisciplinaModel();
+    let listaDisciplinas = await disciplinas.obter(disciplinaId);
+    let series = new SerieModel();
+    let listaSeries = await series.listar();
+
+    res.render('seeds/cadastrarAtividade.ejs', {
+      layout: './layouts/layoutSeeds.ejs',
+      listaDisciplinas,
+      listaSeries,
+    });
+  }
+
+  async cadastrarAtividade(req, res) {
+    console.log(req.body); // formulario esta chegando aqui, precisa só inserir no banco método gravar() de atividadeProfessorModel
+    res.send({
+      ok: 'teste'
+    })
   }
 }
 

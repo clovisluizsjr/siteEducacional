@@ -1,5 +1,5 @@
 const AlunoModel = require('../models/alunoModel');
-const AtividadeProfessorModel = require("../models/atividadeProfessorModel");
+const AtividadeProfessorModel = require('../models/atividadeProfessorModel');
 const DisciplinaModel = require('../models/disciplinaModel');
 const ProfessorModel = require('../models/professorModel');
 const SerieModel = require('../models/serieModel');
@@ -37,8 +37,9 @@ class ProfessorController {
     });
   }
 
-  async discipinaInfo(req, res) { // renderiza info das disciplinas + atividades já existentes
-    const {disciplinaId, serieId} = req.params;
+  async discipinaInfo(req, res) {
+    // renderiza info das disciplinas + atividades já existentes
+    const { disciplinaId, serieId } = req.params;
 
     let disciplinas = new DisciplinaModel();
     let listaDisciplinas = await disciplinas.obter(disciplinaId);
@@ -54,8 +55,8 @@ class ProfessorController {
     });
   }
 
-  async cadastrarAtividade(req, res) {
-    const {disciplinaId, serieId} = req.params;
+  async cadastrarAtividadeView(req, res) {
+    const { disciplinaId, serieId } = req.params;
     let disciplinas = new DisciplinaModel();
     let listaDisciplinas = await disciplinas.obter(disciplinaId);
     let series = new SerieModel();
@@ -66,6 +67,13 @@ class ProfessorController {
       listaDisciplinas,
       listaSeries,
     });
+  }
+
+  async cadastrarAtividade(req, res) {
+    console.log(req.body); // formulario esta chegando aqui, precisa só inserir no banco método gravar() de atividadeProfessorModel
+    res.send({
+      ok: 'teste'
+    })
   }
 }
 

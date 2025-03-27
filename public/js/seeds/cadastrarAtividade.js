@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if ((inptNome.value == '')) listaValidacao.push('input-atv-nome');
     if ((inptDesc.value == '')) listaValidacao.push('input-atv-desc');
     if ((inptPeso.value == '')) listaValidacao.push('input-atv-peso');
-    if ((inptPrazo.value = '')) listaValidacao.push('input-atv-prazo');
+    if ((inptPrazo.value == '')) listaValidacao.push('input-atv-prazo');
     if ((inptSerie.value == '')) listaValidacao.push('input-atv-serie');
     if ((inptDisciplina.value == ''))
       listaValidacao.push('input-atv-disciplina');
@@ -37,23 +37,23 @@ document.addEventListener('DOMContentLoaded', function () {
         serie_id: inptSerie.value,
         disciplina_id: inptDisciplina.value,
       };
-      // fetch('/atividade/cadastrar', {
-      //   method: 'POST',
-      //   headers: {
-      //     'content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(obj),
-      // })
-      //   .then(function (resposta) {
-      //     return resposta.json();
-      //   })
-      //   .then(function (corpoResposta) {
-      //     if (corpoResposta.ok) {
-      //       alert(corpoResposta.ok);
-      //     } else {
-      //       console.error(corpoResposta.msg);
-      //     }
-      //   });
+      fetch('/seeds/professor/atividade/cadastrar', {
+        method: 'POST',
+        headers: {
+          'content-Type': 'application/json',
+        },
+        body: JSON.stringify(obj),
+      })
+        .then(function (resposta) {
+          return resposta.json();
+        })
+        .then(function (corpoResposta) {
+          if (corpoResposta.ok) {
+            alert(corpoResposta.ok);
+          } else {
+            console.error(corpoResposta.msg);
+          }
+        });
     } else {
       destacarCampos(listaValidacao);
     }

@@ -20,20 +20,19 @@ document.addEventListener('DOMContentLoaded', function () {
     let inptDisciplina = document.getElementById('input-atv-disciplina');
     let listaValidacao = [];
 
-    if ((inptNome.value == '')) listaValidacao.push('input-atv-nome');
-    if ((inptDesc.value == '')) listaValidacao.push('input-atv-desc');
-    if ((inptPeso.value == '')) listaValidacao.push('input-atv-peso');
-    if ((inptPrazo.value == '')) listaValidacao.push('input-atv-prazo');
-    if ((inptSerie.value == '')) listaValidacao.push('input-atv-serie');
-    if ((inptDisciplina.value == ''))
-      listaValidacao.push('input-atv-disciplina');
+    if (inptNome.value == '') listaValidacao.push('input-atv-nome');
+    if (inptDesc.value == '') listaValidacao.push('input-atv-desc');
+    if (inptPeso.value == '') listaValidacao.push('input-atv-peso');
+    if (inptPrazo.value == '') listaValidacao.push('input-atv-prazo');
+    if (inptSerie.value == '') listaValidacao.push('input-atv-serie');
+    if (inptDisciplina.value == '') listaValidacao.push('input-atv-disciplina');
 
     if (listaValidacao.length == 0) {
       let obj = {
         atividadeProf_tituloProf: inptNome.value,
         atividadeProf_descricaoProf: inptDesc.value,
         atividadeProf_notaProf: inptPeso.value,
-        atividadeProf_prazoProf: inptPrazo.value,
+        atividadeProf_prazoProf: inptPrazo.value.replace('T', ' ') + ':00',
         serie_id: inptSerie.value,
         disciplina_id: inptDisciplina.value,
       };
@@ -49,7 +48,15 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(function (corpoResposta) {
           if (corpoResposta.ok) {
-            alert(corpoResposta.ok);
+            Swal.fire({
+              icon: 'success',
+              title: 'Sucesso!',
+              text: corpoResposta.msg,
+              timer: 3000, // O alerta desaparece após 3 segundos
+              showConfirmButton: false,
+            }).then(() => {
+              window.location.href = `/${disciplina_id}`; // Troque pela página desejada
+            });
           } else {
             console.error(corpoResposta.msg);
           }

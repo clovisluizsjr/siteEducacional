@@ -43,7 +43,10 @@ class ProfessorController {
     let series = new SerieModel();
     let listaSeries = await series.listar();
     let atividades = new AtividadeProfessorModel();
-    let listaAtividades = await atividades.listarAtividadesPor(disciplinaId, serieId);
+    let listaAtividades = await atividades.listarAtividadesPor(
+      disciplinaId,
+      serieId
+    );
     res.render('seeds/disciplina.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       listaDisciplinas,
@@ -67,10 +70,42 @@ class ProfessorController {
   }
 
   async cadastrarAtividade(req, res) {
-    console.log(req.body); // formulario esta chegando aqui, precisa só inserir no banco método gravar() de atividadeProfessorModel
-    res.send({
-      ok: 'teste'
-    })
+    const {
+      atividadeProf_tituloProf,
+      atividadeProf_descricaoProf,
+      atividadeProf_notaProf,
+      atividadeProf_prazoProf,
+      serie_id,
+      disciplina_id,
+    } = req.body;
+
+    if (
+      atividadeProf_tituloProf != '' &&
+      atividadeProf_descricaoProf != '' &&
+      atividadeProf_notaProf != '' &&
+      atividadeProf_prazoProf != '' &&
+      serie_id != '' &&
+      disciplina_id != '') {
+      
+      let usuario = new AtividadeProfessorModel()
+      usuario.atividadeProf_tituloProf = atividadeProf_tituloProf;
+      usuario.atividadeProf_descricaoProf = atividadeProf_descricaoProf;
+      usuario.atividadeProf_notaProf = atividadeProf_notaProf;
+      usuario.atividadeProf_prazoProf = atividadeProf_prazoProf;
+      usuario.serie_id = serie_id;
+      usuario.disciplina_id = disciplina_id;
+
+      let ok = await usuario.gravar();
+      if(ok) {
+        res.send({ok: true, msg: "Atividade cadastrada com sucesso!"})
+        
+      }else {
+        res.send({ok: false, msg: "Erro ao inserir o atividade no banco de dados!"})
+      }
+    } else {
+      res.send({ok: false, msg: "Inforamações incorretas"})
+    }
+   
   }
 }
 

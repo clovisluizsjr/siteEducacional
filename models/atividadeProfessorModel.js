@@ -53,6 +53,17 @@ class AtividadeProfessorModel {
     return lista;
   }
 
+  async gravar() {
+    let sql = `insert into AtividadeProfessor 
+                    (atividadeProf_tituloProf, atividadeProf_descricaoProf, atividadeProf_notaProf, atividadeProf_prazoProf, disciplina_id, serie_id)
+               values 
+                    (?, ?, ?, ?, ?, ?)`;
+    let valores = [this.#atividadeProf_tituloProf, this.#atividadeProf_descricaoProf, this.#atividadeProf_notaProf, this.#atividadeProf_prazoProf, this.#disciplina_id, this.#serie_id]
+    let banco = new Database();
+    let resultado = await banco.ExecutaComandoNonQuery(sql, valores);
+
+    return resultado;
+}
 
 }
 

@@ -125,10 +125,7 @@ class AlunoModel {
   async listarProfessoresEDisciplinas(alunoRA) {
     let sql = `
         SELECT 
-            Professores.professor_id,
-            Professores.professor_nome,
-            Disciplinas.disciplina_id,
-            Disciplinas.disciplina_nome
+           *
         FROM Alunos
         JOIN Series ON Alunos.serie_id = Series.serie_id
         JOIN Disciplinas ON Series.serie_id = Disciplinas.serie_id
@@ -152,6 +149,58 @@ class AlunoModel {
 
     return lista;
 }
+
+/*async listarProfessoresEDisciplinas(alunoRA) {
+    // 1. Busca a série do aluno
+    let sqlAluno = "SELECT serie_id FROM Alunos WHERE aluno_RA = ?";
+    let banco = new Database();
+    let aluno = await banco.ExecutaComando(sqlAluno, [alunoRA]);
+    
+    if (!aluno || aluno.length === 0) return [];
+    
+    let serieId = aluno[0].serie_id;
+
+    // 2. Busca disciplinas da série
+    let sqlDisciplinas = "SELECT * FROM Disciplinas WHERE serie_id = ?";
+    let disciplinas = await banco.ExecutaComando(sqlDisciplinas, [serieId]);
+
+    // 3. Para cada disciplina, busca o professor
+    let resultado = [];
+    
+    for(let i = 0; i < disciplinas.length; i++) {
+        let disciplina = disciplinas[i];
+        let sqlProfessor = "SELECT * FROM Professores WHERE professor_id = ?";
+        let professor = await banco.ExecutaComando(sqlProfessor, [disciplina.professor_id]);
+        
+        if(professor && professor.length > 0) {
+            // Verifica se professor já está no resultado
+            let professorExistente = false;
+            for(let j = 0; j < resultado.length; j++) {
+                if(resultado[j].professor_id === professor[0].professor_id) {
+                    professorExistente = true;
+                    resultado[j].disciplinas.push({
+                        disciplina_id: disciplina.disciplina_id,
+                        disciplina_nome: disciplina.disciplina_nome
+                    });
+                    break;
+                }
+            }
+            
+            if(!professorExistente) {
+                resultado.push({
+                    professor_id: professor[0].professor_id,
+                    professor_nome: professor[0].professor_nome,
+                    disciplinas: [{
+                        disciplina_id: disciplina.disciplina_id,
+                        disciplina_nome: disciplina.disciplina_nome
+                    }]
+                });
+            }
+        }
+    }
+
+    return resultado;
+}*/ 
 
 }
 module.exports = AlunoModel;

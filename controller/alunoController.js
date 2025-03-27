@@ -11,42 +11,31 @@ class AlunoController {
   }
 
   async listagemAlunoDisciplina(req, res) {
-
-    const alunoRA = req.session.usuario.alunoRA;
-
-    // Busca atividades com nome da disciplina
-    const atividadesModel = new AtividadeAlunoModel();
-    const listaAtividades = await atividadesModel.listarAtividades(alunoRA);
-
-    // Busca disciplinas da série do aluno
-    const disciplinasModel = new DisciplinaModel();
-    const listaDisciplinas = await disciplinasModel.listarPorAluno(alunoRA);
+    let alunoRA = req.params.usuario.alunoRA;
+    let atividadesModel = new AtividadeAlunoModel();
+    let listaAtividades = await atividadesModel.listarAtividades(alunoRA);
+    let disciplinasModel = new DisciplinaModel();
+    let listaDisciplinas = await disciplinasModel.listarPorAluno(alunoRA);
 
     res.render('seeds/atividades', {
-      layout: './layouts/layoutSeeds',
-      listaAtividades: listaAtividades,
-      listaDisciplinas: listaDisciplinas,
-      usuario: req.session.usuario
+        layout: './layouts/layoutSeeds',
+        listaAtividades: listaAtividades,
+        listaDisciplinas: listaDisciplinas
     });
-
-
-
-  }
-  async listagemProfessores(req, res) {
-   
-        const alunoRA = req.session.usuario.alunoRA;
-
-        // Busca professores e disciplinas do aluno
-        const alunoModel = new AlunoModel();
-        const professoresDisciplinas = await alunoModel.listarProfessoresEDisciplinas(alunoRA);
-
-        res.render('seeds/professores', {
-            layout: './layouts/layoutSeeds',
-            professoresDisciplinas: professoresDisciplinas,
-            usuario: req.session.usuario
-        });
-    
 }
+
+  async listagemProfessores(req, res) {
+    let alunoRA = req.params.usuario.alunoRA;
+    console.log("Aluno RA recebido:", alunoRA);
+    let alunoModel = new AlunoModel();
+    let professoresDisciplinas = await alunoModel.listarProfessoresEDisciplinas(alunoRA);
+
+    res.render('seeds/professores', {
+        layout: './layouts/layoutSeeds',
+        professoresDisciplinas: professoresDisciplinas
+    });
+}
+
 }
 
 module.exports = AlunoController;

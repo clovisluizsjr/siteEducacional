@@ -65,6 +65,9 @@ class AtividadeProfessorModel {
     return resultado;
 }
 
+
+
+
 }
 
 module.exports = AtividadeProfessorModel;

@@ -1,4 +1,5 @@
 const AlunoModel = require('../models/alunoModel');
+const AtividadeProfessorModel = require("../models/atividadeProfessorModel");
 const DisciplinaModel = require('../models/disciplinaModel');
 const ProfessorModel = require('../models/professorModel');
 const SerieModel = require('../models/serieModel');
@@ -17,47 +18,41 @@ class ProfessorController {
   //   let listaSeries = await series.listar();
   //   res.render('seeds/alunos.ejs', {
   //     layout: './layouts/layoutSeeds.ejs',
-  //     rota: 'professor',
-  //     imgUser: '/img/team-4.jpg', // Essas informações viram do login
-  //     nomeUser: 'Professor Pandur', // Essas informações viram do login
   //     listaAlunos: listaAlunos,
   //     listaTurmas: listaTurmas,
   //     listaSeries: listaSeries,
   //   });
   // }
 
-  // async listarDisciplinas(req, res) {
-  //   let professorId = 1; // Supor que foi o professor do id 1 que fez o login
-  //   let disciplinas = new DisciplinaModel();
-  //   let listaDisciplinas = await disciplinas.listarProfessorPor(professorId); // será renderizado disciplinas apenas deste professor
-  //   let series = new SerieModel();
-  //   let listaSeries = await series.listar();
-  //   res.render('seeds/turmas.ejs', {
-  //     layout: './layouts/layoutSeeds.ejs',
-  //     rota: 'professor',
-  //     imgUser: '/img/team-4.jpg', // Essas informações viram do login
-  //     nomeUser: 'Professor Pandur', // Essas informações viram do login
-  //     listaDisciplinas: listaDisciplinas,
-  //     listaSeries: listaSeries,
-  //   });
-  // }
+  async listarSeries(req, res) {
+    let professorId = req.session.usuario.professorId;
+    let disciplinas = new DisciplinaModel();
+    let listaDisciplinas = await disciplinas.listarProfessorPor(professorId); // será renderizado disciplinas apenas deste professor
+    let series = new SerieModel();
+    let listaSeries = await series.listar();
+    res.render('seeds/series.ejs', {
+      layout: './layouts/layoutSeeds.ejs',
+      listaDisciplinas: listaDisciplinas,
+      listaSeries: listaSeries,
+    });
+  }
 
-  // async discipinaInfo(req, res) {
-  //   const disciplinaId = req.params.disciplinaId;
+  async discipinaInfo(req, res) { // renderiza info das disciplinas + atividades já existentes
+    const disciplinaId = req.params.disciplinaId;
 
-  //   let disciplinas = new DisciplinaModel();
-  //   let listaDisciplinas = await disciplinas.obter(disciplinaId);
-  //   let series = new SerieModel();
-  //   let listaSeries = await series.listar();
-  //   res.render('seeds/disciplina.ejs', {
-  //     layout: './layouts/layoutSeeds.ejs',
-  //     rota: 'professor',
-  //     imgUser: '/img/team-4.jpg', // Essas informações viram do login
-  //     nomeUser: 'Professor Pandur', // Essas informações viram do login
-  //     listaDisciplinas: listaDisciplinas,
-  //     listaSeries: listaSeries,
-  //   });
-  // }
+    let disciplinas = new DisciplinaModel();
+    let listaDisciplinas = await disciplinas.obter(disciplinaId);
+    let series = new SerieModel();
+    let listaSeries = await series.listar();
+    let atividas = new AtividadeProfessorModel();
+    let listaAtividades = await atividas.listarAtividadesPorDisciplina(disciplinaId);
+    res.render('seeds/disciplina.ejs', {
+      layout: './layouts/layoutSeeds.ejs',
+      listaDisciplinas: listaDisciplinas,
+      listaSeries: listaSeries,
+      listaAtividades,
+    });
+  }
 }
 
 module.exports = ProfessorController;

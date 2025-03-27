@@ -24,6 +24,7 @@ class LoginController {
         req.session.usuario = {
           email: email.includes('@escola.com') ? user.professor_email : user.aluno_email,
           nome:  email.includes('@escola.com') ? user.professor_nome : user.aluno_nome,
+          professorId : email.includes('@escola.com') && user.professor_id,
           tipo: email.includes('@escola.com') ? 'professor' : 'aluno',
         }
         return res.redirect(direcionaRota);
@@ -38,7 +39,6 @@ class LoginController {
   }
 
   logout(req, res) {
-    req.session.destroy();
     res.redirect('/');
   }
 }

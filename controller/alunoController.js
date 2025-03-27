@@ -30,7 +30,23 @@ class AlunoController {
     });
 
 
+
   }
+  async listagemProfessores(req, res) {
+   
+        const alunoRA = req.session.usuario.alunoRA;
+
+        // Busca professores e disciplinas do aluno
+        const alunoModel = new AlunoModel();
+        const professoresDisciplinas = await alunoModel.listarProfessoresEDisciplinas(alunoRA);
+
+        res.render('seeds/professores', {
+            layout: './layouts/layoutSeeds',
+            professoresDisciplinas: professoresDisciplinas,
+            usuario: req.session.usuario
+        });
+    
+}
 }
 
 module.exports = AlunoController;

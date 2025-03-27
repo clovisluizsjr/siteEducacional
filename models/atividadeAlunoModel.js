@@ -29,56 +29,36 @@ class AtividadeAlunoModel {
         this.disciplina_id = disciplina_id;
     }
 
-   /*async listarAtividadeAlunoDisciplina(aluno_RA) {
+    async listarAtividades(aluno_RA) {
         const sql = `
-            SELECT * FROM AtividadeAluno JOIN Disciplinas ON AtividadeAluno.disciplina_id = Disciplinas.disciplina_id  WHERE AtividadeAluno.aluno_RA = ?
+            SELECT * 
+            FROM AtividadeAluno 
+            JOIN Disciplinas ON AtividadeAluno.disciplina_id = Disciplinas.disciplina_id  
+            WHERE AtividadeAluno.aluno_RA = ?
         `;
-        
-        
+    
         const banco = new Database();
         const rows = await banco.ExecutaComando(sql, [aluno_RA]);
-        
         let lista = [];
-        for(let i = 0; i < rows.length; i++) {
-            lista.push({
-                atividadeAluno_id: rows[i].atividadeAluno_id,
-                aluno_RA: rows[i].aluno_RA,
-                atividadeAluno_notaAluno: rows[i].atividadeAluno_notaAluno,
-                atividadeAluno_feedbackProf: rows[i].atividadeAluno_feedbackProf,
-                atividadeAluno_prazoEntrega: rows[i].atividadeAluno_prazoEntrega,
-                atividadeProf_idProf: rows[i].atividadeProf_idProf,
-                disciplina_id: rows[i].disciplina_id,
-                disciplina_nome: rows[i].disciplina_nome
-            });
-            
+    
+        for (let i = 0; i < rows.length; i++) {
+            lista.push(new AtividadeAlunoDisciplinaModel(
+                rows[i]["atividadeAluno_id"],
+                rows[i]["aluno_RA"],
+                rows[i]["atividadeAluno_notaAluno"],
+                rows[i]["atividadeAluno_feedbackProf"],
+                rows[i]["atividadeAluno_prazoEntrega"],
+                rows[i]["atividadeProf_idProf"],
+                rows[i]["disciplina_id"],
+                rows[i]["disciplina_nome"]
+            ));
         }
+    
         return lista;
-    }*/
-
-        async listarAtividades(aluno_RA) {
-            const sql = `
-                SELECT *
-                FROM AtividadeAluno
-                WHERE aluno_RA = ?
-            `;
-            
-            const banco = new Database();
-            const rows = await banco.ExecutaComando(sql, [aluno_RA]);
-            
-            let atividades = [];
-            for (let i = 0; i < rows.length; i++) {
-                atividades.push({
-                    atividadeAluno_id: rows[i].atividadeAluno_id,
-                    atividadeAluno_notaAluno: rows[i].atividadeAluno_notaAluno,
-                    atividadeAluno_feedbackProf: rows[i].atividadeAluno_feedbackProf,
-                    atividadeAluno_prazoEntrega: rows[i].atividadeAluno_prazoEntrega,
-                    disciplina_id: rows[i].disciplina_id
-                });
-            }
-            return atividades;
-        }
     }
- 
+    
+
+}
 
    
 module.exports = AtividadeAlunoModel;

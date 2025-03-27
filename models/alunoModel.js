@@ -15,7 +15,7 @@ class AlunoModel {
   #aluno_statusFinanceiro;
   #serie_id;
 
-  get aluno_RA() { return this.#aluno_RA} set aluno_RA(value) { this.#aluno_RA = value }
+  get aluno_RA() { return this.#aluno_RA } set aluno_RA(value) { this.#aluno_RA = value }
   get aluno_nome() { return this.#aluno_nome } set aluno_nome(value) { this.#aluno_nome = value }
   get aluno_CPF() { return this.#aluno_CPF } set aluno_CPF(value) { this.#aluno_CPF = value }
   get aluno_nasc() { return this.#aluno_nasc } set aluno_nasc(value) { this.#aluno_nasc = value }
@@ -29,7 +29,7 @@ class AlunoModel {
   get aluno_statusFinanceiro() { return this.#aluno_statusFinanceiro } set aluno_statusFinanceiro(value) { this.#aluno_statusFinanceiro = value }
   get serie_id() { return this.#serie_id } set serie_id(value) { this.#serie_id = value }
 
-  constructor(aluno_RA, aluno_nome, aluno_CPF, aluno_nasc, aluno_fone, aluno_email, aluno_mae, aluno_pai, aluno_respCPF, aluno_endereco, aluno_senha,aluno_statusFinanceiro, serie_id) {
+  constructor(aluno_RA, aluno_nome, aluno_CPF, aluno_nasc, aluno_fone, aluno_email, aluno_mae, aluno_pai, aluno_respCPF, aluno_endereco, aluno_senha, aluno_statusFinanceiro, serie_id) {
     this.aluno_RA = aluno_RA;
     this.aluno_nome = aluno_nome;
     this.aluno_CPF = aluno_CPF;
@@ -52,18 +52,18 @@ class AlunoModel {
     let rows = await banco.ExecutaComando(sql);
     for (let i = 0; i < rows.length; i++) {
       lista.push(new AlunoModel(rows[i]["aluno_RA"],
-                                rows[i]["aluno_nome"],
-                                rows[i]["aluno_CPF"],
-                                rows[i]["aluno_nasc"],
-                                rows[i]["aluno_fone"],
-                                rows[i]["aluno_email"],
-                                rows[i]["aluno_mae"],
-                                rows[i]["aluno_pai"],
-                                rows[i]["aluno_respCPF"],
-                                rows[i]["aluno_endereco"],
-                                rows[i]["aluno_senha"],
-                                rows[i]["aluno_statusFinanceiro"],
-                                rows[i]["serie_id"],
+        rows[i]["aluno_nome"],
+        rows[i]["aluno_CPF"],
+        rows[i]["aluno_nasc"],
+        rows[i]["aluno_fone"],
+        rows[i]["aluno_email"],
+        rows[i]["aluno_mae"],
+        rows[i]["aluno_pai"],
+        rows[i]["aluno_respCPF"],
+        rows[i]["aluno_endereco"],
+        rows[i]["aluno_senha"],
+        rows[i]["aluno_statusFinanceiro"],
+        rows[i]["serie_id"],
       ))
     }
     return lista;
@@ -76,22 +76,22 @@ class AlunoModel {
 
     let rows = await banco.ExecutaComando(sql, valores);
 
-    if(rows.length > 0) {
+    if (rows.length > 0) {
       let row = rows[0];
       return new AlunoModel(row["aluno_RA"],
-                            row["aluno_nome"],
-                            row["aluno_CPF"],
-                            row["aluno_nasc"],
-                            row["aluno_fone"],
-                            row["aluno_email"],
-                            row["aluno_mae"],
-                            row["aluno_pai"],
-                            row["aluno_respCPF"],
-                            row["aluno_endereco"],
-                            row["aluno_senha"],
-                            row["aluno_statusFinanceiro"],
-                            row["serie_id"],
-      )    
+        row["aluno_nome"],
+        row["aluno_CPF"],
+        row["aluno_nasc"],
+        row["aluno_fone"],
+        row["aluno_email"],
+        row["aluno_mae"],
+        row["aluno_pai"],
+        row["aluno_respCPF"],
+        row["aluno_endereco"],
+        row["aluno_senha"],
+        row["aluno_statusFinanceiro"],
+        row["serie_id"],
+      )
     }
     return null;
   }
@@ -104,24 +104,54 @@ class AlunoModel {
     let lista = [];
     for (let i = 0; i < rows.length; i++) {
       lista.push(new AlunoModel(rows[i]["aluno_RA"],
-                                rows[i]["aluno_nome"],
-                                rows[i]["aluno_CPF"],
-                                rows[i]["aluno_nasc"],
-                                rows[i]["aluno_fone"],
-                                rows[i]["aluno_email"],
-                                rows[i]["aluno_mae"],
-                                rows[i]["aluno_pai"],
-                                rows[i]["aluno_respCPF"],
-                                rows[i]["aluno_endereco"],
-                                rows[i]["aluno_senha"],
-                                rows[i]["aluno_statusFinanceiro"],
-                                rows[i]["serie_id"],
+        rows[i]["aluno_nome"],
+        rows[i]["aluno_CPF"],
+        rows[i]["aluno_nasc"],
+        rows[i]["aluno_fone"],
+        rows[i]["aluno_email"],
+        rows[i]["aluno_mae"],
+        rows[i]["aluno_pai"],
+        rows[i]["aluno_respCPF"],
+        rows[i]["aluno_endereco"],
+        rows[i]["aluno_senha"],
+        rows[i]["aluno_statusFinanceiro"],
+        rows[i]["serie_id"],
       ))
     }
     return lista;
 
   }
 
+  async listarProfessoresEDisciplinas(alunoRA) {
+    let sql = `
+        SELECT 
+            Professores.professor_id,
+            Professores.professor_nome,
+            Disciplinas.disciplina_id,
+            Disciplinas.disciplina_nome
+        FROM Alunos
+        JOIN Series ON Alunos.serie_id = Series.serie_id
+        JOIN Disciplinas ON Series.serie_id = Disciplinas.serie_id
+        JOIN Professores ON Disciplinas.professor_id = Professores.professor_id
+        WHERE Alunos.aluno_RA = ?
+    `;
+
+    let valores = [alunoRA]; // Passando o RA como parâmetro
+    let banco = new Database();
+    let rows = await banco.ExecutaComando(sql, valores);
+    let lista = [];
+
+    for (let i = 0; i < rows.length; i++) {
+        lista.push(new ProfessorDisciplinaModel(
+            rows[i]["professor_id"],
+            rows[i]["professor_nome"],
+            rows[i]["disciplina_id"],
+            rows[i]["disciplina_nome"]
+        ));
+    }
+
+    return lista;
 }
 
+}
 module.exports = AlunoModel;

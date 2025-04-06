@@ -21,21 +21,37 @@ class AtividadeProfessorModel {
 
   get disciplina_id() { return this.#disciplina_id } set disciplina_id(value) { this.#disciplina_id = value }
 
-  get serie_id() { ret[disciplinaId, serieId];
+  get serie_id() { return this.#serie_id } set serie_id(value) { this.#serie_id = value };
+
+
+  constructor(atividadeProf_idProf, atividadeProf_tituloProf, atividadeProf_descricaoProf, atividadeProf_notaProf, atividadeProf_prazoProf, disciplina_id, serie_id) {
+    this.atividadeProf_idProf = atividadeProf_idProf;
+    this.atividadeProf_tituloProf = atividadeProf_tituloProf;
+    this.atividadeProf_descricaoProf = atividadeProf_descricaoProf;
+    this.atividadeProf_notaProf = atividadeProf_notaProf;
+    this.atividadeProf_prazoProf = atividadeProf_prazoProf;
+    this.disciplina_id = disciplina_id;
+    this.serie_id = serie_id;
+  }
+
+
+  async listarAtividadesPor(disciplinaId, serieId) {
+    let sql = "SELECT * FROM AtividadeProfessor WHERE disciplina_id = ? AND serie_id = ?";
+    let valores = [disciplinaId, serieId]
     let banco = new Database();
-    let lista =[];
+    let lista = [];
     let rows = await banco.ExecutaComando(sql, valores);
-    for(let i= 0; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       lista.push(new AtividadeProfessorModel(rows[i]["atividadeProf_idProf"],
-                                rows[i]["atividadeProf_tituloProf"],
-                                rows[i]["atividadeProf_descricaoProf"],
-                                rows[i]["atividadeProf_notaProf"],
-                                rows[i]["atividadeProf_prazoProf"],
-                                rows[i]["disciplina_id"],
-                                rows[i]["serie_id"],
+        rows[i]["atividadeProf_tituloProf"],
+        rows[i]["atividadeProf_descricaoProf"],
+        rows[i]["atividadeProf_notaProf"],
+        rows[i]["atividadeProf_prazoProf"],
+        rows[i]["disciplina_id"],
+        rows[i]["serie_id"],
       ));
     }
-  
+
     return lista;
   }
 
@@ -49,25 +65,38 @@ class AtividadeProfessorModel {
     let resultado = await banco.ExecutaComandoNonQuery(sql, valores);
 
     return resultado;
-}
-
-
-
-
-}
-
-module.exports = AtividadeProfessorModel;urn this.#serie_id } set serie_id(value) { this.#serie_id = value }
-
-  constructor(atividadeProf_idProf, atividadeProf_tituloProf, atividadeProf_descricaoProf, atividadeProf_notaProf, atividadeProf_prazoProf, disciplina_id, serie_id) {
-    this.atividadeProf_idProf = atividadeProf_idProf;
-    this.atividadeProf_tituloProf = atividadeProf_tituloProf;
-    this.atividadeProf_descricaoProf = atividadeProf_descricaoProf;
-    this.atividadeProf_notaProf = atividadeProf_notaProf;
-    this.atividadeProf_prazoProf = atividadeProf_prazoProf;
-    this.disciplina_id = disciplina_id;
-    this.serie_id = serie_id;
   }
 
-  async listarAtividadesPor(disciplinaId, serieId){
-    let sql = "SELECT * FROM AtividadeProfessor WHERE disciplina_id = ? AND serie_id = ?"; 
-    let valores = 
+
+  //FUNÇÃO OBTER ID DA ATIVIDADE PARA ALTERAÇÃO
+
+  async obter(id) {
+    let sql = "SELECT * FROM AtividadeProfessor WHERE atividadeProf_idProf = ?";
+    let valores = [id];
+    let banco = new Database();
+    let rows = await banco.ExecutaComando(sql, valores);
+    let lista = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      lista.push(new AtividadeProfessorModel(
+        rows[i]["atividadeProf_idProf"],
+        rows[i]["atividadeProf_tituloProf"],
+        rows[i]["atividadeProf_descricaoProf"],
+        rows[i]["atividadeProf_notaProf"],
+        rows[i]["atividadeProf_prazoProf"],
+        rows[i]["disciplina_id"],
+        rows[i]["serie_id"]
+      ));
+    }
+
+    return lista;
+  }
+
+
+  //LISTAR DISC
+
+}
+
+module.exports = AtividadeProfessorModel;
+
+

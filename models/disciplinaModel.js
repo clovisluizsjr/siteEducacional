@@ -1,6 +1,6 @@
 const Database = require('../utils/database');
 
-class DisciplinaModel{
+class DisciplinaModel {
   #disciplina_id;
   #disciplina_nome;
   #disciplina_horario;
@@ -15,7 +15,7 @@ class DisciplinaModel{
   get professor_id() { return this.#professor_id } set professor_id(value) { this.#professor_id = value }
   get serie_id() { return this.#serie_id } set serie_id(value) { this.#serie_id = value }
 
-  constructor(disciplina_id, disciplina_nome, disciplina_horario, disciplina_categoria, professor_id, serie_id){
+  constructor(disciplina_id, disciplina_nome, disciplina_horario, disciplina_categoria, professor_id, serie_id) {
     this.disciplina_id = disciplina_id;
     this.disciplina_nome = disciplina_nome;
     this.disciplina_horario = disciplina_horario;
@@ -24,84 +24,95 @@ class DisciplinaModel{
     this.serie_id = serie_id;
   }
 
-  async listarProfessorPor(id){
+  async listarProfessorPor(id) {
     let sql = "SELECT * FROM Disciplinas WHERE professor_id = ?";       //filtra por id
     let valores = [id]
     let banco = new Database();
-    let lista =[];
+    let lista = [];
     let rows = await banco.ExecutaComando(sql, valores);
 
-    for(let i= 0; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       lista.push(new DisciplinaModel(rows[i]["disciplina_id"],
-                                rows[i]["disciplina_nome"],
-                                rows[i]["disciplina_horario"],
-                                rows[i]["disciplina_categoria"],
-                                rows[i]["professor_id"],
-                                rows[i]["serie_id"],
+        rows[i]["disciplina_nome"],
+        rows[i]["disciplina_horario"],
+        rows[i]["disciplina_categoria"],
+        rows[i]["professor_id"],
+        rows[i]["serie_id"],
       ));
     }
-  
+
     return lista;
   }
 
-  async obter(id){
+  async obter(id) {
     let sql = "SELECT * FROM Disciplinas WHERE disciplina_id = ?";
     let valores = [id]
     let banco = new Database();
-    let lista =[];
+    let lista = [];
     let rows = await banco.ExecutaComando(sql, valores);
 
-    for(let i= 0; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       lista.push(new DisciplinaModel(rows[i]["disciplina_id"],
-                                rows[i]["disciplina_nome"],
-                                rows[i]["disciplina_horario"],
-                                rows[i]["disciplina_categoria"],
-                                rows[i]["professor_id"],
-                                rows[i]["serie_id"],
+        rows[i]["disciplina_nome"],
+        rows[i]["disciplina_horario"],
+        rows[i]["disciplina_categoria"],
+        rows[i]["professor_id"],
+        rows[i]["serie_id"],
       ));
     }
-  
+
     return lista;
   }
-  
+
 
   // Adicione este método à sua classe DisciplinaModel
   async listarPorAluno(alunoRA) {
-  
+
     const sqlSerie = "SELECT serie_id FROM Alunos WHERE aluno_RA = ?";
-    
-   
+
+
     const sqlDisciplinas = `
         SELECT * 
         FROM Disciplinas
         WHERE Disciplinas.serie_id = ?
     `;
-    
+
     const banco = new Database();
-    
-   
+
+
     const [aluno] = await banco.ExecutaComando(sqlSerie, [alunoRA]);
     if (!aluno) return [];
-    
+
     // Executa a segunda consulta para obter as disciplinas
     const rows = await banco.ExecutaComando(sqlDisciplinas, [aluno.serie_id]);
-    
+
     let lista = [];
-    for(let i = 0; i < rows.length; i++) {
-        lista.push(new DisciplinaModel(
-            rows[i]["disciplina_id"],
-            rows[i]["disciplina_nome"],
-            rows[i]["disciplina_horario"],
-            rows[i]["disciplina_categoria"],
-            rows[i]["professor_id"],
-            rows[i]["serie_id"]
-        ));
+    for (let i = 0; i < rows.length; i++) {
+      lista.push(new DisciplinaModel(
+        rows[i]["disciplina_id"],
+        rows[i]["disciplina_nome"],
+        rows[i]["disciplina_horario"],
+        rows[i]["disciplina_categoria"],
+        rows[i]["professor_id"],
+        rows[i]["serie_id"]
+      ));
     }
     return lista;
 
 
-}
- 
+  }
+
+
+  async listar() {
+    try {
+      const [rows] = await conexao.execute('SELECT * FROM Disciplinas');
+      return rows;
+    } catch (erro) {
+      console.error('Erro ao listar disciplinas:', erro);
+      return [];
+    }
+  }
+
 }
 
 module.exports = DisciplinaModel;

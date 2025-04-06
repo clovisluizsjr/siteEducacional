@@ -33,6 +33,13 @@
         >
           Encerra em: <%= new Date(listaAtividades[i].atividadeProf_prazoProf).toLocaleDateString('pt-br') %>
         </td>
+
+
+        <td>
+          <button type="button" data-id="<%= listaAtividades[i].atividadeProf_idProf %>" data-nome="<%= listaAtividades[i].atividadeProf_tituloProf %>" class="btn btn-danger btn-exclusao"><i class="fas fa-trash"></i></button>
+          <a href="/seeds/professor/alterar/<%= listaAtividades[i].atividadeProf_idProf %>" class="btn btn-warning"><i class="fas fa-pen"></i></a>
+      </td>
+        
       </tr>
       <% } %>
     </tbody>

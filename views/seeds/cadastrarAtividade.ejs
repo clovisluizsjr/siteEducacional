@@ -1,39 +1,92 @@
 <script src="/js/seeds/cadastrarAtividade.js"></script>
 
 <div class="p-4">
-  <h1>Cadastrar nova atividade</h1>
+  <% if (typeof usuarioAlteracao=='undefined' ) {%>
+    <h1>Cadastrar nova atividade</h1>
+    <div>
+      <div class="form-group">
+        <label for="input-atv-nome">Titulo Atividade:</label>
+        <input id="input-atv-nome" class="form-control" type="text" />
+      </div>
+      <div class="form-group">
+        <label for="input-atv-desc">Descricao Atividade:</label>
+        <input type="emailtext" class="form-control" id="input-atv-desc" />
+      </div>
+      <div class="form-group">
+        <label for="input-atv-peso">Peso Atividade:</label>
+        <input type="text" class="form-control" id="input-atv-peso" />
+      </div>
+      <div class="form-group">
+        <label for="input-atv-prazo">Prazo Atividade:</label>
+        <input type="datetime-local" class="form-control" id="input-atv-prazo" />
+      </div>
+      <div class="form-group">
+        <label for="input-atv-serie">Serie:</label>
+        <select class="form-control" id="input-atv-serie">
+          <option selected value="<%= listaSeries[0].serie_id  %>">
+            <%= listaSeries[0].serie_nome %>
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="input-atv-disciplina">Disciplina:</label>
+        <select class="form-control" id="input-atv-disciplina">
+          <option selected value="<%= listaDisciplinas[0].disciplina_id %>">
+            <%= listaDisciplinas[0].disciplina_nome%>
+          </option>
+        </select>
+      </div>
+      <div style="margin-top: 30px">
+        <button class="btn btn-primary" id="btn-cadastrar">Cadastrar</button>
+        <a class="btn btn-default" href="/seeds/professor"> Voltar</a>
+      </div>
+    </div>
+</div>
+<% } else { %>
+
   <div>
+    <input type="hidden" id="input-id" value="<%= usuarioAlteracao.atividadeProf_idProf %>" />
+
     <div class="form-group">
       <label for="input-atv-nome">Titulo Atividade:</label>
-      <input id="input-atv-nome" class="form-control" type="text" />
+      <input id="input-atv-nome" class="form-control" type="text"
+        value="<%= usuarioAlteracao.atividadeProf_tituloProf %>" />
     </div>
     <div class="form-group">
       <label for="input-atv-desc">Descricao Atividade:</label>
-      <input type="emailtext" class="form-control" id="input-atv-desc" />
+      <input class="form-control" id="input-atv-desc" value="<%= usuarioAlteracao.atividadeProf_descricaoProf %>" />
     </div>
     <div class="form-group">
-      <label for="input-atv-peso" >Peso Atividade:</label>
-      <input type="text" class="form-control" id="input-atv-peso" />
+      <label for="input-atv-peso">Peso Atividade:</label>
+      <input type="text" class="form-control" id="input-atv-peso"
+        value="<%= usuarioAlteracao.atividadeProf_notaProf %>" />
     </div>
     <div class="form-group">
-      <label for="input-atv-prazo" >Prazo Atividade:</label>
-      <input type="datetime-local" class="form-control" id="input-atv-prazo" />
+      <label for="input-atv-prazo">Prazo Atividade:</label>
+      <input type="datetime-local" class="form-control" id="input-atv-prazo"
+        value="<%= usuarioAlteracao.atividadeProf_prazoProf.toISOString().slice(0,16) %>" />
     </div>
     <div class="form-group">
       <label for="input-atv-serie">Serie:</label>
       <select class="form-control" id="input-atv-serie">
-        <option selected value="<%= listaSeries[0].serie_id  %>"><%= listaSeries[0].serie_nome %></option>
+        <option selected value="<%= usuarioAlteracao.serie_id %>">
+          <%= listaSeries.find(serie=> serie.serie_id === usuarioAlteracao.serie_id).serie_nome %>
+        </option>
       </select>
     </div>
     <div class="form-group">
       <label for="input-atv-disciplina">Disciplina:</label>
       <select class="form-control" id="input-atv-disciplina">
-        <option selected value="<%= listaDisciplinas[0].disciplina_id %>"><%= listaDisciplinas[0].disciplina_nome%></option>
+        <% listaDisciplinas.forEach(d => { %>
+          <option value="<%= d.disciplina_id %>" <%= d.disciplina_id == usuarioAlteracao.disciplina_id ? 'selected' : '' %>>
+            <%= d.disciplina_nome %>
+          </option>
+        <% }) %>
       </select>
     </div>
-    <div style="margin-top: 30px">
-      <button class="btn btn-primary" id="btn-cadastrar">Cadastrar</button>
-      <a class="btn btn-default" href="/seeds/professor"> Voltar</a>
+    <div style="margin-top: 30px;">
+      <button class="btn btn-primary" id="btn-cadastrar">Alterar</button>
+      <a class="btn btn-default" href="/seeds/professor">Voltar</a>
     </div>
   </div>
-</div>
+  <% } %>

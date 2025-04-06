@@ -86,7 +86,7 @@ class ProfessorController {
       atividadeProf_prazoProf != '' &&
       serie_id != '' &&
       disciplina_id != '') {
-      
+
       let usuario = new AtividadeProfessorModel()
       usuario.atividadeProf_tituloProf = atividadeProf_tituloProf;
       usuario.atividadeProf_descricaoProf = atividadeProf_descricaoProf;
@@ -96,16 +96,30 @@ class ProfessorController {
       usuario.disciplina_id = disciplina_id;
 
       let ok = await usuario.gravar();
-      if(ok) {
-        res.send({ok: true, msg: "Atividade cadastrada com sucesso!"})
-        
-      }else {
-        res.send({ok: false, msg: "Erro ao inserir o atividade no banco de dados!"})
+      if (ok) {
+        res.send({ ok: true, msg: "Atividade cadastrada com sucesso!" })
+
+      } else {
+        res.send({ ok: false, msg: "Erro ao inserir o atividade no banco de dados!" })
       }
     } else {
-      res.send({ok: false, msg: "Inforamações incorretas"})
+      res.send({ ok: false, msg: "Inforamações incorretas" })
     }
-   
+
+  }
+
+  async alterarView(req, res) {
+    const id = req.params.id;
+    const usuario = new AtividadeProfessorModel();
+    let disciplinas = new DisciplinaModel();
+    let series = new SerieModel();
+    const usuarioAlteracao = await usuario.obter(id);
+    let listaDisciplinas = await disciplinas.obter(id);
+    let listaSeries = await series.listar();
+    
+    res.render('seeds/cadastrarAtividade.ejs', { usuarioAlteracao: usuarioAlteracao[0],
+      listaDisciplinas, listaSeries
+     });
   }
 }
 

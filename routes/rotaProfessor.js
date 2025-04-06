@@ -12,5 +12,6 @@ router.get('/alunos', auth.validar ,ctrl.listarAlunos);
 router.get('/disciplina/:disciplinaId/:serieId', auth.validar ,ctrl.discipinaInfo);
 router.get('/disciplina/:disciplinaId/:serieId/novaAtividade', auth.validar ,ctrl.cadastrarAtividadeView);
 router.post('/atividade/cadastrar', auth.validar, ctrl.cadastrarAtividade);
+router.get('/alterar/:id', auth.validar, ctrl.alterarView)
 
 module.exports = router;

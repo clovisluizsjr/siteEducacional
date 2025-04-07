@@ -69,8 +69,10 @@ class ProfessorController {
     });
   }
 
+  // No ProfessorController
   async cadastrarAtividade(req, res) {
     const {
+      atividadeProf_idProf,
       atividadeProf_tituloProf,
       atividadeProf_descricaoProf,
       atividadeProf_notaProf,
@@ -85,9 +87,9 @@ class ProfessorController {
       atividadeProf_notaProf != '' &&
       atividadeProf_prazoProf != '' &&
       serie_id != '' &&
-      disciplina_id != '') {
-
-      let usuario = new AtividadeProfessorModel()
+      disciplina_id != ''
+    ) {
+      let usuario = new AtividadeProfessorModel();
       usuario.atividadeProf_tituloProf = atividadeProf_tituloProf;
       usuario.atividadeProf_descricaoProf = atividadeProf_descricaoProf;
       usuario.atividadeProf_notaProf = atividadeProf_notaProf;
@@ -95,17 +97,28 @@ class ProfessorController {
       usuario.serie_id = serie_id;
       usuario.disciplina_id = disciplina_id;
 
-      let ok = await usuario.gravar();
-      if (ok) {
-        res.send({ ok: true, msg: "Atividade cadastrada com sucesso!" })
+      let ok;
+      let msg;
 
+      // Se tem ID, é atualização
+      if (atividadeProf_idProf) {
+        usuario.atividadeProf_idProf = atividadeProf_idProf;
+        ok = await usuario.atualizar();
+        msg = "Atividade atualizada com sucesso!";
       } else {
-        res.send({ ok: false, msg: "Erro ao inserir o atividade no banco de dados!" })
+        // Se não tem ID, é criação
+        ok = await usuario.gravar();
+        msg = "Atividade cadastrada com sucesso!";
+      }
+
+      if (ok) {
+        res.send({ ok: true, msg: msg });
+      } else {
+        res.send({ ok: false, msg: "Erro ao processar a atividade no banco de dados!" });
       }
     } else {
-      res.send({ ok: false, msg: "Inforamações incorretas" })
+      res.send({ ok: false, msg: "Informações incorretas" });
     }
-
   }
 
   async alterarView(req, res) {
@@ -116,10 +129,33 @@ class ProfessorController {
     const usuarioAlteracao = await usuario.obter(id);
     let listaDisciplinas = await disciplinas.obter(id);
     let listaSeries = await series.listar();
-    
-    res.render('seeds/cadastrarAtividade.ejs', { usuarioAlteracao: usuarioAlteracao[0],
+
+    res.render('seeds/cadastrarAtividade.ejs', {
+      usuarioAlteracao: usuarioAlteracao[0],
       listaDisciplinas, listaSeries
-     });
+    });
+  }
+
+
+  //EXCLUIR
+
+  async excluir(req, res) {
+    //parametro id da url
+    const id = req.params.id;
+    const usuario = new AtividadeProfessorModel();
+    const resultado = await usuario.excluir(id);
+    let msg = "";
+    if (resultado) {
+      msg = "Usuário excluído com sucesso!"
+    }
+    else {
+      msg = "Não foi possível excluir o usuário!";
+    }
+    res.json({
+      ok: resultado,
+      msg: msg
+    });
+
   }
 }
 

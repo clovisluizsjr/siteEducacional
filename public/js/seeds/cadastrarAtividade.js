@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('btn-cadastrar').addEventListener('click', cadastrar);
 
+  // Verifica se está em modo de alteração
+  let inputId = document.getElementById('input-atv-id'); // Adicione esse campo hidden no HTML se ainda não existir
+
   function limparValidacao() {
     document.getElementById('input-atv-nome').style.borderColor = '#ced4da';
     document.getElementById('input-atv-desc').style.borderColor = '#ced4da';
@@ -9,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function cadastrar() {
-    console.log('chegou');
     limparValidacao();
 
     let inptNome = document.getElementById('input-atv-nome');
@@ -36,29 +38,37 @@ document.addEventListener('DOMContentLoaded', function () {
         serie_id: inptSerie.value,
         disciplina_id: inptDisciplina.value,
       };
+
+      if (inputId && inputId.value != '') {
+        obj.atividadeProf_idProf = inputId.value;
+      }
+
       fetch('/seeds/professor/atividade/cadastrar', {
         method: 'POST',
         headers: {
-          'content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(obj),
       })
-        .then(function (resposta) {
-          return resposta.json();
-        })
-        .then(function (corpoResposta) {
+        .then((resposta) => resposta.json())
+        .then((corpoResposta) => {
           if (corpoResposta.ok) {
             Swal.fire({
               icon: 'success',
               title: 'Sucesso!',
               text: corpoResposta.msg,
-              timer: 3000, // O alerta desaparece após 3 segundos
+              timer: 3000,
               showConfirmButton: false,
             }).then(() => {
-              window.location.href = `/${disciplina_id}`; // Troque pela página desejada
+              window.location.href = window.location.href = `/seeds/professor/atividade/listar/${idProfessor}`;
+              ; // ou outro redirect apropriado
             });
           } else {
-            console.error(corpoResposta.msg);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erro!',
+              text: corpoResposta.msg,
+            });
           }
         });
     } else {

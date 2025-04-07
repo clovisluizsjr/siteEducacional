@@ -13,5 +13,6 @@ router.get('/disciplina/:disciplinaId/:serieId', auth.validar ,ctrl.discipinaInf
 router.get('/disciplina/:disciplinaId/:serieId/novaAtividade', auth.validar ,ctrl.cadastrarAtividadeView);
 router.post('/atividade/cadastrar', auth.validar, ctrl.cadastrarAtividade);
 router.get('/alterar/:id', auth.validar, ctrl.alterarView)
+router.get("/excluir/:id", auth.validar, ctrl.excluir);
 
 module.exports = router;

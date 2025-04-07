@@ -45,7 +45,8 @@
 <% } else { %>
 
   <div>
-    <input type="hidden" id="input-id" value="<%= usuarioAlteracao.atividadeProf_idProf %>" />
+    <input type="hidden" id="input-atv-id" value="<%= usuarioAlteracao ? usuarioAlteracao.atividadeProf_idProf : '' %>">
+
 
     <div class="form-group">
       <label for="input-atv-nome">Titulo Atividade:</label>
@@ -86,7 +87,7 @@
     </div>
     <div style="margin-top: 30px;">
       <button class="btn btn-primary" id="btn-cadastrar">Alterar</button>
-      <a class="btn btn-default" href="/seeds/professor">Voltar</a>
+      <a class="btn btn-default" href=/seeds/professor>Voltar</a>
     </div>
   </div>
   <% } %>

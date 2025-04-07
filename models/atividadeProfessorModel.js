@@ -93,7 +93,41 @@ class AtividadeProfessorModel {
   }
 
 
-  //LISTAR DISC
+  //ATUALIZAR
+  // No AtividadeProfessorModel
+  async atualizar() {
+    let sql = `UPDATE AtividadeProfessor 
+             SET atividadeProf_tituloProf = ?, 
+                 atividadeProf_descricaoProf = ?, 
+                 atividadeProf_notaProf = ?, 
+                 atividadeProf_prazoProf = ?, 
+                 disciplina_id = ?, 
+                 serie_id = ?
+             WHERE atividadeProf_idProf = ?`;
+    let valores = [
+      this.#atividadeProf_tituloProf,
+      this.#atividadeProf_descricaoProf,
+      this.#atividadeProf_notaProf,
+      this.#atividadeProf_prazoProf,
+      this.#disciplina_id,
+      this.#serie_id,
+      this.#atividadeProf_idProf
+    ];
+    let banco = new Database();
+    let resultado = await banco.ExecutaComandoNonQuery(sql, valores);
+    return resultado;
+  }
+
+
+  //EXLCUIR
+
+  async excluir(id) {
+    let sql = "delete from AtividadeProfessor where atividadeProf_idProf = ?";
+    let banco = new Database();
+    const valores = [id];
+    const resultado = await banco.ExecutaComandoNonQuery(sql, valores)
+    return resultado;   //true ou false      
+  }
 
 }
 

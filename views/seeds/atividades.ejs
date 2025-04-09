@@ -1,38 +1,46 @@
 <div class="flex p-4">
-    <h3><i class="fas fa-tasks mr-2"></i>Atividades</h3>
-    
-    <% if (listaAtividades.length > 0) { %>
-      <div class="mt-4">
-        <div class="card mb-3">
+  <h3><i class="fas fa-tasks mr-2"></i>Atividades</h3>
+
+  <% if (listaAtividades.length > 0) { %>
+    <div class="mt-4">
+      <% listaAtividades.forEach(function(atividade) { %>
+        <div class="card mb-3 shadow-sm">
           <div class="card-body">
-            <h5 class="card-title">
-              <%= listaDisciplinas[listaAtividades[0].disciplina_id].disciplina_nome %>
-              <span class="badge <%= listaAtividades[0].atividadeAluno_notaAluno ? 'bg-success' : 'bg-secondary' %> float-end">
-                Nota: <%= listaAtividades[0].atividadeAluno_notaAluno || 'Pendente' %>
-              </span>
+            <h5 class="card-title mb-1">
+              <%= atividade.nomeDisciplina %>
             </h5>
-            <h6 class="card-subtitle mb-2 text-muted">
-              Entregue em: <%= new Date(listaAtividades[0].atividadeAluno_prazoEntrega).toLocaleDateString('pt-BR') %>
+            <br>
+            <p class=" <%= atividade.atividadeAluno_notaAluno ? 'bg-success' : 'bg-secondary' %> mb-1">
+              Nota: <%= atividade.atividadeAluno_notaAluno || 'Pendente' %>
+            </p>
+            <br>
+            <h6 class="card-subtitle text-primary mb-2">
+              <i class="fas fa-book-open me-1"></i> <%= atividade.nomeAtividade %>
             </h6>
-            <% if (listaAtividades[0].atividadeAluno_feedbackProf) { %>
-              <div class="alert alert-info mt-2">
-                <strong>Feedback:</strong> <%= listaAtividades[0].atividadeAluno_feedbackProf %>
+            <p class="text-muted mb-1">
+              <i class="far fa-calendar-alt me-1"></i>
+              Prazo de entrega: <%= new Date(atividade.atividadeAluno_prazoEntrega).toLocaleDateString('pt-BR') %>
+            </p>
+            <% if (atividade.atividadeAluno_feedbackProf) { %>
+              <div class="alert alert-info mt-3">
+                <strong>Feedback:</strong> <%= atividade.atividadeAluno_feedbackProf %>
               </div>
             <% } %>
           </div>
         </div>
-      </div>
-    <% } else { %>
-        <i class="fas fa-info-circle me-2"></i> Nenhuma atividade encontrada.
-    <% } %>
-  
-    <hr class="my-4">
-    
-    <div class="d-flex justify-content-between">
-      <p class="text-muted">
-       <%= listaAtividades.length %> atividade(s)
-      </p>
-    
+      <% }); %>
     </div>
+  <% } else { %>
+    <div class="alert alert-warning mt-4">
+      <i class="fas fa-info-circle me-2"></i> Nenhuma atividade encontrada.
+    </div>
+  <% } %>
+
+  <hr class="my-4">
+
+  <div class="d-flex justify-content-between">
+    <p class="text-muted">
+      <%= listaAtividades.length %> atividade(s)
+    </p>
   </div>
-  
+</div>

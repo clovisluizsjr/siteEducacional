@@ -31,9 +31,13 @@ class AtividadeAlunoModel {
 
     async listarAtividades(aluno_RA) {
         const sql = `
-            SELECT * 
+            SELECT 
+                AtividadeAluno.*, 
+                Disciplinas.disciplina_nome AS nomeDisciplina,
+                AtividadeProfessor.atividadeProf_tituloProf AS nomeAtividade
             FROM AtividadeAluno 
             JOIN Disciplinas ON AtividadeAluno.disciplina_id = Disciplinas.disciplina_id  
+            JOIN AtividadeProfessor ON AtividadeAluno.atividadeProf_idProf = AtividadeProfessor.atividadeProf_idProf
             WHERE AtividadeAluno.aluno_RA = ?
         `;
     
@@ -42,7 +46,7 @@ class AtividadeAlunoModel {
         let lista = [];
     
         for (let i = 0; i < rows.length; i++) {
-            lista.push(new AtividadeAlunoModel(
+            const atividade = new AtividadeAlunoModel(
                 rows[i]["atividadeAluno_id"],
                 rows[i]["aluno_RA"],
                 rows[i]["atividadeAluno_notaAluno"],
@@ -50,14 +54,14 @@ class AtividadeAlunoModel {
                 rows[i]["atividadeAluno_prazoEntrega"],
                 rows[i]["atividadeProf_idProf"],
                 rows[i]["disciplina_id"],
-            ));
+            );
+            atividade.nomeDisciplina = rows[i]["nomeDisciplina"];
+            atividade.nomeAtividade = rows[i]["nomeAtividade"]; // ← novo campo adicionado
+            lista.push(atividade);
         }
     
         return lista;
     }
-    
-
 }
 
-   
 module.exports = AtividadeAlunoModel;

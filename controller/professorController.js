@@ -126,13 +126,15 @@ class ProfessorController {
     const usuario = new AtividadeProfessorModel();
     let disciplinas = new DisciplinaModel();
     let series = new SerieModel();
+  
     const usuarioAlteracao = await usuario.obter(id);
-    let listaDisciplinas = await disciplinas.obter(id);
-    let listaSeries = await series.listar();
-
+    const listaDisciplinas = await disciplinas.listarProfessorPor(req.session.usuario.userId);
+    const listaSeries = await series.listar();
+  
     res.render('seeds/cadastrarAtividade.ejs', {
       usuarioAlteracao: usuarioAlteracao[0],
-      listaDisciplinas, listaSeries
+      listaDisciplinas,
+      listaSeries
     });
   }
 

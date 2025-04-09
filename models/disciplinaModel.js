@@ -106,12 +106,26 @@ class DisciplinaModel {
   async listar() {
     try {
       const [rows] = await conexao.execute('SELECT * FROM Disciplinas');
-      return rows;
+      let lista = [];
+  
+      for (let i = 0; i < rows.length; i++) {
+        lista.push(new DisciplinaModel(
+          rows[i]["disciplina_id"],
+          rows[i]["disciplina_nome"],
+          rows[i]["disciplina_horario"],
+          rows[i]["disciplina_categoria"],
+          rows[i]["professor_id"],
+          rows[i]["serie_id"]
+        ));
+      }
+  
+      return lista;
     } catch (erro) {
       console.error('Erro ao listar disciplinas:', erro);
       return [];
     }
   }
+  
 
 }
 

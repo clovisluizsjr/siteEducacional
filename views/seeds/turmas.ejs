@@ -1,0 +1,28 @@
+<script src="/js/seeds/turmas.js"></script>
+
+<div class="p-4">
+  <h1>Turmas</h1>
+
+  <table class="mt-4 table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Série</th>
+        <th>Disciplina</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Desenvolver um for com as turmas -->
+      <% for(let i = 0; i< listaTurmas.length; i ++) { %>
+      <tr
+        class="turma-row"
+        data-turma_id="<%= listaTurmas[i].turma_id %>"
+        data-disciplina_id="<%= listaTurmas[i].disciplina_id %>"
+        style="cursor: pointer"
+      >
+        <td class="cursor-pointer"><%= listaTurmas[i].turma_nome %></td>
+        <td><%= listaTurmas[i].disciplina_nome%></td>
+      </tr>
+      <%} %>
+    </tbody>
+  </table>
+</div>

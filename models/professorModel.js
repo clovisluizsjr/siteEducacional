@@ -113,6 +113,22 @@ class ProfessorModel {
 
   }
 
+  async validaAcesso(professor_id, turma_id, disciplina_id) {
+    let sql = `
+    SELECT id FROM Professor_turmas_disciplinas
+      WHERE professor_id = ? AND turma_id = ? AND disciplina_id = ?
+    `
+    let valores = [professor_id, turma_id, disciplina_id];
+    let banco = new Database();
+    let rows = await banco.ExecutaComando(sql, valores);
+    let lista = [];
+    for (let i = 0; i < rows.length; i++) {
+      lista.push(rows[i]);
+    }
+
+    return lista;
+  }
+
 }
 
 module.exports = ProfessorModel;

@@ -1,48 +1,13 @@
 <script src="/js/seeds/listar.js"></script>
 <div class="p-4">
-  <h3><%= listaDisciplinas[0].disciplina_nome %></h3>
-  <p>Turma: <%= listaSeries[listaDisciplinas[0].serie_id -1].serie_nome %></p>
-  <p>
-    Alunos : <%= listaSeries[listaDisciplinas[0].serie_id -1].serie_quantMAX %>
-  </p>
+  <h3><%= disciplinaInfo.disciplina_nome %></h3>
+ 
 
   <hr />
   <div class="flex">
-    <a
-       href="/seeds/professor/disciplina/<%= listaDisciplinas[0].disciplina_id %>/<%= listaSeries[listaDisciplinas[0].serie_id - 1].serie_id %>/novaAtividade"
-      class="btn btn-primary"
-      >Cadastrar Nova atividade</a
-    >
+   
     <a href="#" class="btn btn-info">Registrar Presença</a>
   </div>
   <hr />
-  <table class="mt-4 table table-striped table-hover">
-    <thead>
-      <tr>
-        <th>Atividade</th>
-        <th>Peso</th>
-        <th>Prazo</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% for(let i = 0; i < listaAtividades.length; i ++) { %>
-      <tr style="cursor: pointer">
-        <td><%= listaAtividades[i].atividadeProf_tituloProf %></td>
-        <td>0 - <%= listaAtividades[i].atividadeProf_notaProf %></td>
-        <td
-          style="color: <%= new Date(listaAtividades[i].atividadeProf_prazoProf) < new Date() ? 'red' : 'green' %>; font-style: italic;"
-        >
-          Encerra em: <%= new Date(listaAtividades[i].atividadeProf_prazoProf).toLocaleDateString('pt-br') %>
-        </td>
-
-
-        <td>
-          <button type="button" data-id="<%= listaAtividades[i].atividadeProf_idProf %>" data-nome="<%= listaAtividades[i].atividadeProf_tituloProf %>" class="btn btn-danger btn-exclusao"><i class="fas fa-trash"></i></button>
-          <a href="/seeds/professor/alterar/<%= listaAtividades[i].atividadeProf_idProf %>" class="btn btn-warning"><i class="fas fa-pen"></i></a>
-      </td>
-        
-      </tr>
-      <% } %>
-    </tbody>
-  </table>
+  
 </div>

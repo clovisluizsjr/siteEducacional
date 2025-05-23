@@ -1,4 +1,5 @@
 const AlunoModel = require('../models/alunoModel');
+const AtividadeModel = require("../models/atividadeModel");
 const DisciplinaModel = require('../models/disciplinaModel');
 const ProfessorModel = require('../models/professorModel');
 const ProfessorTurmasDisciplinas = require('../models/professorTurmasDisciplinas');
@@ -43,28 +44,26 @@ class ProfessorController {
       turmaId,
       disciplinaId
     );
-
+      
     if (!validaAcesso.length) {
       return res.send('<p>Usuário sem permissão</p>');
     }
 
     let turmas = new TurmaModel();
     let turmaInfo = await turmas.filtrarPorId(turmaId);
-    console.log('turmaInfo', turmaInfo[0]);
+ 
     let disciplinas = new DisciplinaModel();
     let disciplinaInfo = await disciplinas.obter(disciplinaId);
-    console.log('disciplinaInfo:', disciplinaInfo[0]);
 
-    // let atividades = new AtividadeProfessorModel();
-    // let listaAtividades = await atividades.listarAtividadesPor(
-    //   disciplinaId,
-    //   serieId
-    // );
+
+    let atividades = new AtividadeModel();
+    let listaAtividades = await atividades.listarAtividades(validaAcesso[0].id)
+    console.log("TESTE ###", listaAtividades);
     res.render('seeds/disciplina.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       turmaInfo: turmaInfo[0],
       disciplinaInfo: disciplinaInfo[0],
-      // listaAtividades,
+      listaAtividades,
     });
   }
 

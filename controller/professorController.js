@@ -45,16 +45,15 @@ class ProfessorController {
     );
 
     if (!validaAcesso.length) {
-      return res
-        .status(403)
-        .render('error', { message: 'Acesso não autorizado' });
+      return res.send('<p>Usuário sem permissão</p>');
     }
 
     let turmas = new TurmaModel();
     let turmaInfo = await turmas.filtrarPorId(turmaId);
+    console.log('turmaInfo', turmaInfo[0]);
     let disciplinas = new DisciplinaModel();
     let disciplinaInfo = await disciplinas.obter(disciplinaId);
-
+    console.log('disciplinaInfo:', disciplinaInfo[0]);
 
     // let atividades = new AtividadeProfessorModel();
     // let listaAtividades = await atividades.listarAtividadesPor(

@@ -6,4 +6,4 @@ SELECT id FROM Professor_turmas_disciplinas
       WHERE professor_turma_disciplina_id = 12
       ORDER BY data_limite ASC
 
-SELECT * FROM Turmas WHERE turma_id = 1
+SELECT * FROM Turmas WHERE turma_id = 2

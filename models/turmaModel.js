@@ -62,7 +62,7 @@ class TurmaModel {
     let banco = new Database();
     let lista = [];
     let rows = await banco.ExecutaComando(sql, valor);
-    for (let i = 0; i < rows.lenght; i++) {
+    for (let i = 0; i < rows.length; i++) {
       lista.push(
         new TurmaModel(
           rows[i]['turma_id'],

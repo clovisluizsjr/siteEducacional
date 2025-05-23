@@ -10,7 +10,6 @@ CREATE TABLE Alunos (
   aluno_endereco VARCHAR(100),
   aluno_senha VARCHAR(255) NOT NULL
 );
-
 CREATE TABLE Professores (
   professor_id INT PRIMARY KEY,
   professor_nome VARCHAR(100) NOT NULL,
@@ -21,19 +20,16 @@ CREATE TABLE Professores (
   professor_email VARCHAR(100) NOT NULL,
   professor_senha VARCHAR(50) NOT NULL
 );
-
 CREATE TABLE Turmas (
   turma_id INT PRIMARY KEY,
   turma_nome VARCHAR(50) NOT NULL,
   turma_quantALU INT,
   turma_quantMAX INT
 );
-
 CREATE TABLE Disciplinas (
   disciplina_id INT PRIMARY KEY,
   disciplina_nome VARCHAR(100) NOT NULL
 );
-
 CREATE TABLE Professor_turmas_disciplinas (
   id INT PRIMARY KEY,
   professor_id INT NOT NULL,
@@ -43,28 +39,23 @@ CREATE TABLE Professor_turmas_disciplinas (
   FOREIGN KEY (turma_id) REFERENCES Turmas(turma_id),
   FOREIGN KEY (disciplina_id) REFERENCES Disciplinas(disciplina_id)
 );
-
-
 CREATE TABLE Aluno_turmas (
   id INT PRIMARY KEY,
   aluno_RA VARCHAR(14) REFERENCES Alunos(aluno_RA),
   turma_id INT REFERENCES Turmas(turma_id),
   UNIQUE (aluno_RA, turma_id)
 );
-
 CREATE TABLE Atividades (
-  id INT PRIMARY KEY,
+  atividade_id INT PRIMARY KEY,
   titulo VARCHAR(255) NOT NULL,
-  descricao TEXT,
+  descricao VARCHAR(255),
+  data_inicial DATE NOT NULL,
   data_limite DATE NOT NULL,
-  peso NUMERIC(4,2) NOT NULL,
-  professor_turma_disciplina_id INT REFERENCES Professor_turmas_disciplinas(id),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  professor_turma_disciplina_id INT REFERENCES Professor_turmas_disciplinas(id)
 );
-
 CREATE TABLE Entregas (
-  id INT PRIMARY KEY,
-  atividade_id INT REFERENCES Atividades(id),
+  entrega_id INT PRIMARY KEY,
+  atividade_id INT REFERENCES Atividades(atividade_id),
   aluno_RA VARCHAR(14) REFERENCES Alunos(aluno_RA),
   data_entrega TIMESTAMP,
   conteudo TEXT,
@@ -73,6 +64,25 @@ CREATE TABLE Entregas (
   UNIQUE (atividade_id, aluno_RA)
 );
 
+CREATE TABLE QuadroNotas (
+  id INT PRIMARY KEY,
+  professor_turma_disciplina_id INT NOT NULL REFERENCES Professor_turmas_disciplinas(id),
+  descricao VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(professor_turma_disciplina_id) -- Garante apenas um quadro por turma/disciplina
+);
+
+CREATE TABLE ItensQuadroNotas (
+  id INT PRIMARY KEY,
+  quadro_id INT NOT NULL REFERENCES QuadroNotas(id),
+  atividade_id INT REFERENCES Atividades(atividade_id), -- Pode ser NULL para itens como "Participação"
+  descricao VARCHAR(100) NOT NULL,
+  peso NUMERIC(5,2) NOT NULL CHECK (peso > 0 AND peso <= 100),
+  tipo VARCHAR(20) CHECK (tipo IN ('atividade', 'prova', 'trabalho', 'participacao', 'outro')),
+  UNIQUE(quadro_id, atividade_id) -- Evita duplicação
+);
+
+ALTER TABLE Entregas ADD COLUMN professor_turma_disciplina_id INT REFERENCES Professor_turmas_disciplinas(id);
 
 INSERT INTO Professores (professor_id, professor_nome, professor_CPF, professor_nasc, professor_fone, professor_endereco, professor_email, professor_senha) VALUES
 (1, 'Maria Silva', '111.222.333-44', '1980-05-15', '(11) 9999-8888', 'Rua A, 123 - SP', 'maria.silva@escola.com', 'Maria344'),

@@ -1,13 +1,17 @@
 <script src="/js/seeds/listar.js"></script>
 <div class="p-4">
   <h3><%= disciplinaInfo.disciplina_nome %></h3>
- 
+  <h4 class="text-muted">Turma: <%= turmaInfo.turma_nome %></h4>
 
   <hr />
   <div class="flex">
-   
+    <a
+      href="/seeds/professor/disciplina/<%= turmaInfo.turma_id %>/<%= disciplinaInfo.disciplina_id %>/nova-atividade"
+      class="btn btn-primary"
+    >
+      + Nova Atividade
+    </a>
     <a href="#" class="btn btn-info">Registrar Presença</a>
   </div>
   <hr />
-  
 </div>

@@ -46,7 +46,7 @@ CREATE TABLE Aluno_turmas (
   UNIQUE (aluno_RA, turma_id)
 );
 CREATE TABLE Atividades (
-  atividade_id INT PRIMARY KEY,
+  atividade_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   titulo VARCHAR(255) NOT NULL,
   descricao VARCHAR(255),
   data_inicial DATE NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE Atividades (
   professor_turma_disciplina_id INT REFERENCES Professor_turmas_disciplinas(id)
 );
 CREATE TABLE Entregas (
-  entrega_id INT PRIMARY KEY,
+  entrega_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   atividade_id INT REFERENCES Atividades(atividade_id),
   aluno_RA VARCHAR(14) REFERENCES Alunos(aluno_RA),
   data_entrega TIMESTAMP,
@@ -65,7 +65,7 @@ CREATE TABLE Entregas (
 );
 
 CREATE TABLE QuadroNotas (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   professor_turma_disciplina_id INT NOT NULL REFERENCES Professor_turmas_disciplinas(id),
   descricao VARCHAR(100),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -73,7 +73,7 @@ CREATE TABLE QuadroNotas (
 );
 
 CREATE TABLE ItensQuadroNotas (
-  id INT PRIMARY KEY,
+  id INT PRIMARY KEY AUTO_INCREMENT,
   quadro_id INT NOT NULL REFERENCES QuadroNotas(id),
   atividade_id INT REFERENCES Atividades(atividade_id), -- Pode ser NULL para itens como "Participação"
   descricao VARCHAR(100) NOT NULL,

@@ -1,5 +1,5 @@
 const AlunoModel = require('../models/alunoModel');
-const AtividadeModel = require("../models/atividadeModel");
+const AtividadeModel = require('../models/atividadeModel');
 const DisciplinaModel = require('../models/disciplinaModel');
 const ProfessorModel = require('../models/professorModel');
 const ProfessorTurmasDisciplinas = require('../models/professorTurmasDisciplinas');
@@ -20,18 +20,6 @@ class ProfessorController {
     });
   }
 
-  // async listarAlunos(req, res) {
-  //   let alunos = new AlunoModel();
-  //   let listaAlunos = await alunos.listar();
-  //   let series = new SerieModel();
-  //   let listaSeries = await series.listar();
-  //   res.render('seeds/alunos.ejs', {
-  //     layout: './layouts/layoutSeeds.ejs',
-  //     listaAlunos: listaAlunos,
-  //     listaSeries: listaSeries,
-  //   });
-  // }
-
   async discipinaInfo(req, res) {
     // renderiza info das disciplinas + atividades já existentes
     const { turmaId, disciplinaId } = req.params;
@@ -44,21 +32,19 @@ class ProfessorController {
       turmaId,
       disciplinaId
     );
-      
+
     if (!validaAcesso.length) {
       return res.send('<p>Usuário sem permissão</p>');
     }
 
     let turmas = new TurmaModel();
     let turmaInfo = await turmas.filtrarPorId(turmaId);
- 
+
     let disciplinas = new DisciplinaModel();
     let disciplinaInfo = await disciplinas.obter(disciplinaId);
 
-
     let atividades = new AtividadeModel();
-    let listaAtividades = await atividades.listarAtividades(validaAcesso[0].id)
-    console.log("TESTE ###", listaAtividades);
+    let listaAtividades = await atividades.listarAtividades(validaAcesso[0].id);
     res.render('seeds/disciplina.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       turmaInfo: turmaInfo[0],
@@ -67,109 +53,99 @@ class ProfessorController {
     });
   }
 
-  // async cadastrarAtividadeView(req, res) {
-  //   const { disciplinaId, serieId } = req.params;
-  //   let disciplinas = new DisciplinaModel();
-  //   let listaDisciplinas = await disciplinas.obter(disciplinaId);
-  //   let series = new SerieModel();
-  //   let listaSeries = await series.listar();
+  async cadastrarAtividadeView(req, res) {
+    const { turmaId, disciplinaId } = req.params;
+    const professorId = req.session.usuario.userId;
+    let professores = new ProfessorModel();
+    let validaAcesso = await professores.validaAcesso(
+      professorId,
+      turmaId,
+      disciplinaId
+    );
+    if (!validaAcesso.length) {
+      return res.send('<p>Usuário sem permissão</p>');
+    }
 
-  //   res.render('seeds/cadastrarAtividade.ejs', {
-  //     layout: './layouts/layoutSeeds.ejs',
-  //     listaDisciplinas,
-  //     listaSeries,
-  //   });
-  // }
+    res.render('seeds/cadastrarAtividade.ejs', {
+      layout: './layouts/layoutSeeds.ejs',
+      professorTurmaId: validaAcesso[0].id,
+      turmaId,
+      disciplinaId,
+    });
+  }
 
-  // // No ProfessorController
-  // async cadastrarAtividade(req, res) {
-  //   const {
-  //     atividadeProf_idProf,
-  //     atividadeProf_tituloProf,
-  //     atividadeProf_descricaoProf,
-  //     atividadeProf_notaProf,
-  //     atividadeProf_prazoProf,
-  //     serie_id,
-  //     disciplina_id,
-  //   } = req.body;
+  async gravarAtividade(req, res) {
+    const {
+      titulo,
+      descricao,
+      data_inicial,
+      data_limite,
+      professor_turma_disciplina_id,
+    } = req.body;
 
-  //   if (
-  //     atividadeProf_tituloProf != '' &&
-  //     atividadeProf_descricaoProf != '' &&
-  //     atividadeProf_notaProf != '' &&
-  //     atividadeProf_prazoProf != '' &&
-  //     serie_id != '' &&
-  //     disciplina_id != ''
-  //   ) {
-  //     let usuario = new AtividadeProfessorModel();
-  //     usuario.atividadeProf_tituloProf = atividadeProf_tituloProf;
-  //     usuario.atividadeProf_descricaoProf = atividadeProf_descricaoProf;
-  //     usuario.atividadeProf_notaProf = atividadeProf_notaProf;
-  //     usuario.atividadeProf_prazoProf = atividadeProf_prazoProf;
-  //     usuario.serie_id = serie_id;
-  //     usuario.disciplina_id = disciplina_id;
+    if (
+      titulo != '' &&
+      descricao != '' &&
+      data_inicial != '' &&
+      data_limite != ''
+    ) {
+      let novaAtividade = new AtividadeModel(
+        0,
+        titulo,
+        descricao,
+        data_inicial,
+        data_limite,
+        professor_turma_disciplina_id
+      );
 
-  //     let ok;
-  //     let msg;
+      let ok;
+      ok = await novaAtividade.gravarAtividade();
 
-  //     // Se tem ID, é atualização
-  //     if (atividadeProf_idProf) {
-  //       usuario.atividadeProf_idProf = atividadeProf_idProf;
-  //       ok = await usuario.atualizar();
-  //       msg = "Atividade atualizada com sucesso!";
-  //     } else {
-  //       // Se não tem ID, é criação
-  //       ok = await usuario.gravar();
-  //       msg = "Atividade cadastrada com sucesso!";
-  //     }
-
-  //     if (ok) {
-  //       res.send({ ok: true, msg: msg });
-  //     } else {
-  //       res.send({ ok: false, msg: "Erro ao processar a atividade no banco de dados!" });
-  //     }
-  //   } else {
-  //     res.send({ ok: false, msg: "Informações incorretas" });
-  //   }
-  // }
-
-  // async alterarView(req, res) {
-  //   const id = req.params.id;
-  //   const usuario = new AtividadeProfessorModel();
-  //   let disciplinas = new DisciplinaModel();
-  //   let series = new SerieModel();
-
-  //   const usuarioAlteracao = await usuario.obter(id);
-  //   const listaDisciplinas = await disciplinas.listarProfessorPor(req.session.usuario.userId);
-  //   const listaSeries = await series.listar();
-
-  //   res.render('seeds/cadastrarAtividade.ejs', {
-  //     usuarioAlteracao: usuarioAlteracao[0],
-  //     listaDisciplinas,
-  //     listaSeries
-  //   });
-  // }
+      if (ok) {
+        res.send({ ok: true });
+      } else {
+        res.send({ ok: false });
+      }
+    } else {
+      res.send({ ok: false });
+    }
+  }
 
   // //EXCLUIR
 
-  // async excluir(req, res) {
-  //   //parametro id da url
-  //   const id = req.params.id;
-  //   const usuario = new AtividadeProfessorModel();
-  //   const resultado = await usuario.excluir(id);
-  //   let msg = "";
-  //   if (resultado) {
-  //     msg = "Usuário excluído com sucesso!"
-  //   }
-  //   else {
-  //     msg = "Não foi possível excluir o usuário!";
-  //   }
-  //   res.json({
-  //     ok: resultado,
-  //     msg: msg
-  //   });
+  async excluir(req, res) {
+    //parametro id da url
+    let ok = true;
 
-  // }
+    if (req.body.id) {
+      let atividade = new AtividadeModel();
+      ok = await atividade.excluirAtividade(req.body.id);
+    } else {
+      ok = false;
+    }
+    res.send({ ok: ok });
+  }
+
+  async atividadeAlunos(req, res) {
+    const { turmaId, disciplinaId, atividadeId } = req.params;
+    const professorId = req.session.usuario.userId;
+    let professores = new ProfessorModel();
+    let turmaProfessorId = await professores.validaAcesso(
+      professorId,
+      turmaId,
+      disciplinaId
+    );
+
+    let alunos = new AlunoModel();
+    let listaAtividades = await alunos.listarAlunos(
+      atividadeId,
+      turmaProfessorId[0].id
+    );
+    res.render('seeds/alunos.ejs', {
+      layout: './layouts/layoutSeeds.ejs',
+      listaAtividades,
+    });
+  }
 }
 
 module.exports = ProfessorController;

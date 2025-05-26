@@ -14,9 +14,13 @@ router.get(
   auth.validar,
   ctrl.discipinaInfo
 );
-// router.get('/disciplina/:disciplinaId/:serieId/novaAtividade', auth.validar ,ctrl.cadastrarAtividadeView);
-// router.post('/atividade/cadastrar', auth.validar, ctrl.cadastrarAtividade);
+router.get(
+  '/disciplina/:turmaId/:disciplinaId/novaAtividade',
+  auth.validar,
+  ctrl.cadastrarAtividadeView
+);
+router.post('/atividade/cadastrar', auth.validar, ctrl.gravarAtividade);
 // router.get('/alterar/:id', auth.validar, ctrl.alterarView)
-// router.get("/excluir/:id", auth.validar, ctrl.excluir);
-
+router.post('/atividade/excluir', auth.validar, ctrl.excluir);
+router.get('/disciplina/:turmaId/:disciplinaId/:atividadeId', auth.validar, ctrl.atividadeAlunos)
 module.exports = router;

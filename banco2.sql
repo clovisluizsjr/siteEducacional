@@ -49,18 +49,17 @@ CREATE TABLE Atividades (
   atividade_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   titulo VARCHAR(255) NOT NULL,
   descricao VARCHAR(255),
-  data_inicial DATE NOT NULL,
-  data_limite DATE NOT NULL,
+  data_inicial DATETIME NOT NULL,
+  data_limite DATETIME NOT NULL,
   professor_turma_disciplina_id INT REFERENCES Professor_turmas_disciplinas(id)
 );
 CREATE TABLE Entregas (
   entrega_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   atividade_id INT REFERENCES Atividades(atividade_id),
   aluno_RA VARCHAR(14) REFERENCES Alunos(aluno_RA),
-  data_entrega TIMESTAMP,
+  data_entrega DATETIME,
   conteudo TEXT,
   nota NUMERIC(4,2),
-  status VARCHAR(20) CHECK (status IN ('pendente', 'entregue', 'corrigido', 'atrasado')) DEFAULT 'pendente',
   UNIQUE (atividade_id, aluno_RA)
 );
 
@@ -78,14 +77,14 @@ CREATE TABLE ItensQuadroNotas (
   atividade_id INT REFERENCES Atividades(atividade_id), -- Pode ser NULL para itens como "Participação"
   descricao VARCHAR(100) NOT NULL,
   peso NUMERIC(5,2) NOT NULL CHECK (peso > 0 AND peso <= 100),
-  tipo VARCHAR(20) CHECK (tipo IN ('atividade', 'prova', 'trabalho', 'participacao', 'outro')),
+  tipo VARCHAR(20),
   UNIQUE(quadro_id, atividade_id) -- Evita duplicação
 );
 
 ALTER TABLE Entregas ADD COLUMN professor_turma_disciplina_id INT REFERENCES Professor_turmas_disciplinas(id);
 
 INSERT INTO Professores (professor_id, professor_nome, professor_CPF, professor_nasc, professor_fone, professor_endereco, professor_email, professor_senha) VALUES
-(1, 'Maria Silva', '111.222.333-44', '1980-05-15', '(11) 9999-8888', 'Rua A, 123 - SP', 'maria.silva@escola.com', 'Maria344'),
+(1, 'Maria Silva', '111.222.333-44', '1980-05-15', '(11) 9999-8888', 'Rua A, 123 - SP', 'maria@escola.com', 'Maria344'),
 (2, 'João Santos', '222.333.444-55', '1975-08-20', '(11) 8888-7777', 'Av B, 456 - SP', 'joao.santos@escola.com', 'Joao555'),
 (3, 'Ana Oliveira', '333.444.555-66', '1982-03-10', '(11) 7777-6666', 'Rua C, 789 - SP', 'ana.oliveira@escola.com', 'Ana666'),
 (4, 'Carlos Pereira', '444.555.666-77', '1978-11-25', '(11) 6666-5555', 'Av D, 101 - SP', 'carlos.pereira@escola.com', 'Carlos777'),

@@ -6,8 +6,8 @@
       <tr>
         <th>RA</th>
         <th>Nome</th>
-        <th>Email</th>
-        <th>Série</th>
+        <th>Entrega</th>
+        <th>Data Envio</th>
       </tr>
     </thead>
     <tbody>
@@ -15,8 +15,14 @@
       <tr>
         <td><%= listaAlunos[i].aluno_RA %></td>
         <td><%= listaAlunos[i].aluno_nome %></td>
-        <td><%= listaAlunos[i].aluno_email %></td>
-        <td><%= listaSeries[listaAlunos[i].serie_id - 1].serie_nome %></td>
+        <td><%= listaAlunos[i].conteudo %></td>
+        <td>
+          <input type="text" value="<%= listaAlunos[i].nota %>" />
+        </td>
+        <td><%= listaAlunos[i].data_entrega %></td>
+        <td>
+          <input type="button" value="Salvar" />
+        </td>
       </tr>
       <%} %>
     </tbody>

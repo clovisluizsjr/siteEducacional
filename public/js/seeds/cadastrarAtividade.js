@@ -1,48 +1,76 @@
 document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('btn-cadastrar').addEventListener('click', cadastrar);
+  const btnCadastrar = document.getElementById('btn_cadastrar');
 
-  // Verifica se está em modo de alteração
-  let inputId = document.getElementById('input-atv-id'); // Adicione esse campo hidden no HTML se ainda não existir
+  let inptTitulo = document.getElementById('inpt_titulo');
+  let inptDesc = document.getElementById('inpt_descricao');
+  let inptDataInic = document.getElementById('inpt_data_inicial');
+  let inptDataLimite = document.getElementById('inpt_data_limite');
+  let professorTurmaId = document.querySelector('[name="professorTurmaId"]');
 
-  function limparValidacao() {
-    document.getElementById('input-atv-nome').style.borderColor = '#ced4da';
-    document.getElementById('input-atv-desc').style.borderColor = '#ced4da';
-    document.getElementById('input-atv-peso').style.borderColor = '#ced4da';
-    document.getElementById('input-atv-prazo').style.borderColor = '#ced4da';
+  function validaForm() {
+    //Função para destacar campos em branco, adiciona e remove classe do bootstrap
+    let formularioValidado = true;
+    const campos = [
+      'inpt_titulo',
+      'inpt_descricao',
+      'inpt_data_inicial',
+      'inpt_data_limite',
+    ];
+
+    campos.forEach((id) => {
+      let item = document.getElementById(id);
+      if (item.value == '') {
+        item.classList.add('is-invalid');
+        formularioValidado = false;
+      } else {
+        item.classList.remove('is-invalid');
+      }
+    });
+    return formularioValidado; //Se os campos não chegarem em branco ele retorna true.
+  }
+
+  function validaDatas() {
+    const agora = new Date();
+    const dataInicial = new Date(inptDataInic.value);
+    const dataLimite = new Date(inptDataLimite.value);
+
+    if (agora >= dataInicial) {
+      // Verifica se data inicial  não está no passado
+      Swal.fire({
+        icon: 'warning',
+        title: 'Data Inicial inválida',
+        text: 'A data inicial deve ser atual.',
+      });
+      return false;
+    }
+
+    const diffMs = dataLimite - dataInicial; // Verifica se data limite é pelo menos 1minuto após a inicial
+    const diffMinutos = diffMs / 1000 / 60;
+
+    if (diffMinutos < 1) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Data Limite inválida',
+        text: 'A data limite deve ser pelo menos 1 minuto após a data inicial.',
+      });
+      return false;
+    }
+
+    return true;
   }
 
   function cadastrar() {
-    limparValidacao();
-
-    let inptNome = document.getElementById('input-atv-nome');
-    let inptDesc = document.getElementById('input-atv-desc');
-    let inptPeso = document.getElementById('input-atv-peso');
-    let inptPrazo = document.getElementById('input-atv-prazo');
-    let inptSerie = document.getElementById('input-atv-serie');
-    let inptDisciplina = document.getElementById('input-atv-disciplina');
-    let listaValidacao = [];
-
-    if (inptNome.value == '') listaValidacao.push('input-atv-nome');
-    if (inptDesc.value == '') listaValidacao.push('input-atv-desc');
-    if (inptPeso.value == '') listaValidacao.push('input-atv-peso');
-    if (inptPrazo.value == '') listaValidacao.push('input-atv-prazo');
-    if (inptSerie.value == '') listaValidacao.push('input-atv-serie');
-    if (inptDisciplina.value == '') listaValidacao.push('input-atv-disciplina');
-
-    if (listaValidacao.length == 0) {
-      let obj = {
-        atividadeProf_tituloProf: inptNome.value,
-        atividadeProf_descricaoProf: inptDesc.value,
-        atividadeProf_notaProf: inptPeso.value,
-        atividadeProf_prazoProf: inptPrazo.value.replace('T', ' ') + ':00',
-        serie_id: inptSerie.value,
-        disciplina_id: inptDisciplina.value,
+    if (btnCadastrar.disabled) return;
+    
+    if (validaForm() && validaDatas()) {
+      const obj = {
+        titulo: inptTitulo.value,
+        descricao: inptDesc.value,
+        data_inicial: inptDataInic.value.replace('T', ' ') + ':00',
+        data_limite: inptDataLimite.value.replace('T', ' ') + ':00',
+        professor_turma_disciplina_id: professorTurmaId.value,
       };
-
-      if (inputId && inputId.value != '') {
-        obj.atividadeProf_idProf = inputId.value;
-      }
-
+      btnCadastrar.disabled = true;
       fetch('/seeds/professor/atividade/cadastrar', {
         method: 'POST',
         headers: {
@@ -56,32 +84,17 @@ document.addEventListener('DOMContentLoaded', function () {
             Swal.fire({
               icon: 'success',
               title: 'Sucesso!',
-              text: corpoResposta.msg,
+              text: 'Atividade cadastrada com sucesso',
               timer: 3000,
               showConfirmButton: false,
-            }).then(() => {
-              window.location.href = window.location.href = `/seeds/professor/atividade/listar/${idProfessor}`;
-              ; // ou outro redirect apropriado
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Erro!',
-              text: corpoResposta.msg,
             });
           }
+        })
+        .catch((e) => {
+          console.log(e);
         });
-    } else {
-      destacarCampos(listaValidacao);
     }
   }
 
-  function destacarCampos(lista) {
-    for (let i = 0; i < lista.length; i++) {
-      let campo = document.getElementById(lista[i]);
-      campo.style.borderColor = 'red';
-    }
-
-    alert('Preencha corretamente os campos indicados!');
-  }
+  btnCadastrar.addEventListener('click', cadastrar);
 });

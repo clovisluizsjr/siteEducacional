@@ -1,4 +1,5 @@
 <script src="/js/seeds/listar.js"></script>
+<script src="/js/seeds/excluirAtividade.js"></script>
 <div class="p-4">
   <h3><%= disciplinaInfo.disciplina_nome %></h3>
   <h4 class="text-muted">Turma: <%= turmaInfo.turma_nome %></h4>
@@ -6,7 +7,7 @@
   <hr />
   <div class="flex">
     <a
-      href="/seeds/professor/disciplina/<%= turmaInfo.turma_id %>/<%= disciplinaInfo.disciplina_id %>/nova-atividade"
+      href="/seeds/professor/disciplina/<%= turmaInfo.turma_id %>/<%= disciplinaInfo.disciplina_id %>/novaAtividade"
       class="btn btn-primary"
     >
       + Nova Atividade
@@ -18,33 +19,47 @@
     <thead>
       <tr>
         <th>Atividade</th>
-        <th>Peso</th>
         <th>Prazo</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       <% for(let i = 0; i < listaAtividades.length; i ++) { %>
       <tr style="cursor: pointer">
         <td><%= listaAtividades[i].titulo %></td>
-  
+
         <td
           style="color: <%= new Date(listaAtividades[i].data_limite) < new Date() ? 'red' : 'green' %>; font-style: italic;"
         >
-          Encerra em: <%= new Date(listaAtividades[i].data_limite).toLocaleDateString('pt-br') %>
+          Encerra em: <%= new
+          Date(listaAtividades[i].data_limite).toLocaleString('pt-br') %>
         </td>
 
-
-      <td>
-        <button type="button" class="btn btn-danger btn-exclusao">
-          <i class="fas fa-trash"></i>
-        </button>
-        <a href="#" class="btn btn-warning"><i class="fas fa-pen"></i></a>
-      </td>
-        
+        <td>
+          <button
+            type="button"
+            class="btn btn-info"
+            data-atividade="<%= listaAtividades[i].atividade_id %>"
+          >
+            Corrigir
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger btn-exclusao"
+            data-atividade="<%= listaAtividades[i].atividade_id %>"
+          >
+            <i class="fas fa-trash"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-altera"
+            data-atividade="<%= listaAtividades[i].atividade_id %>"
+          >
+            <i class="fas fa-pen"></i>
+          </button>
+        </td>
       </tr>
       <% } %>
     </tbody>
   </table>
-
-
 </div>

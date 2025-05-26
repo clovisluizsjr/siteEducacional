@@ -11,12 +11,23 @@ class Database {
     this.#conexao = conexao;
   }
 
+  // constructor() {
+  //   this.#conexao = mysql.createPool({
+  //     host: '132.226.245.178',
+  //     database: 'PFS1_10442428760',
+  //     user: '10442428760',
+  //     password: '10442428760',
+  //   });
+  // }
+
+  // Banco alternativo
   constructor() {
     this.#conexao = mysql.createPool({
-      host: '132.226.245.178',
-      database: 'PFS1_10442428760',
-      user: '10442428760',
-      password: '10442428760',
+      host: 'shortline.proxy.rlwy.net',
+      database: 'railway',
+      user: 'root',
+      password: 'cuxcTanKssRwpydXOcXHujskAgaRSlKj',
+      port:42145
     });
   }
 

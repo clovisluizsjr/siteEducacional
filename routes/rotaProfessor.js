@@ -26,5 +26,5 @@ router.get('/disciplina/:turmaId/:disciplinaId/:atividadeId/altera',
 router.post('/atividade/cadastrar', auth.validar, ctrl.gravarAtividade);
 router.put('/atividade/alterar', auth.validar, ctrl.gravarAtividade)
 router.post('/atividade/excluir', auth.validar, ctrl.excluir);
-router.get('/disciplina/:turmaId/:disciplinaId/:atividadeId', auth.validar, ctrl.atividadeAlunos)
+router.get('/disciplina/:turmaId/:disciplinaId/:atividadeId/corrige', auth.validar, ctrl.atividadeAlunos)
 module.exports = router;

@@ -1,3 +1,35 @@
 <div class="p-4">
-  <h4 class="text-muted">Atividade: <%= atividade.titulo %></h4>
+  <h4 class="text-muted">
+    Atividade: <%= listaAtividades[0].atividade_titulo %>
+  </h4>
+  <table class="mt-4 table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Aluno</th>
+        <th>Conteudo</th>
+        <th>Data Entrega</th>
+        <th>Nota</th>
+        <th>Salvar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(let i = 0; i < listaAtividades.length; i ++) { %>
+      <tr>
+        <td><%= listaAtividades[i].aluno_nome %></td>
+        <td><%= listaAtividades[i].conteudo || ' ' %></td>
+        <td><%= listaAtividades[i].data_entrega || 'Pendente' %></td>
+        <td class="col-md-2">
+          <input
+            type="text"
+            value="<%= listaAtividades[i].nota || ' ' %>"
+            class="form-control"
+          />
+        </td>
+        <td>
+          <button class="btn btn-success">Salvar</button>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
 </div>

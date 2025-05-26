@@ -1,6 +1,7 @@
 const AlunoModel = require('../models/alunoModel');
 const AtividadeModel = require('../models/atividadeModel');
 const DisciplinaModel = require('../models/disciplinaModel');
+const EntregaModel = require("../models/entregaModel");
 const ProfessorModel = require('../models/professorModel');
 const ProfessorTurmasDisciplinas = require('../models/professorTurmasDisciplinas');
 const TurmaModel = require('../models/turmaModel');
@@ -141,12 +142,16 @@ class ProfessorController {
       disciplinaId
     );
 
-    let alunos = new AlunoModel();
-    let listaAtividades = await alunos.listarAlunos(
+    let entrega = new EntregaModel();
+    let listaAtividades = await entrega.listarEntregas(
+      turmaProfessorId[0].id,
       atividadeId,
-      turmaProfessorId[0].id
     );
-    res.render('seeds/alunos.ejs', {
+    console.log('atividadeId', atividadeId)
+    console.log('listaAtividades', listaAtividades)
+    console.log('listaAtividades[0]', listaAtividades[0])
+  
+    res.render('seeds/corrigirAtividade.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       listaAtividades,
     });

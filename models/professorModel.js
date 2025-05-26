@@ -92,27 +92,6 @@ class ProfessorModel {
     return null;
   }
 
-  async obterPor(email) {
-    let sql = `select * FROM Professores WHERE professor_email = ?`
-    let valores = [email]
-    let banco = new Database();
-    let rows = await banco.ExecutaComando(sql, valores);
-    let lista = [];
-    for(let i= 0; i < rows.length; i++) {
-      lista.push(new ProfessorModel(rows[i]["professor_id"],
-                                rows[i]["professor_nome"],
-                                rows[i]["professor_CPF"],
-                                rows[i]["professor_nasc"],
-                                rows[i]["professor_fone"],
-                                rows[i]["professor_email"],
-                                rows[i]["professor_endereco"],
-                                rows[i]["professor_senha"],
-      ));
-    }
-    return lista;
-
-  }
-
   async validaAcesso(professor_id, turma_id, disciplina_id) {
     let sql = `
     SELECT id FROM Professor_turmas_disciplinas

@@ -50,6 +50,26 @@ class AtividadeModel {
     return lista;
   }
 
+  async obterAtividadePor(id){
+    let sql = 'SELECT * FROM Atividades WHERE atividade_id = ?'
+    let valor = [id];
+    let banco = new Database();
+    let lista = [];
+    let rows = await banco.ExecutaComando(sql, valor);
+
+    for (let i = 0; i < rows.length; i++) {
+      lista.push(new AtividadeModel(
+        rows[i]['atividade_id'],
+        rows[i]['titulo'],
+        rows[i]['descricao'],
+        rows[i]['data_inicial'],
+        rows[i]['data_limite'],
+        rows[i]['professor_turma_disciplina_id'],
+      ))
+    }
+    return lista;
+  }
+
   async gravarAtividade() {
     let banco = new Database();
     if (this.#atividade_id == 0) {
@@ -70,10 +90,9 @@ class AtividadeModel {
       //alteraAtividade
       let sql = `UPDATE Atividades 
       SET titulo = ?, descricao = ?, data_inicial = ?, data_limite = ?
-      WHERE  atividade_id = ?,
+      WHERE  atividade_id = ?
       `;
       let valores = [
-        this.#atividade_id,
         this.#titulo,
         this.#descricao,
         this.#data_inicial,

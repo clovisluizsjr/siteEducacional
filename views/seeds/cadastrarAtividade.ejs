@@ -1,8 +1,7 @@
-<script src="/js/seeds/cadastrarAtividade.js"></script>
-
+<% if(!atividadeInfo) { %>
+<!-- Fluxo Cadastro-->
 <div class="p-4">
   <h1 class="mb-4">Cadastrar nova atividade</h1>
-
   <div>
     <div class="mb-3">
       <label for="inpt_titulo" class="form-label">Título da Atividade:</label>
@@ -50,7 +49,7 @@
     </div>
 
     <div class="mt-4">
-      <button type="button" class="btn btn-primary me-2" id="btn_cadastrar">
+      <button type="button" class="btn btn-primary me-2 btn_cadastrar">
         <i class="bi bi-save me-1"></i> Cadastrar
       </button>
       <a
@@ -63,3 +62,85 @@
     </div>
   </div>
 </div>
+<%} else { %>
+<!-- Fluxo alteração-->
+<div class="p-4">
+  <h1 class="mb-4">Alterar atividade</h1>
+  <div>
+    <input
+      type="hidden"
+      class="atividade-id"
+      value="<%=atividadeInfo.atividade_id %>"
+    />
+    <div class="mb-3">
+      <label for="inpt_titulo" class="form-label">Título da Atividade:</label>
+      <input
+        id="inpt_titulo"
+        type="text"
+        class="form-control"
+        required
+        value="<%= atividadeInfo.titulo %>"
+      />
+      <div class="invalid-feedback">Preencha o título da atividade</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="inpt_descricao" class="form-label">Descrição:</label>
+      <textarea
+        id="inpt_descricao"
+        class="form-control"
+        rows="3"
+        required
+        value=""
+      ><%= atividadeInfo.descricao %></textarea>
+      <div class="invalid-feedback">Preencha a descrição</div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="inpt_data_inicial" class="form-label">Data Início:</label>
+        <input
+          id="inpt_data_inicial"
+          type="datetime-local"
+          class="form-control"
+          required
+          value="<%= new Date(atividadeInfo.data_inicial).toISOString().slice(0, 16) %>"
+        />
+        <div class="invalid-feedback">Data inválida</div>
+      </div>
+      <div class="col-md-6">
+        <label for="inpt_data_limite" class="form-label">Data Limite:</label>
+        <input
+          id="inpt_data_limite"
+          type="datetime-local"
+          class="form-control"
+          required
+          value="<%= new Date(atividadeInfo.data_limite).toISOString().slice(0, 16) %>"
+        />
+        <div class="invalid-feedback">Data inválida</div>
+      </div>
+      <input
+        type="hidden"
+        name="professorTurmaId"
+        value="<%= professorTurmaId %>"
+      />
+    </div>
+
+    <div class="mt-4">
+      <button type="button" class="btn btn-primary me-2 btn_alterar">
+        <i class="bi bi-save me-1"></i> Alterar
+      </button>
+      <a
+        type="button"
+        class="btn btn-outline-secondary"
+        href="/seeds/professor/disciplina/<%=turmaId %>/<%=disciplinaId %>"
+      >
+        Voltar
+      </a>
+    </div>
+  </div>
+</div>
+
+<%} %>
+
+<script src="/js/seeds/cadastrarAtividade.js"></script>

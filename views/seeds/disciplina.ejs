@@ -38,7 +38,7 @@
         <td>
           <button
             type="button"
-            class="btn btn-info"
+            class="btn btn-corrigir"
             data-atividade="<%= listaAtividades[i].atividade_id %>"
           >
             Corrigir
@@ -50,13 +50,13 @@
           >
             <i class="fas fa-trash"></i>
           </button>
-          <button
+          <a href="/seeds/professor/disciplina/<%= turmaInfo.turma_id %>/<%= disciplinaInfo.disciplina_id %>/<%= listaAtividades[i].atividade_id %>/altera"
             type="button"
-            class="btn btn-altera"
+            class="btn btn-warning btn-altera"
             data-atividade="<%= listaAtividades[i].atividade_id %>"
           >
             <i class="fas fa-pen"></i>
-          </button>
+        </a>
         </td>
       </tr>
       <% } %>

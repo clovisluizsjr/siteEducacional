@@ -1,11 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const btnCadastrar = document.getElementById('btn_cadastrar');
+  const btnCadastrar = document.querySelector('.btn_cadastrar');
+  const btnAlterar = document.querySelector('.btn_alterar');
 
   let inptTitulo = document.getElementById('inpt_titulo');
   let inptDesc = document.getElementById('inpt_descricao');
   let inptDataInic = document.getElementById('inpt_data_inicial');
   let inptDataLimite = document.getElementById('inpt_data_limite');
   let professorTurmaId = document.querySelector('[name="professorTurmaId"]');
+  let atividadeElement = document.querySelector('.atividade-id');
+  let atividadeId = atividadeElement?.value || 0;
+
+  const rota = atividadeId == 0 ? 'cadastrar' : 'alterar';
+  const metodo = atividadeId == 0 ? 'POST' : 'PUT';
 
   function validaForm() {
     //Função para destacar campos em branco, adiciona e remove classe do bootstrap
@@ -60,19 +66,21 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function cadastrar() {
-    if (btnCadastrar.disabled) return;
-    
+    const botaoAtivo = btnCadastrar || btnAlterar;
+    if (botaoAtivo.disabled) return;
+
     if (validaForm() && validaDatas()) {
       const obj = {
+        atividade_id: atividadeId,
         titulo: inptTitulo.value,
         descricao: inptDesc.value,
         data_inicial: inptDataInic.value.replace('T', ' ') + ':00',
         data_limite: inptDataLimite.value.replace('T', ' ') + ':00',
         professor_turma_disciplina_id: professorTurmaId.value,
       };
-      btnCadastrar.disabled = true;
-      fetch('/seeds/professor/atividade/cadastrar', {
-        method: 'POST',
+      botaoAtivo.disabled = true;
+      fetch(`/seeds/professor/atividade/${rota}`, {
+        method: metodo,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -96,5 +104,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  btnCadastrar.addEventListener('click', cadastrar);
+   if (btnCadastrar) {
+    btnCadastrar.addEventListener('click', cadastrar);
+  }
+  
+  if (btnAlterar) {
+    btnAlterar.addEventListener('click', cadastrar);
+  }
 });

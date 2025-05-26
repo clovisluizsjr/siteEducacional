@@ -54,7 +54,7 @@ class ProfessorController {
   }
 
   async cadastrarAtividadeView(req, res) {
-    const { turmaId, disciplinaId } = req.params;
+    const { turmaId, disciplinaId, atividadeId } = req.params;
     const professorId = req.session.usuario.userId;
     let professores = new ProfessorModel();
     let validaAcesso = await professores.validaAcesso(
@@ -66,9 +66,13 @@ class ProfessorController {
       return res.send('<p>Usuário sem permissão</p>');
     }
 
+    let atividades = new AtividadeModel();
+    let atividadeInfo = await atividades.obterAtividadePor(atividadeId);
+
     res.render('seeds/cadastrarAtividade.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       professorTurmaId: validaAcesso[0].id,
+      atividadeInfo: atividadeInfo[0],
       turmaId,
       disciplinaId,
     });
@@ -76,6 +80,7 @@ class ProfessorController {
 
   async gravarAtividade(req, res) {
     const {
+      atividade_id,
       titulo,
       descricao,
       data_inicial,
@@ -90,7 +95,7 @@ class ProfessorController {
       data_limite != ''
     ) {
       let novaAtividade = new AtividadeModel(
-        0,
+        atividade_id,
         titulo,
         descricao,
         data_inicial,

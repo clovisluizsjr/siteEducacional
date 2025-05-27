@@ -63,14 +63,15 @@ class EntregaModel {
   }
 
   async listarEntregas(professorTurmaId, atividadeId) {
-    let sql = `
-      SELECT ativ.titulo AS atividade_titulo,
-      a.aluno_RA,
-      a.aluno_nome,
-      e.anotacoes,
-      e.nome_arquivo,
-      e.nota,
-      e.data_entrega
+  let sql = `
+    SELECT 
+      ativ.titulo AS atividade_titulo,
+      a.aluno_RA AS aluno_RA,
+      a.aluno_nome AS aluno_nome,
+      e.anotacoes AS anotacoes,
+      e.nome_arquivo AS nome_arquivo,
+      e.nota AS nota,
+      e.data_entrega AS data_entrega
     FROM 
       Professor_turmas_disciplinas ptd
     JOIN 
@@ -86,17 +87,12 @@ class EntregaModel {
       ativ.atividade_id = ?
     ORDER BY 
       a.aluno_nome ASC;
-    `;
-    let valores = [professorTurmaId, atividadeId];
-    let banco = new Database();
-    let lista = [];
-    let rows = await banco.ExecutaComando(sql, valores);
-    for (let i = 0; i < rows.length; i++) {
-      lista.push(rows[i]);
-    }
-
-    return lista;
-  }
+  `;
+  let valores = [professorTurmaId, atividadeId];
+  let banco = new Database();
+  let rows = await banco.ExecutaComando(sql, valores);
+  return rows;
+}
 
   async gravaAtividade() {//implementando sem envio de arquivo
   let banco = new Database();

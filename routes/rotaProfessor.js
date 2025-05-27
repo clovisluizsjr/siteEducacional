@@ -23,6 +23,12 @@ router.get('/disciplina/:turmaId/:disciplinaId/:atividadeId/altera',
   auth.validar,
   ctrl.cadastrarAtividadeView
 )
+router.get(
+  '/disciplina/:turmaId/:disciplinaId/quadroNotas',
+  auth.validar,
+  ctrl.quadroNotasView 
+);
+
 router.post('/atividade/cadastrar', auth.validar, ctrl.gravarAtividade);
 router.put('/atividade/alterar', auth.validar, ctrl.gravarAtividade)
 router.post('/atividade/excluir', auth.validar, ctrl.excluir);

@@ -1,0 +1,15 @@
+<h3>Atividades</h3>
+<% if (listaAtividades && listaAtividades.length) { %>
+  <% listaAtividades.forEach(atividade => { %>
+    <form action="/seeds/professor/itensquadro/salvar" method="POST">
+      <input type="hidden" name="quadro" value="<%= disciplinaInfo.id %>">
+      <input type="hidden" name="atividade_id" value="<%= atividade.atividade_id %>">
+      <input type="text" name="descricao" value="<%= atividade.titulo %>" readonly>
+      <input type="number" step="0.1" name="peso" placeholder="Peso" required>
+      <input type="text" name="tipo" placeholder="Tipo (ex: Prova, Trabalho)" required>
+      <button type="submit">Adicionar ao Quadro</button>
+    </form>
+  <% }) %>
+<% } else { %>
+  <p>Não há atividades disponíveis para esta disciplina.</p>
+<% } %>

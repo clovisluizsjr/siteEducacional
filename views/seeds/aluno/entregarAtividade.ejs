@@ -1,65 +1,63 @@
 <script src="/js/seeds/aluno/entregarAtividade.js"></script>
 
 <div class="p-4">
-  <input
-    type="hidden"
-    name="atividadeId"
-    value="<%= atividade.atividade_id %>"
-  />
-  <input
-    type="hidden"
-    name="professorTurmaId"
-    value="<%= atividade.professor_turma_disciplina_id %>"
-  />
-  <input
-    type="hidden"
-    name="alunoRa"
-    value="<%= alunoRA %>"
-  />
-  <h1><%=atividade.titulo %></h1>
-  <hr />
-  <h4><%=atividade.descricao %></h4>
-  <p>
-    Abre em:
-    <span class="font-weight-bold">
-      <%= new Date(atividade.data_inicial).toLocaleString('pt-br') %>
-    </span>
-    Finaliza em:
-    <span class="font-weight-bold">
-      <%= new Date(atividade.data_limite).toLocaleString('pt-br') %>
-    </span>
-  </p>
+  <form action="/atividades/responder" method="POST">
+    <!-- DADOS  ESCONDIDOS -->
+    <input type="hidden" name="atividadeId" value="<%= atividade.atividade_id %>" />
+    <input type="hidden" name="professorTurmaId" value="<%= atividade.professor_turma_disciplina_id %>" />
+    <input type="hidden" name="alunoRa" value="<%= alunoRA %>" />
+    <input type="hidden" name="entrega_id" class="entrega-id" value="<%= entrega ? entrega.entrega_id : 0 %>" />
 
-  <% const agora = new Date(); const dataInicial = new
-  Date(atividade.data_inicial); const dataLimite = new
-  Date(atividade.data_limite); const dentroPrazo = agora >= dataInicial && agora
-  <= dataLimite; %> <% if(dentroPrazo) {%>
-  <div>
-    <div class="mb-3">
-      <label for="inpt_resposta" class="form-label">Resposta:</label>
-      <textarea
-        id="inpt_resposta"
-        class="form-control"
-        rows="5"
-        required
-      ></textarea>
-      <div class="invalid-feedback">Preencha a Resposta</div>
-    </div>
+    <!-- INF DAS ATIVIDADES -->
+    <h1><%= atividade.titulo %></h1>
+    <hr />
+    <h4><%= atividade.descricao %></h4>
+    <p>
+      Abre em:
+      <span class="font-weight-bold">
+        <%= new Date(atividade.data_inicial).toLocaleString('pt-br') %>
+      </span>
+      Finaliza em:
+      <span class="font-weight-bold">
+        <%= new Date(atividade.data_limite).toLocaleString('pt-br') %>
+      </span>
+    </p>
 
+    <!-- VERIFICARR PRAZO -->
+    <% 
+      const agora = new Date(); 
+      const dataInicial = new Date(atividade.data_inicial); 
+      const dataLimite = new Date(atividade.data_limite); 
+      const aindaNoPrazo = agora >= dataInicial && agora <= dataLimite; 
+    %>
+
+    <% if (aindaNoPrazo) { %>
+      <!-- RESPOSTA -->
+      <div class="mb-3">
+        <label for="inpt_resposta" class="form-label">Resposta:</label>
+        <textarea id="inpt_resposta" name="anotacoes" class="form-control" rows="5" required><%= entrega ? entrega.anotacoes : '' %></textarea>
+        <div class="invalid-feedback">Preencha a Resposta</div>
+      </div>
+    <% } else { %>
+      <div class="alert alert-warning mt-3">
+        Prazo encerrado. Não é aceito mais edições !
+      </div>
+      <% if (entrega && entrega.anotacoes) { %>
+        <h5 class="mt-4">Resposta entregue:</h5>
+        <div class="border rounded p-3 bg-light">
+          <%= entrega.anotacoes %>
+        </div>
+      <% } %>
+    <% } %>
+
+    <!-- BOTOES -->
     <div class="mt-4">
-      <button type="button" class="btn btn-primary me-2 btn-enviar">
+      <button type="submit" class="btn btn-primary me-2 btn-enviar" <% if (!aindaNoPrazo) { %> disabled <% } %>>
         <i class="bi bi-save me-1"></i> Enviar
       </button>
-      <a type="button" class="btn btn-outline-secondary" href="#"> Voltar </a>
+      <!--FUNÇÃO PARA VOLTAR-->
+     <button type="button" class="btn btn-outline-secondary" onclick="window.history.back()">Voltar</button>
+
     </div>
-  </div>
-  <% } else {%>
-  <p class="text-danger font-weight-bold">
-    Atividade fora do período (Fechada em <%= dataLimite.toLocaleString('pt-br')
-    %>).
-  </p>
-  <h1>Feedback</h1>
-  <h1>nota</h1>
-  <a type="button" class="btn btn-outline-secondary" href="#"> Voltar </a>
-  <% }%>
+  </form>
 </div>

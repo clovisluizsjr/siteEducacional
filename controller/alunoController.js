@@ -29,19 +29,31 @@ class AlunoController {
     });
   }
 
+
   async atividadeInfo(req, res) {
     let { atividadeId } = req.params;
     let alunoRA = req.session.usuario.userId;
 
     let atividades = new AtividadeModel();
-    let listaAtividades = await atividades.obterAtividadePor(atividadeId);
+    let entrega = new EntregaModel();
+
+    let atividade = (await atividades.obterAtividadePor(atividadeId))[0];
+
+    // ALUNO JA ENTREGOU ATIVIDADE?
+    let entregaExistente = await entrega.obterEntrega(atividadeId, alunoRA);
+
+    // AINDA ESTA NO PRAZO?
+    let aindaNoPrazo = new Date(atividade.data_fim) >= new Date();
 
     res.render('seeds/aluno/entregarAtividade.ejs', {
       layout: './layouts/layoutSeeds',
-      atividade: listaAtividades[0],
+      atividade,
       alunoRA,
+      entrega: entregaExistente,
+      aindaNoPrazo
     });
   }
+
 
   async entregaAtividade(req, res) {
     const {

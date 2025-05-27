@@ -98,26 +98,54 @@ class EntregaModel {
     return lista;
   }
 
-  async gravaAtividade() { // implementado sem envio de arquivo
-    if (this.#entrega_id == 0) {
-      let sql = `
+  async gravaAtividade() {//implementando sem envio de arquivo
+  let banco = new Database();
+
+  if (this.#entrega_id == 0 || !this.#entrega_id) {
+    const sql = `
       INSERT INTO Entregas (atividade_id, aluno_RA, professor_turma_disciplina_id, data_entrega, anotacoes, status)
       VALUES (?, ?, ?, ?, ?, ?)
-      `
-      let valores = [
-        this.#atividade_id,
-        this.#aluno_RA,
-        this.#professor_turma_disciplina_id,
-        this.#data_entrega,
-        this.#anotacoes,
-        this.#status
-      ]
-      let banco = new Database();
-      let resultado = await banco.ExecutaComando(sql, valores);
-      return resultado;
-      
-    }
+    `;
+    const valores = [
+      this.#atividade_id,
+      this.#aluno_RA,
+      this.#professor_turma_disciplina_id,
+      this.#data_entrega,
+      this.#anotacoes,
+      this.#status
+    ];
+    return await banco.ExecutaComando(sql, valores);
+    //se ele puder ainda entregar
+  } else {
+    const sql = `
+      UPDATE Entregas
+      SET data_entrega = ?, anotacoes = ?, status = ?
+      WHERE entrega_id = ?
+    `;
+    const valores = [
+      this.#data_entrega,
+      this.#anotacoes,
+      this.#status,
+      this.#entrega_id
+    ];
+    return await banco.ExecutaComando(sql, valores);
   }
+}
+
+
+
+  //obtendo o status da entrega
+  async obterEntrega(atividadeId, alunoRA) {
+  const sql = `
+    SELECT * FROM Entregas
+    WHERE atividade_id = ? AND aluno_RA = ?
+    LIMIT 1
+  `;
+  const banco = new Database();
+  const resultados = await banco.ExecutaComando(sql, [atividadeId, alunoRA]);
+  return resultados[0] || null;
+}
+
 }
 
 module.exports = EntregaModel;

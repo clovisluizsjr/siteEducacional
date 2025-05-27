@@ -176,29 +176,30 @@ class AlunoModel {
 
   async listarProfessoresEDisciplinas(alunoRA) {
     let sql = `
-        SELECT 
-           *
-        FROM Alunos
-        JOIN Series ON Alunos.serie_id = Series.serie_id
-        JOIN Disciplinas ON Series.serie_id = Disciplinas.serie_id
-        JOIN Professores ON Disciplinas.professor_id = Professores.professor_id
-        WHERE Alunos.aluno_RA = ?
+      SELECT DISTINCT
+        d.disciplina_id AS codigo,
+        d.disciplina_nome AS disciplina,
+        p.professor_nome AS professor,
+        ptd.id AS professorTurmaId
+      FROM 
+          Aluno_turmas at
+      JOIN 
+          Professor_turmas_disciplinas ptd ON at.turma_id = ptd.turma_id
+      JOIN 
+          Disciplinas d ON ptd.disciplina_id = d.disciplina_id
+      JOIN 
+          Professores p ON ptd.professor_id = p.professor_id
+      WHERE 
+          at.aluno_RA = ?
+      ORDER BY d.disciplina_nome;
     `;
 
     let valores = [alunoRA]; // Passando o RA como parâmetro
     let banco = new Database();
     let rows = await banco.ExecutaComando(sql, valores);
     let lista = [];
-
     for (let i = 0; i < rows.length; i++) {
-      lista.push(
-        new AlunoModel(
-          rows[i]['professor_id'],
-          rows[i]['professor_nome'],
-          rows[i]['disciplina_id'],
-          rows[i]['disciplina_nome']
-        )
-      );
+      lista.push(rows[i]);
     }
 
     return lista;

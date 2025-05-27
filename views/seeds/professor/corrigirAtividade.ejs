@@ -1,0 +1,53 @@
+<script src="/js/seeds/professor/corrigirAtividade.js"></script>
+
+<div class="p-4">
+  <h4 class="text-muted">
+    Atividade: <%= listaAtividades[0].atividade_titulo %>
+  </h4>
+  <table class="mt-4 table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Aluno</th>
+        <th>Arquivo</th>
+        <th>Anotações</th>
+        <th>Data Entrega</th>
+        <th>Nota</th>
+        <th>Salvar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(let i = 0; i < listaAtividades.length; i ++) { %>
+      <input
+        type="hidden"
+        data-alunora="<%=  listaAtividades[i].aluno_RA %>"
+        value="<%=  listaAtividades[i].aluno_RA %>"
+      />
+      <tr>
+        <td><%= listaAtividades[i].aluno_nome %></td>
+        <td><%= listaAtividades[i].nome_arquivo || ' ' %></td>
+        <td><%= listaAtividades[i].anotacoes || ' ' %></td>
+        <td>
+          <%= listaAtividades[i].data_entrega ? new
+          Date(listaAtividades[i].data_entrega).toLocaleString('pt-br') :
+          'Pendente' %>
+        </td>
+        <td class="col-md-2">
+          <input
+            type="text"
+            value="<%= listaAtividades[i].nota || ' ' %>"
+            class="form-control"
+          />
+        </td>
+        <td>
+          <button
+            class="btn btn-success btn-corrigir"
+            data-atividadeid="<%=atividadeId %>"
+          >
+            Salvar
+          </button>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>

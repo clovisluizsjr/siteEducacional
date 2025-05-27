@@ -1,0 +1,40 @@
+<div class="p-4">
+  <%if(listaAtividades.length > 0) {%>
+  <!-- Caso exista atividades -->
+  <table class="mt-4 table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Atividade</th>
+        <th>Prazo</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(let i = 0; i < listaAtividades.length; i ++) { %>
+      <tr style="cursor: pointer">
+        <td><%= listaAtividades[i].titulo %></td>
+
+        <td
+          style="color: <%= new Date(listaAtividades[i].data_limite) < new Date() ? 'red' : 'green' %>; font-style: italic;"
+        >
+          Encerra em: <%= new
+          Date(listaAtividades[i].data_limite).toLocaleString('pt-br') %>
+        </td>
+
+        <td>
+          <a
+            href="/seeds/aluno/atividades/info/<%= listaAtividades[i].atividade_id %>/"
+            class="btn btn-info btn-altera"
+            data-atividade="<%= listaAtividades[i].atividade_id %>"
+          >
+            Ver Atividade
+          </a>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <%} else { %>
+  <h3 class="text-center">Nenhuma atividade pendente</h3>
+  <% }%>
+</div>

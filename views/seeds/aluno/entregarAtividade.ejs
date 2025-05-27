@@ -1,0 +1,65 @@
+<script src="/js/seeds/aluno/entregarAtividade.js"></script>
+
+<div class="p-4">
+  <input
+    type="hidden"
+    name="atividadeId"
+    value="<%= atividade.atividade_id %>"
+  />
+  <input
+    type="hidden"
+    name="professorTurmaId"
+    value="<%= atividade.professor_turma_disciplina_id %>"
+  />
+  <input
+    type="hidden"
+    name="alunoRa"
+    value="<%= alunoRA %>"
+  />
+  <h1><%=atividade.titulo %></h1>
+  <hr />
+  <h4><%=atividade.descricao %></h4>
+  <p>
+    Abre em:
+    <span class="font-weight-bold">
+      <%= new Date(atividade.data_inicial).toLocaleString('pt-br') %>
+    </span>
+    Finaliza em:
+    <span class="font-weight-bold">
+      <%= new Date(atividade.data_limite).toLocaleString('pt-br') %>
+    </span>
+  </p>
+
+  <% const agora = new Date(); const dataInicial = new
+  Date(atividade.data_inicial); const dataLimite = new
+  Date(atividade.data_limite); const dentroPrazo = agora >= dataInicial && agora
+  <= dataLimite; %> <% if(dentroPrazo) {%>
+  <div>
+    <div class="mb-3">
+      <label for="inpt_resposta" class="form-label">Resposta:</label>
+      <textarea
+        id="inpt_resposta"
+        class="form-control"
+        rows="5"
+        required
+      ></textarea>
+      <div class="invalid-feedback">Preencha a Resposta</div>
+    </div>
+
+    <div class="mt-4">
+      <button type="button" class="btn btn-primary me-2 btn-enviar">
+        <i class="bi bi-save me-1"></i> Enviar
+      </button>
+      <a type="button" class="btn btn-outline-secondary" href="#"> Voltar </a>
+    </div>
+  </div>
+  <% } else {%>
+  <p class="text-danger font-weight-bold">
+    Atividade fora do período (Fechada em <%= dataLimite.toLocaleString('pt-br')
+    %>).
+  </p>
+  <h1>Feedback</h1>
+  <h1>nota</h1>
+  <a type="button" class="btn btn-outline-secondary" href="#"> Voltar </a>
+  <% }%>
+</div>

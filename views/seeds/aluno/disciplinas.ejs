@@ -1,0 +1,24 @@
+<script src="/js/seeds/aluno/disciplinas.js"></script>
+
+<div class="p-4">
+  <table class="mt-4 table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Disciplina</th>
+        <th>Professor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(let i = 0; i < listaDisciplinas.length; i ++) { %>
+      <tr 
+        class="disciplina-row" 
+        style="cursor: pointer"
+        data-professorturmaid="<%= listaDisciplinas[i].professorTurmaId %>"
+      >
+        <td><%= listaDisciplinas[i].disciplina %></td>
+        <td><%= listaDisciplinas[i].professor %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>

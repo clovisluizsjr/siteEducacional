@@ -15,7 +15,7 @@ class ProfessorController {
     let professorId = req.session.usuario.userId;
     let turmas = new ProfessorTurmasDisciplinas();
     let listaTurmas = await turmas.listarPorProfessorId(professorId);
-    res.render('seeds/turmas.ejs', {
+    res.render('seeds/professor/turmas.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       listaTurmas: listaTurmas,
     });
@@ -46,7 +46,7 @@ class ProfessorController {
 
     let atividades = new AtividadeModel();
     let listaAtividades = await atividades.listarAtividades(validaAcesso[0].id);
-    res.render('seeds/disciplina.ejs', {
+    res.render('seeds/professor/disciplina.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       turmaInfo: turmaInfo[0],
       disciplinaInfo: disciplinaInfo[0],
@@ -70,7 +70,7 @@ class ProfessorController {
     let atividades = new AtividadeModel();
     let atividadeInfo = await atividades.obterAtividadePor(atividadeId);
 
-    res.render('seeds/cadastrarAtividade.ejs', {
+    res.render('seeds/professor/cadastrarAtividade.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       professorTurmaId: validaAcesso[0].id,
       atividadeInfo: atividadeInfo[0],
@@ -147,13 +147,12 @@ class ProfessorController {
       turmaProfessorId[0].id,
       atividadeId,
     );
-    console.log('atividadeId', atividadeId)
-    console.log('listaAtividades', listaAtividades)
-    console.log('listaAtividades[0]', listaAtividades[0])
+
   
-    res.render('seeds/corrigirAtividade.ejs', {
+    res.render('seeds/professor/corrigirAtividade.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       listaAtividades,
+      atividadeId
     });
   }
 }

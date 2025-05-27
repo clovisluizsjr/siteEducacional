@@ -57,9 +57,14 @@ CREATE TABLE Entregas (
   entrega_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   atividade_id INT REFERENCES Atividades(atividade_id),
   aluno_RA VARCHAR(14) REFERENCES Alunos(aluno_RA),
+  professor_turma_disciplina_id INT REFERENCES Professor_turmas_disciplinas(id),
   data_entrega DATETIME,
-  conteudo TEXT,
+  anotacoes TEXT,
   nota NUMERIC(4,2),
+  arquivo LONGBLOB,
+  nome_arquivo VARCHAR(255),
+  feedback VARCHAR(255),
+  status VARCHAR(20),
   UNIQUE (atividade_id, aluno_RA)
 );
 
@@ -81,7 +86,7 @@ CREATE TABLE ItensQuadroNotas (
   UNIQUE(quadro_id, atividade_id) -- Evita duplicação
 );
 
-ALTER TABLE Entregas ADD COLUMN professor_turma_disciplina_id INT REFERENCES Professor_turmas_disciplinas(id);
+
 
 INSERT INTO Professores (professor_id, professor_nome, professor_CPF, professor_nasc, professor_fone, professor_endereco, professor_email, professor_senha) VALUES
 (1, 'Maria Silva', '111.222.333-44', '1980-05-15', '(11) 9999-8888', 'Rua A, 123 - SP', 'maria@escola.com', 'Maria344'),
@@ -551,3 +556,70 @@ INSERT INTO Professor_turmas_disciplinas (id, professor_id, turma_id, disciplina
 (58, 8, 6, 9),   -- Eduardo Almeida ensina Educação Física para 3ºB
 (59, 9, 6, 10),  -- Juliana Teixeira ensina Filosofia para 3ºB
 (60, 10, 6, 11); -- Ricardo Nunes ensina Sociologia para 3ºB
+
+INSERT INTO QuadroNotas (professor_turma_disciplina_id, descricao) VALUES
+(1, '1ºA - Matemática'),
+(2, '1ºA - Português'),
+(3, '1ºA - História'),
+(4, '1ºA - Geografia'),
+(5, '1ºA - Física'),
+(6, '1ºA - Biologia'),
+(7, '1ºA - Inglês'),
+(8, '1ºA - Educação Física'),
+(9, '1ºA - Filosofia'),
+(10, '1ºA - Sociologia'),
+
+(11, '1ºB - Matemática'),
+(12, '1ºB - Português'),
+(13, '1ºB - História'),
+(14, '1ºB - Geografia'),
+(15, '1ºB - Química'),
+(16, '1ºB - Biologia'),
+(17, '1ºB - Inglês'),
+(18, '1ºB - Educação Física'),
+(19, '1ºB - Filosofia'),
+(20, '1ºB - Artes'),
+
+(21, '2ºA - Matemática'),
+(22, '2ºA - Português'),
+(23, '2ºA - História'),
+(24, '2ºA - Geografia'),
+(25, '2ºA - Física'),
+(26, '2ºA - Química'),
+(27, '2ºA - Inglês'),
+(28, '2ºA - Educação Física'),
+(29, '2ºA - Filosofia'),
+(30, '2ºA - Sociologia'),
+
+(31, '2ºB - Matemática'),
+(32, '2ºB - Português'),
+(33, '2ºB - História'),
+(34, '2ºB - Geografia'),
+(35, '2ºB - Física'),
+(36, '2ºB - Biologia'),
+(37, '2ºB - Inglês'),
+(38, '2ºB - Educação Física'),
+(39, '2ºB - Filosofia'),
+(40, '2ºB - Artes'),
+
+(41, '3ºA - Matemática'),
+(42, '3ºA - Português'),
+(43, '3ºA - História'),
+(44, '3ºA - Geografia'),
+(45, '3ºA - Física'),
+(46, '3ºA - Química'),
+(47, '3ºA - Inglês'),
+(48, '3ºA - Educação Física'),
+(49, '3ºA - Sociologia'),
+(50, '3ºA - Artes'),
+
+(51, '3ºB - Matemática'),
+(52, '3ºB - Português'),
+(53, '3ºB - História'),
+(54, '3ºB - Geografia'),
+(55, '3ºB - Física'),
+(56, '3ºB - Biologia'),
+(57, '3ºB - Inglês'),
+(58, '3ºB - Educação Física'),
+(59, '3ºB - Filosofia'),
+(60, '3ºB - Sociologia');

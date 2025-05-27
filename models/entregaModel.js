@@ -1,19 +1,76 @@
 const Database = require('../utils/database');
 
 class EntregaModel {
+  #entrega_id;
+  #atividade_id;
+  #aluno_RA;
+  #professor_turma_disciplina_id;
+  #data_entrega;
+  #anotacoes;
+  #nota;
+  #arquivo;
+  #nome_arquivo;
+  #feedback;
+  #status;
+
+  get entrega_id() { return this.#entrega_id }
+  set entrega_id(value) { this.#entrega_id = value }
+  get atividade_id() { return this.#atividade_id }
+  set atividade_id(value) { this.#atividade_id = value }
+  get aluno_RA() { return this.#aluno_RA }
+  set aluno_RA(value) { this.#aluno_RA = value }
+  get professor_turma_disciplina_id() { return this.#professor_turma_disciplina_id }
+  set professor_turma_disciplina_id(value) { this.#professor_turma_disciplina_id = value }
+  get data_entrega() { return this.#data_entrega }
+  set data_entrega(value) { this.#data_entrega = value }
+  get anotacoes() { return this.#anotacoes }
+  set anotacoes(value) { this.#anotacoes = value }
+  get nota() { return this.#nota }
+  set nota(value) { this.#nota = value }
+  get arquivo() { return this.#arquivo }
+  set arquivo(value) { this.#arquivo = value }
+  get nome_arquivo() { return this.#nome_arquivo }
+  set nome_arquivo(value) { this.#nome_arquivo = value }
+  get feedback() { return this.#feedback }
+  set feedback(value) { this.#feedback = value }
+  get status() { return this.#status }
+  set status(value) { this.#status = value }
+  
+  constructor(
+    entrega_id,
+    atividade_id,
+    aluno_RA,
+    professor_turma_disciplina_id,
+    data_entrega,
+    anotacoes,
+    nota,
+    arquivo,
+    nome_arquivo,
+    feedback,
+    status
+  ) {
+    this.#entrega_id = entrega_id;
+    this.#atividade_id = atividade_id;
+    this.#aluno_RA = aluno_RA;
+    this.#professor_turma_disciplina_id = professor_turma_disciplina_id;
+    this.#data_entrega = data_entrega;
+    this.#anotacoes = anotacoes;
+    this.#nota = nota;
+    this.#arquivo = arquivo;
+    this.#nome_arquivo = nome_arquivo;
+    this.#feedback = feedback;
+    this.#status = status;
+  }
+
   async listarEntregas(professorTurmaId, atividadeId) {
     let sql = `
       SELECT ativ.titulo AS atividade_titulo,
       a.aluno_RA,
       a.aluno_nome,
-      e.conteudo,
+      e.anotacoes,
+      e.nome_arquivo,
       e.nota,
-      e.data_entrega,
-      CASE 
-          WHEN e.conteudo IS NULL THEN 'Pendente'
-          WHEN e.nota IS NULL THEN 'pendente'
-          ELSE 'corrigido'
-      END AS status_entrega
+      e.data_entrega
     FROM 
       Professor_turmas_disciplinas ptd
     JOIN 
@@ -39,6 +96,27 @@ class EntregaModel {
     }
 
     return lista;
+  }
+
+  async gravaAtividade() { // implementado sem envio de arquivo
+    if (this.#entrega_id == 0) {
+      let sql = `
+      INSERT INTO Entregas (atividade_id, aluno_RA, professor_turma_disciplina_id, data_entrega, anotacoes, status)
+      VALUES (?, ?, ?, ?, ?, ?)
+      `
+      let valores = [
+        this.#atividade_id,
+        this.#aluno_RA,
+        this.#professor_turma_disciplina_id,
+        this.#data_entrega,
+        this.#anotacoes,
+        this.#status
+      ]
+      let banco = new Database();
+      let resultado = await banco.ExecutaComando(sql, valores);
+      return resultado;
+      
+    }
   }
 }
 

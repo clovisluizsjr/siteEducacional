@@ -39,7 +39,7 @@ class ItensQuadroNotasModel {
         const banco = new Database();
         if (!this.#id || this.#id === 0) {
             const sql = `
-        INSERT INTO ItensQuadroNotas (quadro, atividade_id, descricao, peso, tipo)
+        INSERT INTO ItensQuadroNotas (quadro_id, atividade_id, descricao, peso, tipo)
         VALUES (?, ?, ?, ?, ?)
       `;
             const valores = [
@@ -54,7 +54,7 @@ class ItensQuadroNotasModel {
         } else {
             const sql = `
         UPDATE ItensQuadroNotas
-        SET quadro = ?, atividade_id = ?, descricao = ?, peso = ?, tipo = ?
+        SET quadro_id = ?, atividade_id = ?, descricao = ?, peso = ?, tipo = ?
         WHERE id = ?
       `;
             const valores = [

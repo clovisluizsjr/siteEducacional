@@ -6,6 +6,7 @@ const ProfessorModel = require('../models/professorModel');
 const ProfessorTurmasDisciplinas = require('../models/professorTurmasDisciplinas');
 const TurmaModel = require('../models/turmaModel');
 const ItensQuadroNotasModel = require('../models/itensQuadroNotas')
+const QuadroNotasModel = require('../models/quadroNotasModel');
 
 class ProfessorController {
   home(req, res) {
@@ -156,70 +157,80 @@ class ProfessorController {
 
 
 
- async quadroNotasView(req, res) {
-  const { turmaId, disciplinaId } = req.params;
-  const professorId = req.session.usuario.userId;
+  async quadroNotasView(req, res) {
+    const { turmaId, disciplinaId } = req.params;
+    const professorId = req.session.usuario.userId;
 
-  // Verificar acesso
-  let professores = new ProfessorModel();
-  let validaAcesso = await professores.validaAcesso(professorId, turmaId, disciplinaId);
+    // Verificar acesso
+    let professores = new ProfessorModel();
+    let validaAcesso = await professores.validaAcesso(professorId, turmaId, disciplinaId);
 
-  if (!validaAcesso.length) {
-    return res.send('<p>Usuário sem permissão</p>');
+    if (!validaAcesso.length) {
+      return res.send('<p>Usuário sem permissão</p>');
+    }
+
+    // inf da turma
+    const turmaModel = new TurmaModel();
+    const turmaLista = await turmaModel.filtrarPorId(turmaId);
+    const turmaInfo = turmaLista.length > 0 ? turmaLista[0] : null;
+
+    // inf disciplina
+    const disciplinaModel = new DisciplinaModel();
+    const disciplinaLista = await disciplinaModel.obter(disciplinaId);
+    const disciplinaInfo = disciplinaLista.length > 0 ? disciplinaLista[0] : null;
+
+    // Buscar atividades
+    const atividadesModel = new AtividadeModel();
+    const listaAtividades = await atividadesModel.listarAtividades(validaAcesso[0].id);
+
+    // Buscar itens do quadro de notas
+    let itensQuadroModel = new ItensQuadroNotasModel();
+    let itensQuadro = await itensQuadroModel.listarPorQuadro(validaAcesso[0].id);
+
+    // notas entregas
+    const entregaModel = new EntregaModel();
+    const notas = await entregaModel.listarEntregas(turmaId, disciplinaId);
+
+    res.render('seeds/professor/itensQuadro.ejs', {
+      layout: './layouts/layoutSeeds.ejs',
+      turmaInfo,
+      disciplinaInfo,
+      notas,
+      itensQuadro,
+      listaAtividades,
+      professorTurmaDisciplinaId: validaAcesso[0].id 
+    });
   }
-
-  // inf da turma
-  const turmaModel = new TurmaModel();
-  const turmaLista = await turmaModel.filtrarPorId(turmaId);
-  const turmaInfo = turmaLista.length > 0 ? turmaLista[0] : null;
-
-  // inf disciplina
-  const disciplinaModel = new DisciplinaModel();
-  const disciplinaLista = await disciplinaModel.obter(disciplinaId);
-  const disciplinaInfo = disciplinaLista.length > 0 ? disciplinaLista[0] : null;
-
-  // Buscar atividades
-  const atividadesModel = new AtividadeModel();
-  const listaAtividades = await atividadesModel.listarAtividades(validaAcesso[0].id);
-
-  // Buscar itens do quadro de notas
-  let itensQuadroModel = new ItensQuadroNotasModel();
-  let itensQuadro = await itensQuadroModel.listarPorQuadro(validaAcesso[0].id);
-
-  // notas entregas
-  const entregaModel = new EntregaModel();
-  const notas = await entregaModel.listarEntregas(turmaId, disciplinaId);
-
-  res.render('seeds/professor/itensQuadro.ejs', {
-    layout: './layouts/layoutSeeds.ejs',
-    turmaInfo,
-    disciplinaInfo,
-    notas,
-    itensQuadro,
-    listaAtividades // Adicionando esta linha para passar as atividades para a view
-  });
-}
 
 
 
 
 
   //GRAVAR ITENS QUADRO
+
   async gravarItemQuadro(req, res) {
-    const { quadro, atividade_id, descricao, peso, tipo } = req.body;
+    const { professor_turma_disciplina_id, atividade_id, descricao, peso, tipo } = req.body;
+
+    const quadroNotasModel = new QuadroNotasModel();
+    const quadro_id = await quadroNotasModel.buscarIdPorProfessorTurmaDisciplina(professor_turma_disciplina_id);
+
+    if (!quadro_id) {
+      return res.send({ ok: false, erro: 'Quadro de notas não encontrado.' });
+    }
 
     const item = new ItensQuadroNotasModel(
       null,
-      quadro,
+      quadro_id,
       atividade_id,
       descricao,
       peso,
       tipo
     );
 
-    const sucesso = await item.gravarItem(); // Alterado para gravarItem() para corresponder ao modelo
+    const sucesso = await item.gravarItem();
     res.send({ ok: sucesso });
   }
+
 
 
 }

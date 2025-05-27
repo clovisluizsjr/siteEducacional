@@ -1,15 +1,37 @@
-<h3>Atividades</h3>
+<h3 class="mt-4 mb-3">📘 Quadro de Notas</h3>
+
 <% if (listaAtividades && listaAtividades.length) { %>
   <% listaAtividades.forEach(atividade => { %>
-    <form action="/seeds/professor/itensquadro/salvar" method="POST">
-      <input type="hidden" name="quadro" value="<%= disciplinaInfo.id %>">
+    <form action="/seeds/professor/itensquadro/salvar" method="POST" class="card p-3 mb-3 shadow-sm border">
+
+      <input type="hidden" name="professor_turma_disciplina_id" value="<%= professorTurmaDisciplinaId %>">
       <input type="hidden" name="atividade_id" value="<%= atividade.atividade_id %>">
-      <input type="text" name="descricao" value="<%= atividade.titulo %>" readonly>
-      <input type="number" step="0.1" name="peso" placeholder="Peso" required>
-      <input type="text" name="tipo" placeholder="Tipo (ex: Prova, Trabalho)" required>
-      <button type="submit">Adicionar ao Quadro</button>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold">Título</label>
+        <input type="text" name="descricao" class="form-control" value="<%= atividade.titulo %>" readonly>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Peso</label>
+          <input type="number" step="0.1" name="peso" class="form-control" placeholder="Peso" required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Tipo</label>
+          <input type="text" name="tipo" class="form-control" placeholder="Tipo (ex: Prova, Trabalho)" required>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Adicionar ao Quadro</button>
+        <button formaction="/seeds/professor/itensquadro/editar" class="btn btn-warning">Editar</button>
+        <button formaction="/seeds/professor/itensquadro/excluir" class="btn btn-danger">Excluir</button>
+      </div>
+
     </form>
   <% }) %>
 <% } else { %>
-  <p>Não há atividades disponíveis para esta disciplina.</p>
+  <p class="text-muted">Não há atividades disponíveis para esta disciplina.</p>
 <% } %>

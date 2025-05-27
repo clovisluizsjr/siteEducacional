@@ -30,6 +30,7 @@ router.get(
 );
 
 router.post('/atividade/cadastrar', auth.validar, ctrl.gravarAtividade);
+router.post('/itensquadro/salvar', auth.validar, ctrl.gravarItemQuadro);
 router.put('/atividade/alterar', auth.validar, ctrl.gravarAtividade)
 router.post('/atividade/excluir', auth.validar, ctrl.excluir);
 router.get('/disciplina/:turmaId/:disciplinaId/:atividadeId/corrige', auth.validar, ctrl.atividadeAlunos)

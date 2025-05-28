@@ -1,48 +1,86 @@
 <script src="/js/seeds/professor/validacaoPesos.js"></script>
-<h3 class="mt-4 mb-3">📘 Quadro de Notas</h3>
 
-<form action="/seeds/professor/itensquadro/salvar" method="POST">
-  <input type="hidden" name="professor_turma_disciplina_id" value="<%= professorTurmaDisciplinaId %>">
+<div class="p-4">
+  <h3 class="mt-4 mb-3">📘 Quadro de Notas</h3>
+  <form action="/seeds/professor/itensquadro/salvar" method="POST">
+    <input
+      type="hidden"
+      name="professor_turma_disciplina_id"
+      value="<%= professorTurmaDisciplinaId %>"
+    />
 
-  <% if (listaComItens && listaComItens.length) { %>
-    <% for (let i = 0; i < listaComItens.length; i++) {
-         let atividade = listaComItens[i].atividade;
-         let item = listaComItens[i].item;
-    %>
-      <div class="card p-3 mb-3 shadow-sm border">
-        <input type="hidden" name="atividades[<%= i %>][atividade_id]" value="<%= atividade.atividade_id %>">
-        <input type="hidden" name="atividades[<%= i %>][descricao]" value="<%= atividade.titulo %>">
+    <% if (listaComItens && listaComItens.length) { %> <% for (let i = 0; i <
+    listaComItens.length; i++) { let atividade = listaComItens[i].atividade; let
+    item = listaComItens[i].item; %>
+    <div class="card p-3 mb-3 shadow-sm border">
+      <input
+        type="hidden"
+        name="atividades[<%= i %>][atividade_id]"
+        value="<%= atividade.atividade_id %>"
+      />
+      <input
+        type="hidden"
+        name="atividades[<%= i %>][descricao]"
+        value="<%= atividade.titulo %>"
+      />
 
-        <div class="mb-3">
-          <label class="form-label fw-bold">Título</label>
-          <input type="text" class="form-control" value="<%= atividade.titulo %>" readonly>
-        </div>
-
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Peso</label>
-            <input type="number" step="0.1" name="atividades[<%= i %>][peso]" class="form-control" placeholder="Peso"
-                   value="<%= item.peso || '' %>" required>
-          </div>
-
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Tipo</label>
-            <input type="text" name="atividades[<%= i %>][tipo]" class="form-control" placeholder="Tipo (ex: Prova, Trabalho)"
-                   value="<%= item.tipo || '' %>" required>
-          </div>
-        </div>
-
-        <% if (item.id) { %>
-          <input type="hidden" name="atividades[<%= i %>][id]" value="<%= item.id %>">
-        <% } %>
+      <div class="mb-3">
+        <label class="form-label fw-bold">Título</label>
+        <input
+          type="text"
+          class="form-control"
+          value="<%= atividade.titulo %>"
+          readonly
+        />
       </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Peso</label>
+          <input
+            type="number"
+            step="0.1"
+            name="atividades[<%= i %>][peso]"
+            class="form-control"
+            placeholder="Peso"
+            value="<%= item.peso || '' %>"
+            required
+          />
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Tipo</label>
+          <input
+            type="text"
+            name="atividades[<%= i %>][tipo]"
+            class="form-control"
+            placeholder="Tipo (ex: Prova, Trabalho)"
+            value="<%= item.tipo || '' %>"
+            required
+          />
+        </div>
+      </div>
+
+      <% if (item.id) { %>
+      <input
+        type="hidden"
+        name="atividades[<%= i %>][id]"
+        value="<%= item.id %>"
+      />
+      <% } %>
+    </div>
     <% } %>
 
     <div class="text-end mt-3">
-        <p id="mensagemSomaPesos" class="fw-bold"></p>
-      <button type="submit" class="btn btn-primary btn-lg">Salvar Todas as Alterações</button>
+      <p id="mensagemSomaPesos" class="fw-bold"></p>
+      <button type="submit" class="btn btn-primary btn-lg btnSalvarPeso" disabled>
+        Salvar Todas as Alterações
+      </button>
     </div>
-  <% } else { %>
-    <p class="text-muted">Não há atividades disponíveis para esta disciplina.</p>
-  <% } %>
-</form>
+    <% } else { %>
+    <p class="text-muted">
+      Não há atividades disponíveis para esta disciplina.
+    </p>
+    <% } %>
+  </form>
+</div>

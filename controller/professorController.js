@@ -179,11 +179,11 @@ class ProfessorController {
     const disciplinaLista = await disciplinaModel.obter(disciplinaId);
     const disciplinaInfo = disciplinaLista.length > 0 ? disciplinaLista[0] : null;
 
-    // Buscar atividades
+    // buscar atividades
     const atividadesModel = new AtividadeModel();
     const listaAtividades = await atividadesModel.listarAtividades(validaAcesso[0].id);
 
-    // Buscar itens do quadro de notas
+    // buscar itens do quadro de notas
     let itensQuadroModel = new ItensQuadroNotasModel();
     let itensQuadro = await itensQuadroModel.listarPorQuadro(validaAcesso[0].id);
 
@@ -191,48 +191,100 @@ class ProfessorController {
     const entregaModel = new EntregaModel();
     const notas = await entregaModel.listarEntregas(turmaId, disciplinaId);
 
+    // Transforma a lista em um mapa para facilitar o acesso no EJS
+    const listaComItens = listaAtividades.map(atividade => {
+      const item = itensQuadro.find(i => i.atividade_id == atividade.atividade_id);
+      return {
+        atividade,
+        item: item || {} // evita undefined
+      };
+    });
+
     res.render('seeds/professor/itensQuadro.ejs', {
       layout: './layouts/layoutSeeds.ejs',
       turmaInfo,
       disciplinaInfo,
       notas,
-      itensQuadro,
-      listaAtividades,
-      professorTurmaDisciplinaId: validaAcesso[0].id 
+      listaComItens,
+      professorTurmaDisciplinaId: validaAcesso[0].id
     });
+
   }
-
-
-
 
 
   //GRAVAR ITENS QUADRO
 
-  async gravarItemQuadro(req, res) {
-    const { professor_turma_disciplina_id, atividade_id, descricao, peso, tipo } = req.body;
+async gravarItemQuadro(req, res) {
+  const { professor_turma_disciplina_id, atividades } = req.body;
 
-    const quadroNotasModel = new QuadroNotasModel();
-    const quadro_id = await quadroNotasModel.buscarIdPorProfessorTurmaDisciplina(professor_turma_disciplina_id);
+  const quadroNotasModel = new QuadroNotasModel();
+  const quadro_id = await quadroNotasModel.buscarIdPorProfessorTurmaDisciplina(professor_turma_disciplina_id);
 
-    if (!quadro_id) {
-      return res.send({ ok: false, erro: 'Quadro de notas não encontrado.' });
+  if (!quadro_id) {
+    return res.send({ ok: false, erro: 'Quadro de notas não encontrado.' });
+  }
+
+  // Verificação da soma dos pesos
+  let somaPesos = 0;
+  let contaFormatada = '';
+
+  for (let i = 0; i < atividades.length; i++) {
+    const pesoAtual = parseFloat(atividades[i].peso) || 0;
+    somaPesos += pesoAtual;
+    contaFormatada += pesoAtual;
+
+    if (i < atividades.length - 1) {
+      contaFormatada += ' + ';
+    }
+  }
+
+  contaFormatada += ` = ${somaPesos}`;
+
+  if (somaPesos !== 10) {
+    return res.send({
+      ok: false,
+      erro: `A soma dos pesos deve ser igual a 10. Verificação: ${contaFormatada}`
+    });
+  }
+
+  try {
+    for (let i = 0; i < atividades.length; i++) {
+      const atividade = atividades[i];
+
+      const item = new ItensQuadroNotasModel(
+        atividade.id || null,
+        quadro_id,
+        atividade.atividade_id,
+        atividade.descricao,
+        atividade.peso,
+        atividade.tipo
+      );
+
+      await item.gravarItem();
     }
 
-    const item = new ItensQuadroNotasModel(
-      null,
-      quadro_id,
-      atividade_id,
-      descricao,
-      peso,
-      tipo
-    );
+    res.send({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ ok: false, erro: 'Erro ao salvar itens do quadro de notas.' });
+  }
+}
+
+
+
+
+  //EDITAR ITENS 
+  async editarItemQuadro(req, res) {
+    const { id, peso, tipo } = req.body;
+
+    const item = new ItensQuadroNotasModel();
+    item.id = id;
+    item.peso = peso;
+    item.tipo = tipo;
 
     const sucesso = await item.gravarItem();
     res.send({ ok: sucesso });
   }
-
-
-
 }
 
 module.exports = ProfessorController;

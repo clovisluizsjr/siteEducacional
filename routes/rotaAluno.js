@@ -23,5 +23,6 @@ router.get('/disciplinas', auth.validar, ctrl.listarDisciplinas); //seeds/aluno/
 router.get('/atividades/:professorTurmaId',auth.validar, ctrl.listarAtividades);
 router.get('/atividades/info/:atividadeId', auth.validar, ctrl.atividadeInfo)
 router.post('/atividade/entrega', auth.validar, ctrl.entregaAtividade)
+router.get('/quadroNotas', auth.validar,ctrl.listarQuadroNotas);
 
 module.exports = router;

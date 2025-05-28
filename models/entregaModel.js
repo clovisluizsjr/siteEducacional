@@ -35,7 +35,7 @@ class EntregaModel {
   set feedback(value) { this.#feedback = value }
   get status() { return this.#status }
   set status(value) { this.#status = value }
-  
+
   constructor(
     entrega_id,
     atividade_id,
@@ -63,7 +63,7 @@ class EntregaModel {
   }
 
   async listarEntregas(professorTurmaId, atividadeId) {
-  let sql = `
+    let sql = `
     SELECT 
       ativ.titulo AS atividade_titulo,
       a.aluno_RA AS aluno_RA,
@@ -88,58 +88,71 @@ class EntregaModel {
     ORDER BY 
       a.aluno_nome ASC;
   `;
-  let valores = [professorTurmaId, atividadeId];
-  let banco = new Database();
-  let rows = await banco.ExecutaComando(sql, valores);
-  return rows;
-}
+    let valores = [professorTurmaId, atividadeId];
+    let banco = new Database();
+    let rows = await banco.ExecutaComando(sql, valores);
+    return rows;
+  }
 
   async gravaAtividade() {//implementando sem envio de arquivo
-  let banco = new Database();
+    let banco = new Database();
 
-  if (this.#entrega_id == 0 || !this.#entrega_id) {
-    const sql = `
+    if (this.#entrega_id == 0 || !this.#entrega_id) {
+      const sql = `
       INSERT INTO Entregas (atividade_id, aluno_RA, professor_turma_disciplina_id, data_entrega, anotacoes, status)
       VALUES (?, ?, ?, ?, ?, ?)
     `;
-    const valores = [
-      this.#atividade_id,
-      this.#aluno_RA,
-      this.#professor_turma_disciplina_id,
-      this.#data_entrega,
-      this.#anotacoes,
-      this.#status
-    ];
-    return await banco.ExecutaComando(sql, valores);
-    //se ele puder ainda entregar
-  } else {
-    const sql = `
+      const valores = [
+        this.#atividade_id,
+        this.#aluno_RA,
+        this.#professor_turma_disciplina_id,
+        this.#data_entrega,
+        this.#anotacoes,
+        this.#status
+      ];
+      return await banco.ExecutaComando(sql, valores);
+      //se ele puder ainda entregar
+    } else {
+      const sql = `
       UPDATE Entregas
       SET data_entrega = ?, anotacoes = ?, status = ?
       WHERE entrega_id = ?
     `;
-    const valores = [
-      this.#data_entrega,
-      this.#anotacoes,
-      this.#status,
-      this.#entrega_id
-    ];
-    return await banco.ExecutaComando(sql, valores);
+      const valores = [
+        this.#data_entrega,
+        this.#anotacoes,
+        this.#status,
+        this.#entrega_id
+      ];
+      return await banco.ExecutaComando(sql, valores);
+    }
   }
-}
 
 
 
   //obtendo o status da entrega
   async obterEntrega(atividadeId, alunoRA) {
-  const sql = `
+    const sql = `
     SELECT * FROM Entregas
     WHERE atividade_id = ? AND aluno_RA = ?
     LIMIT 1
   `;
-  const banco = new Database();
-  const resultados = await banco.ExecutaComando(sql, [atividadeId, alunoRA]);
-  return resultados[0] || null;
+    const banco = new Database();
+    const resultados = await banco.ExecutaComando(sql, [atividadeId, alunoRA]);
+    return resultados[0] || null;
+  }
+
+
+  async getNotasPorAlunoEDisciplina(alunoRA, disciplinaId) {
+  let sql = `
+    SELECT e.atividade_id, e.nota
+    FROM Entregas e
+    JOIN Atividades a ON a.atividade_id = e.atividade_id
+    JOIN Professor_turmas_disciplinas ptd ON ptd.id = a.professor_turma_disciplina_id
+    WHERE ptd.disciplina_id = ? AND e.aluno_RA = ?
+  `;
+  let banco = new Database();
+  return await banco.ExecutaComando(sql, [disciplinaId, alunoRA]);
 }
 
 }

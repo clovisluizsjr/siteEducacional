@@ -1,0 +1,40 @@
+<div class="p-4">
+    <h3 class="mb-4">📊 Quadro de Notas</h3>
+    
+    <% if (listaDisciplinas && listaDisciplinas.length) { %>
+        <table class="mt-4 table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Disciplina</th>
+                    <th>Professor</th>
+                    <th>Status</th>
+                    <th>Média</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(let i = 0; i < listaDisciplinas.length; i++) { 
+                    const disc = listaDisciplinas[i];
+                    const statusClass = disc.status === 'Aprovado' ? 'text-success' : 'text-danger';
+                %>
+                    <tr>
+                        <td><%= disc.disciplina %></td>
+                        <td><%= disc.professor %></td>
+                        <td class="<%= statusClass %> fw-bold"><%= disc.status %></td>
+                        <td><%= disc.media %></td>
+                        <td>
+                            <a href="/seeds/aluno/atividades/<%= disc.professorTurmaId %>" 
+                               class="btn btn-sm btn-primary">
+                                Ver Atividades
+                            </a>
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <div class="alert alert-info">
+            Nenhuma disciplina encontrada ou você não possui notas registradas ainda.
+        </div>
+    <% } %>
+</div>

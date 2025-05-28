@@ -1,6 +1,7 @@
 const AlunoModel = require('../models/alunoModel');
 const AtividadeModel = require('../models/atividadeModel');
 const EntregaModel = require('../models/entregaModel');
+const ItensQuadroNotasModel = require('../models/itensQuadroNotas');
 
 class AlunoController {
   home(req, res) {
@@ -95,33 +96,62 @@ class AlunoController {
       res.send({ ok: false });
     }
   }
-  // async listagemAlunoDisciplina(req, res) {
-  //   let alunoRA = req.session.usuario.userId;
-  //   let atividadesModel = new AtividadeAlunoModel();
-  //   let listaAtividades = await atividadesModel.listarAtividades(alunoRA);
-  //   let disciplinasModel = new DisciplinaModel();
-  //   let listaDisciplinas = await disciplinasModel.listarPorAluno(alunoRA);
 
-  //   res.render('seeds/atividades', {
-  //     layout: './layouts/layoutSeeds',
-  //     listaAtividades: listaAtividades,
-  //     listaDisciplinas: listaDisciplinas,
-  //   });
-  // }
 
-  // async listagemProfessores(req, res) {
-  //   let alunoRA = req.session.usuario.userId;
+  async listarDisciplinasQuadro(req, res) {
+    let alunoRA = req.session.usuario.userId;
+    let alunos = new AlunoModel();
+    let listaDisciplinas = await alunos.listarProfessoresEDisciplinas(alunoRA);
 
-  //   let alunoModel = new AlunoModel();
-  //   let professoresDisciplinas = await alunoModel.listarProfessoresEDisciplinas(
-  //     alunoRA
-  //   );
+    res.render('seeds/aluno/quadroNotas.ejs', {
+      layout: './layouts/layoutSeeds',
+      listaDisciplinas,
+    });
+  }
 
-  //   res.render('seeds/professores', {
-  //     layout: './layouts/layoutSeeds',
-  //     professoresDisciplinas: professoresDisciplinas,
-  //   });
-  // }
+
+  async listarQuadroNotas(req, res) {
+  const entregaModel = new EntregaModel();
+  const itensModel = new ItensQuadroNotasModel();
+  const alunoRA = req.session.usuario.userId;
+
+
+  const alunoModel = new AlunoModel();
+  const disciplinas = await alunoModel.listarProfessoresEDisciplinas(alunoRA);
+
+  const listaDisciplinas = [];
+
+  for (const disc of disciplinas) {
+   
+    const pesos = await itensModel.getPesosPorDisciplina(disc.codigo); 
+    const entregas = await entregaModel.getNotasPorAlunoEDisciplina(alunoRA, disc.codigo);
+
+    let somaNotas = 0;
+    let somaPesos = 0;
+
+    entregas.forEach(entrega => {
+      const pesoItem = pesos.find(p => p.atividade_id === entrega.atividade_id);
+      if (pesoItem && entrega.nota !== null) {
+        somaNotas += entrega.nota * pesoItem.peso;
+        somaPesos += pesoItem.peso;
+      }
+    });
+
+    const media = somaPesos > 0 ? (somaNotas / somaPesos).toFixed(2) : 0;
+    const status = media >= 6 ? 'Aprovado' : 'Reprovado';
+
+    listaDisciplinas.push({
+      disciplina: disc.disciplina,
+      professor: disc.professor,
+      media,
+      status,
+      professorTurmaId: disc.professorTurmaId
+    });
+  }
+
+  console.log(listaDisciplinas)
+  res.render('seeds/aluno/quadroNotas.ejs', { listaDisciplinas });
 }
 
+}
 module.exports = AlunoController;

@@ -28,10 +28,18 @@ router.get(
   auth.validar,
   ctrl.quadroNotasView 
 );
+router.get(
+  '/disciplina/:turmaId/:disciplinaId/:atividadeId/corrige',
+  auth.validar,
+  ctrl.atividadeAlunos
+);
+
 
 router.post('/atividade/cadastrar', auth.validar, ctrl.gravarAtividade);
 router.post('/itensquadro/salvar', auth.validar, ctrl.gravarItemQuadro);
-router.put('/atividade/alterar', auth.validar, ctrl.gravarAtividade)
+router.post('/itensquadro/editar', auth.validar, ctrl.editarItemQuadro);
+router.post('/atividade/alterar', auth.validar, ctrl.gravarAtividade)
 router.post('/atividade/excluir', auth.validar, ctrl.excluir);
-router.get('/disciplina/:turmaId/:disciplinaId/:atividadeId/corrige', auth.validar, ctrl.atividadeAlunos)
+router.get('/disciplina/:turmaId/:disciplinaId/:atividadeId/corrige', auth.validar, ctrl.atividadeAlunos);
+
 module.exports = router;

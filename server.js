@@ -7,7 +7,8 @@ const rotaProfessor = require('./routes/rotaProfessor');
 const rotaAluno = require('./routes/rotaAluno');
 const app = express();
 const porta = 5000;
-
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
 app.use(session({
   secret: 'sementes_do_futuro',
   resave: false,
@@ -16,8 +17,7 @@ app.use(session({
     maxAge: 1000 * 60 * 30 // 1000 milissegundos = 1 seg * 60 segundos = 1 minuto * 30 minutos 
   }
 }));
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
+
 app.set('layout', 'layouts/layoutSeeds');
 app.use(expressEjsLayout);
 app.use(express.urlencoded({ extended: true }));

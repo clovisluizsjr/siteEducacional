@@ -35,13 +35,15 @@ class ItensQuadroNotasModel {
         this.#tipo = tipo;
     }
 
+ 
+
     async gravarItem() {
         const banco = new Database();
         if (!this.#id || this.#id === 0) {
             const sql = `
-        INSERT INTO ItensQuadroNotas (quadro_id, atividade_id, descricao, peso, tipo)
-        VALUES (?, ?, ?, ?, ?)
-      `;
+                                                INSERT INTO ItensQuadroNotas (quadro_id, atividade_id, descricao, peso, tipo)
+                                                VALUES (?, ?, ?, ?, ?)
+                                            `;
             const valores = [
                 this.#quadro,
                 this.#atividade_id,
@@ -53,10 +55,10 @@ class ItensQuadroNotasModel {
             return resultado;
         } else {
             const sql = `
-        UPDATE ItensQuadroNotas
-        SET quadro_id = ?, atividade_id = ?, descricao = ?, peso = ?, tipo = ?
-        WHERE id = ?
-      `;
+                                                UPDATE ItensQuadroNotas
+                                                SET quadro_id = ?, atividade_id = ?, descricao = ?, peso = ?, tipo = ?
+                                                WHERE id = ?
+                                            `;
             const valores = [
                 this.#quadro,
                 this.#atividade_id,
@@ -70,13 +72,7 @@ class ItensQuadroNotasModel {
         }
     }
 
-    async excluirItem(id) {
-        const banco = new Database();
-        const sql = `DELETE FROM ItensQuadroNotas WHERE id = ?`;
-        const valores = [id];
-        const resultado = await banco.ExecutaComando(sql, valores);
-        return resultado;
-    }
+   
 
     async listarPorQuadro(quadroId) {
         const banco = new Database();
@@ -88,7 +84,7 @@ class ItensQuadroNotasModel {
         for (let i = 0; i < rows.length; i++) {
             lista.push(new ItensQuadroNotasModel(
                 rows[i]['id'],
-                rows[i]['quadro_id'], 
+                rows[i]['quadro_id'],
                 rows[i]['atividade_id'],
                 rows[i]['descricao'],
                 rows[i]['peso'],
@@ -97,6 +93,19 @@ class ItensQuadroNotasModel {
         }
         return lista;
     }
+
+
+    async getPesosPorDisciplina(disciplinaId) {
+    let sql = `
+    SELECT iq.atividade_id, iq.peso
+  FROM ItensQuadroNotas iq
+  JOIN Atividades a ON a.atividade_id = iq.atividade_id
+  JOIN Professor_turmas_disciplinas ptd ON ptd.id = a.professor_turma_disciplina_id
+  WHERE ptd.disciplina_id = ?
+  `;
+    let banco = new Database();
+    return await banco.ExecutaComando(sql, [disciplinaId]);
+  }
 }
 
 module.exports = ItensQuadroNotasModel;

@@ -31,14 +31,25 @@
       const aindaNoPrazo = agora >= dataInicial && agora <= dataLimite; 
     %>
 
-    <% if (aindaNoPrazo) { %>
+    <% if (aindaNoPrazo && entrega.status == 'Entregue') { %>
       <!-- RESPOSTA -->
       <div class="mb-3">
         <label for="inpt_resposta" class="form-label">Resposta:</label>
         <textarea id="inpt_resposta" name="anotacoes" class="form-control" rows="5" required><%= entrega ? entrega.anotacoes : '' %></textarea>
         <div class="invalid-feedback">Preencha a Resposta</div>
       </div>
-    <% } else { %>
+      <% } else if( entrega.status == 'Corrigido') { %>
+        <div class="d-flex w-50 justify-content-around border border-success rounded" >
+          <div>
+            <p class="font-weight-bold">FeedBack:</p>
+            <p><%=entrega.feedback %></p>
+          </div>
+          <div>
+            <p class="font-weight-bold">Nota:</p>
+            <p><%=entrega.nota %></p>
+          </div>
+        </div>
+      <% } else { %>
       <div class="alert alert-warning mt-3">
         Prazo encerrado. Não é aceito mais edições !
       </div>
@@ -52,7 +63,7 @@
 
     <!-- BOTOES -->
     <div class="mt-4">
-      <button type="submit" class="btn btn-primary me-2 btn-enviar" <% if (!aindaNoPrazo) { %> disabled <% } %>>
+      <button type="submit" class="btn btn-primary me-2 btn-enviar" <% if (!aindaNoPrazo && !entrega.status == 'Corrigido') { %> disabled <% } %>>
         <i class="bi bi-save me-1"></i> Enviar
       </button>
       <!--FUNÇÃO PARA VOLTAR-->

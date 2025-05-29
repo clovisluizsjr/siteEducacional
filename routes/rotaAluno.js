@@ -24,5 +24,6 @@ router.get('/atividades/:professorTurmaId',auth.validar, ctrl.listarAtividades);
 router.get('/atividades/info/:atividadeId', auth.validar, ctrl.atividadeInfo)
 router.post('/atividade/entrega', auth.validar, ctrl.entregaAtividade)
 router.get('/quadroNotas', auth.validar,ctrl.listarQuadroNotas);
+router.get('/quadroNotas/:professorTurmaId', auth.validar, ctrl.quadroNotasAluno)
 
 module.exports = router;

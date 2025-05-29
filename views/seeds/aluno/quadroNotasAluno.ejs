@@ -1,0 +1,41 @@
+<div class="p-4">
+  <% if (listaQuadroFinal.length > 0) { 
+       let notaTotal = 0; // acumulador
+  %>
+  <h3 class="mb-4">📊 Quadro de Notas</h3>
+
+  <table class="mt-4 table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Atividade(s)</th>
+        <th>Nota Ativ</th>
+        <th>Peso</th>
+        <th>Nota Calculada</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let i = 0; i < listaQuadroFinal.length; i++) {
+           const nota = listaQuadroFinal[i].nota;
+           const peso = listaQuadroFinal[i].peso;
+           const notaCalculada = nota && peso ? nota * peso/10 : 0;
+           notaTotal += notaCalculada;
+      %>
+        <tr>
+          <td><%= listaQuadroFinal[i].titulo %></td>
+          <td><%= nota || '' %></td>
+          <td><%= peso || '' %></td>
+          <td><%= notaCalculada || '' %></td>
+        </tr>
+      <% } %>
+      <tr>
+        <td><strong>Nota total obtida</strong></td>
+        <td></td>
+        <td></td>
+        <td><strong><%= notaTotal.toFixed(2) %></strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <% } else { %>
+    <h2>Quadro de notas não disponibilizado</h2>
+  <%} %>
+</div>

@@ -101,6 +101,27 @@ class ItensQuadroNotasModel {
     return lista;
   }
 
+  async getQuadroAluno(alunoRA, professorTurmaId) {
+    let sql = `
+      SELECT a.titulo, iq.peso, ent.nota
+      FROM ItensQuadroNotas iq
+      JOIN Atividades a ON a.atividade_id = iq.atividade_id
+      JOIN Professor_turmas_disciplinas ptd ON ptd.id = a.professor_turma_disciplina_id
+      JOIN Entregas ent ON ent.atividade_id = a.atividade_id
+      WHERE ent.aluno_RA = ? AND ptd.id = ?   
+    `
+    let banco = new Database();
+    let valores = [alunoRA, professorTurmaId];
+    let rows = await banco.ExecutaComando(sql, valores);
+
+    let lista = [];
+    for (let i = 0; i < rows.length; i++) {
+      lista.push(rows[i]);
+    }
+
+    return lista;
+  }
+
   async getPesosPorDisciplina(disciplinaId) {
     let sql = `
     SELECT iq.atividade_id, iq.peso

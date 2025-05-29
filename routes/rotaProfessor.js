@@ -35,6 +35,7 @@ router.get(
 );
 
 
+router.post('/corrigir', auth.validar, ctrl.corrigeAtividade);
 router.post('/atividade/cadastrar', auth.validar, ctrl.gravarAtividade);
 router.post('/itensquadro/salvar', auth.validar, ctrl.gravarItemQuadro);
 router.post('/itensquadro/editar', auth.validar, ctrl.editarItemQuadro);

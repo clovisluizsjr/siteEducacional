@@ -99,8 +99,8 @@ class EntregaModel {
 
     if (this.#entrega_id == 0 || !this.#entrega_id) {
       const sql = `
-      INSERT INTO Entregas (atividade_id, aluno_RA, professor_turma_disciplina_id, data_entrega, anotacoes, status)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO Entregas (atividade_id, aluno_RA, professor_turma_disciplina_id, data_entrega, anotacoes, nota, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
       const valores = [
         this.#atividade_id,
@@ -108,11 +108,12 @@ class EntregaModel {
         this.#professor_turma_disciplina_id,
         this.#data_entrega,
         this.#anotacoes,
+        this.#nota || null,
         this.#status
       ];
       return await banco.ExecutaComando(sql, valores);
       //se ele puder ainda entregar
-    } else {
+    } else if (!this.#nota) {
       const sql = `
       UPDATE Entregas
       SET data_entrega = ?, anotacoes = ?, status = ?
@@ -125,10 +126,20 @@ class EntregaModel {
         this.#entrega_id
       ];
       return await banco.ExecutaComando(sql, valores);
+    } else { // professor altera uma nota
+        const sql = `
+      UPDATE Entregas
+      SET nota = ?, status = ?
+      WHERE entrega_id = ?
+      `;
+      const valores = [
+        this.#nota,
+        this.#status,  // Corrigido para #status
+        this.#entrega_id  // Adicionado o ID para a cláusula WHERE
+      ];
+      return await banco.ExecutaComando(sql, valores);
     }
   }
-
-
 
   //obtendo o status da entrega
   async obterEntrega(atividadeId, alunoRA) {

@@ -289,6 +289,41 @@ async gravarItemQuadro(req, res) {
     const sucesso = await item.gravarItem();
     res.send({ ok: sucesso });
   }
+
+  async corrigeAtividade(req, res) {
+    const {atividade_id, aluno_RA, nota} = req.body
+    const professorId = req.session.usuario.userId;
+
+    // Verificar acesso
+    let atividadeData = new AtividadeModel();
+    let validaAcesso = await atividadeData.obterAtividadePor(atividade_id)
+
+    let NovaEntrega = new EntregaModel();
+    let entrega_id = NovaEntrega.obterEntrega(atividade_id, aluno_RA)
+
+    if (!validaAcesso.length) {
+      return res.send('<p>Usuário sem permissão</p>');
+    }
+
+    const dataHoraAtual = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    const novaEntrega = new EntregaModel(
+      entrega_id || null,
+      atividade_id,
+      aluno_RA,
+      validaAcesso[0].professor_turma_disciplina_id,
+      dataHoraAtual,
+      ' ',
+      nota,
+      '',
+      '',
+      '',
+      'Corrigido'
+    );
+    
+    const sucesso = await novaEntrega.gravaAtividade();
+    res.send({ ok: sucesso });
+  }
 }
 
 module.exports = ProfessorController;

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   let btns = document.querySelectorAll('.btn-corrigir');
-  
+
   for (let i = 0; i < btns.length; i++) {
     btns[i].addEventListener('click', lancarNota);
   }
@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function lancarNota() {
     let atividadeId = this.dataset.atividadeid;
     let row = this.closest('tr');
-    let alunoRa = row.dataset.alunora; 
+    let alunoRa = row.dataset.alunora;
 
     let notaInput = row.querySelector('input[type="text"]');
     let nota = notaInput.value;
@@ -21,28 +21,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const dados = {
       atividade_id: atividadeId,
       aluno_RA: alunoRa,
-      nota: parseFloat(nota)
+      nota: parseFloat(nota),
     };
 
-
-    fetch('/entregas/lancar-nota', {
+    fetch('/seeds/professor/corrigir', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(dados)
+      body: JSON.stringify(dados),
     })
-    .then(response => response.json())
-    .then(resultado => {
-      if (resultado.sucesso) {
-        alert('Nota lançada com sucesso!');
-      } else {
-        alert('Erro ao lançar nota.');
-      }
-    })
-    .catch(err => {
-      console.error('Erro ao enviar nota:', err);
-      alert('Erro de comunicação com o servidor.');
-    });
+      .then((response) => response.json())
+      .then((resultado) => {
+        if (resultado.sucesso) {
+          alert('Nota lançada com sucesso!');
+        } else {
+          alert('Erro ao lançar nota.');
+        }
+      })
+      .catch((err) => {
+        console.error('Erro ao enviar nota:', err);
+        alert('Erro de comunicação com o servidor.');
+      });
   }
 });

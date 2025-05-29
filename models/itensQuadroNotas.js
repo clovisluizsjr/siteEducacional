@@ -103,12 +103,18 @@ class ItensQuadroNotasModel {
 
   async getQuadroAluno(alunoRA, professorTurmaId) {
     let sql = `
-      SELECT a.titulo, iq.peso, ent.nota
-      FROM ItensQuadroNotas iq
-      JOIN Atividades a ON a.atividade_id = iq.atividade_id
-      JOIN Professor_turmas_disciplinas ptd ON ptd.id = a.professor_turma_disciplina_id
-      JOIN Entregas ent ON ent.atividade_id = a.atividade_id
-      WHERE ent.aluno_RA = ? AND ptd.id = ?   
+      SELECT 
+    a.atividade_id,
+    a.titulo, 
+    iq.peso, 
+    ent.nota,
+    ent.entrega_id,
+    ent.status
+    FROM ItensQuadroNotas iq
+    JOIN Atividades a ON a.atividade_id = iq.atividade_id
+    JOIN Professor_turmas_disciplinas ptd ON ptd.id = a.professor_turma_disciplina_id
+    LEFT JOIN Entregas ent ON ent.atividade_id = a.atividade_id AND ent.aluno_RA = ?
+    WHERE ptd.id = ?
     `
     let banco = new Database();
     let valores = [alunoRA, professorTurmaId];

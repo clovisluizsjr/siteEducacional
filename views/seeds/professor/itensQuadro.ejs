@@ -43,7 +43,7 @@
             name="atividades[<%= i %>][peso]"
             class="form-control"
             placeholder="Peso"
-            value="<%= item.peso || '' %>"
+            value="<%= item && item.peso ? item.peso : '' %>"
             required
           />
         </div>
@@ -55,13 +55,13 @@
             name="atividades[<%= i %>][tipo]"
             class="form-control"
             placeholder="Tipo (ex: Prova, Trabalho)"
-            value="<%= item.tipo || '' %>"
+            value="<%= item && item.tipo ? item.tipo : '' %>"
             required
           />
         </div>
       </div>
 
-      <% if (item.id) { %>
+      <% if (item && item.id) { %>
       <input
         type="hidden"
         name="atividades[<%= i %>][id]"

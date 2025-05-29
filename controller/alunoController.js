@@ -148,8 +148,6 @@ class AlunoController {
       professorTurmaId: disc.professorTurmaId
     });
   }
-
-  console.log(listaDisciplinas)
   res.render('seeds/aluno/quadroNotas.ejs', { listaDisciplinas });
 }
 

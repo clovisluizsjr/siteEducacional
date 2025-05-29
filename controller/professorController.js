@@ -183,9 +183,13 @@ class ProfessorController {
     const atividadesModel = new AtividadeModel();
     const listaAtividades = await atividadesModel.listarAtividades(validaAcesso[0].id);
 
+    // buscar quadro_id
+    const quadroNotasModel = new QuadroNotasModel();
+    const quadro_id = await quadroNotasModel.buscarIdPorProfessorTurmaDisciplina(validaAcesso[0].id);
+
     // buscar itens do quadro de notas
     let itensQuadroModel = new ItensQuadroNotasModel();
-    let itensQuadro = await itensQuadroModel.listarPorQuadro(validaAcesso[0].id);
+    let itensQuadro = await itensQuadroModel.listarPorQuadro(quadro_id);
 
     // notas entregas
     const entregaModel = new EntregaModel();
@@ -196,7 +200,7 @@ class ProfessorController {
       const item = itensQuadro.find(i => i.atividade_id == atividade.atividade_id);
       return {
         atividade,
-        item: item || {} // evita undefined
+        item: item 
       };
     });
 
@@ -224,7 +228,7 @@ async gravarItemQuadro(req, res) {
     return res.send({ ok: false, erro: 'Quadro de notas não encontrado.' });
   }
 
-  // Verificação da soma dos pesos
+  //Verificação da soma dos pesos
   let somaPesos = 0;
   let contaFormatada = '';
 
@@ -240,7 +244,7 @@ async gravarItemQuadro(req, res) {
 
   contaFormatada += ` = ${somaPesos}`;
 
-  if (somaPesos !== 10) {
+  if (somaPesos != 10) {
     return res.send({
       ok: false,
       erro: `A soma dos pesos deve ser igual a 10. Verificação: ${contaFormatada}`

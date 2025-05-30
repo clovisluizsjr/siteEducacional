@@ -1,47 +1,60 @@
 document.addEventListener('DOMContentLoaded', function () {
-  let btns = document.querySelectorAll('.btn-corrigir');
+  // Seleciona todos os botões de corrigir
+  const btns = document.querySelectorAll('.btn-corrigir');
 
-  for (let i = 0; i < btns.length; i++) {
-    btns[i].addEventListener('click', lancarNota);
-  }
+  // Adiciona o evento de click a cada botão
+  btns.forEach((btn) => {
+    btn.addEventListener('click', function () {
+      // Obtém os dados específicos do botão clicado
+      const atividadeId = this.dataset.atividadeid;
+      const alunoRa = this.dataset.alunora;
+      const row = this.closest('tr');
 
-  function lancarNota() {
-    let atividadeId = this.dataset.atividadeid;
-    let row = this.closest('tr');
-    let alunoRa = row.dataset.alunora;
+      // Encontra o input de nota específico para esta linha
+      const notaInput = row.querySelector('input[type="text"]');
+      const nota = notaInput.value.trim();
 
-    let notaInput = row.querySelector('input[type="text"]');
-    let nota = notaInput.value;
+      // Validação
+      if (!nota) {
+        alert('Digite uma nota antes de enviar.');
+        return;
+      }
 
-    if (nota === '') {
-      alert('Digite uma nota antes de enviar.');
-      return;
-    }
+      // Verifica se a nota é um número válido
+      if (isNaN(nota) || parseFloat(nota) < 0 || parseFloat(nota) > 10) {
+        alert('Por favor, insira uma nota válida entre 0 e 10.');
+        return;
+      }
 
-    const dados = {
-      atividade_id: atividadeId,
-      aluno_RA: alunoRa,
-      nota: parseFloat(nota),
-    };
+      // Prepara os dados para envio
+      const dados = {
+        atividade_id: atividadeId,
+        aluno_RA: alunoRa,
+        nota: parseFloat(nota),
+      };
 
-    fetch('/seeds/professor/corrigir', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dados),
-    })
-      .then((response) => response.json())
-      .then((resultado) => {
-        if (resultado.sucesso) {
-          alert('Nota lançada com sucesso!');
-        } else {
-          alert('Erro ao lançar nota.');
-        }
+      // Envia para o servidor
+      fetch('/seeds/professor/corrigir', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados),
       })
-      .catch((err) => {
-        console.error('Erro ao enviar nota:', err);
-        alert('Erro de comunicação com o servidor.');
-      });
-  }
+        .then((response) => response.json())
+        .then((resultado) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Sucesso!',
+            text: 'Atividade cadastrada com sucesso',
+            timer: 3000,
+            showConfirmButton: false,
+          });
+        })
+        .catch((err) => {
+          console.error('Erro ao enviar nota:', err);
+          alert('Erro de comunicação com o servidor.');
+        });
+    });
+  });
 });

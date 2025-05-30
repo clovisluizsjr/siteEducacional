@@ -299,7 +299,7 @@ async gravarItemQuadro(req, res) {
     let validaAcesso = await atividadeData.obterAtividadePor(atividade_id)
 
     let NovaEntrega = new EntregaModel();
-    let entrega_id = NovaEntrega.obterEntrega(atividade_id, aluno_RA)
+    let entregas = await NovaEntrega.obterEntrega(atividade_id, aluno_RA)
 
     if (!validaAcesso.length) {
       return res.send('<p>Usuário sem permissão</p>');
@@ -308,7 +308,7 @@ async gravarItemQuadro(req, res) {
     const dataHoraAtual = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     const novaEntrega = new EntregaModel(
-      entrega_id || null,
+      entregas?.entrega_id || null,
       atividade_id,
       aluno_RA,
       validaAcesso[0].professor_turma_disciplina_id,

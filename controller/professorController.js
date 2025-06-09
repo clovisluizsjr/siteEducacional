@@ -200,7 +200,7 @@ class ProfessorController {
       const item = itensQuadro.find(i => i.atividade_id == atividade.atividade_id);
       return {
         atividade,
-        item: item 
+        item: item
       };
     });
 
@@ -218,61 +218,61 @@ class ProfessorController {
 
   //GRAVAR ITENS QUADRO
 
-async gravarItemQuadro(req, res) {
-  const { professor_turma_disciplina_id, atividades } = req.body;
+  async gravarItemQuadro(req, res) {
+    const { professor_turma_disciplina_id, atividades } = req.body;
 
-  const quadroNotasModel = new QuadroNotasModel();
-  const quadro_id = await quadroNotasModel.buscarIdPorProfessorTurmaDisciplina(professor_turma_disciplina_id);
+    const quadroNotasModel = new QuadroNotasModel();
+    const quadro_id = await quadroNotasModel.buscarIdPorProfessorTurmaDisciplina(professor_turma_disciplina_id);
 
-  if (!quadro_id) {
-    return res.send({ ok: false, erro: 'Quadro de notas não encontrado.' });
-  }
-
-  //Verificação da soma dos pesos
-  let somaPesos = 0;
-  let contaFormatada = '';
-
-  for (let i = 0; i < atividades.length; i++) {
-    const pesoAtual = parseFloat(atividades[i].peso) || 0;
-    somaPesos += pesoAtual;
-    contaFormatada += pesoAtual;
-
-    if (i < atividades.length - 1) {
-      contaFormatada += ' + ';
+    if (!quadro_id) {
+      return res.send({ ok: false, erro: 'Quadro de notas não encontrado.' });
     }
-  }
 
-  contaFormatada += ` = ${somaPesos}`;
+    //Verificação da soma dos pesos
+    let somaPesos = 0;
+    let contaFormatada = '';
 
-  if (somaPesos != 10) {
-    return res.send({
-      ok: false,
-      erro: `A soma dos pesos deve ser igual a 10. Verificação: ${contaFormatada}`
-    });
-  }
-
-  try {
     for (let i = 0; i < atividades.length; i++) {
-      const atividade = atividades[i];
+      const pesoAtual = parseFloat(atividades[i].peso) || 0;
+      somaPesos += pesoAtual;
+      contaFormatada += pesoAtual;
 
-      const item = new ItensQuadroNotasModel(
-        atividade.id || null,
-        quadro_id,
-        atividade.atividade_id,
-        atividade.descricao,
-        atividade.peso,
-        atividade.tipo
-      );
-
-      await item.gravarItem();
+      if (i < atividades.length - 1) {
+        contaFormatada += ' + ';
+      }
     }
 
-    res.send({ ok: true });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ ok: false, erro: 'Erro ao salvar itens do quadro de notas.' });
+    contaFormatada += ` = ${somaPesos}`;
+
+    if (somaPesos != 10) {
+      return res.send({
+        ok: false,
+        erro: `A soma dos pesos deve ser igual a 10. Verificação: ${contaFormatada}`
+      });
+    }
+
+    try {
+      for (let i = 0; i < atividades.length; i++) {
+        const atividade = atividades[i];
+
+        const item = new ItensQuadroNotasModel(
+          atividade.id || null,
+          quadro_id,
+          atividade.atividade_id,
+          atividade.descricao,
+          atividade.peso,
+          atividade.tipo
+        );
+
+        await item.gravarItem();
+      }
+
+      res.send({ ok: true });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ ok: false, erro: 'Erro ao salvar itens do quadro de notas.' });
+    }
   }
-}
 
 
 
@@ -291,7 +291,7 @@ async gravarItemQuadro(req, res) {
   }
 
   async corrigeAtividade(req, res) {
-    const {atividade_id, aluno_RA, nota} = req.body
+    const { atividade_id, aluno_RA, nota } = req.body
     const professorId = req.session.usuario.userId;
 
     // Verificar acesso
@@ -320,10 +320,41 @@ async gravarItemQuadro(req, res) {
       '',
       'Corrigido'
     );
-    
+
     const sucesso = await novaEntrega.gravaAtividade();
     res.send({ ok: sucesso });
   }
+
+
+  async viewRelatorio(req, res) {
+  const professorId = req.session.usuario.userId;
+  const entregaModel = new EntregaModel();
+
+    const relatorio = await entregaModel.relatorioFiltrado(professorId);
+    res.render('seeds/professor/relatorios.ejs', {
+      layout: './layouts/layoutSeeds.ejs',
+      relatorio
+    });
+  
+}
+
+async filtrar(req, res) {
+    const termo = req.query.termo || '';
+    console.log(termo)
+    const professorId = req.session.usuario.userId; 
+    const entregaModel = new EntregaModel(); 
+
+    const lista = await entregaModel.relatorioFiltrado(professorId, termo);
+    res.send({ lista });
+}
+
+
+
+
+
+
+
+
 }
 
 module.exports = ProfessorController;

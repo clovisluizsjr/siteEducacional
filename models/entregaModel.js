@@ -127,7 +127,7 @@ class EntregaModel {
       ];
       return await banco.ExecutaComando(sql, valores);
     } else { // professor altera uma nota
-        const sql = `
+      const sql = `
       UPDATE Entregas
       SET nota = ?, status = ?
       WHERE entrega_id = ?
@@ -155,15 +155,65 @@ class EntregaModel {
 
 
   async getNotasPorAlunoEDisciplina(alunoRA, disciplinaId) {
-  let sql = `
+    let sql = `
     SELECT e.atividade_id, e.nota
     FROM Entregas e
     JOIN Atividades a ON a.atividade_id = e.atividade_id
     JOIN Professor_turmas_disciplinas ptd ON ptd.id = a.professor_turma_disciplina_id
     WHERE ptd.disciplina_id = ? AND e.aluno_RA = ?
   `;
-  let banco = new Database();
-  return await banco.ExecutaComando(sql, [disciplinaId, alunoRA]);
+    let banco = new Database();
+    return await banco.ExecutaComando(sql, [disciplinaId, alunoRA]);
+  }
+
+ async relatorioFiltrado(professorId, termoBusca = "") {
+    let sql = `
+        SELECT
+            t.turma_id,
+            t.turma_nome,
+            d.disciplina_id,
+            d.disciplina_nome,
+            a.atividade_id,
+            a.titulo AS atividade_titulo,
+            al.aluno_RA,
+            al.aluno_nome,
+            e.nota
+        FROM
+            Professor_turmas_disciplinas ptd
+        JOIN Turmas t ON ptd.turma_id = t.turma_id
+        JOIN Disciplinas d ON ptd.disciplina_id = d.disciplina_id
+        JOIN Atividades a ON a.professor_turma_disciplina_id = ptd.id
+        JOIN Aluno_turmas at ON at.turma_id = t.turma_id
+        JOIN Alunos al ON al.aluno_RA = at.aluno_RA
+        LEFT JOIN Entregas e ON e.atividade_id = a.atividade_id AND e.aluno_RA = al.aluno_RA
+        WHERE
+            ptd.professor_id = ?
+    `;
+
+    const params = [professorId];
+
+    if (termoBusca && termoBusca.trim() !== "") {
+        sql += `
+            AND (
+                t.turma_nome LIKE ?
+                OR d.disciplina_nome LIKE ?
+                OR a.titulo LIKE ?
+                OR al.aluno_nome LIKE ?
+                OR al.aluno_RA LIKE ?
+            )
+        `;
+
+        const termo = `%${termoBusca}%`;
+        params.push(termo, termo, termo, termo, termo);
+    }
+
+    sql += `
+        ORDER BY
+        t.turma_nome, d.disciplina_nome, a.titulo, al.aluno_nome;
+    `;
+
+    const banco = new Database();
+    return await banco.ExecutaComando(sql, params);
 }
 
 }

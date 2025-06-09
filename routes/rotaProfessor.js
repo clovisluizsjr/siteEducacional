@@ -42,5 +42,7 @@ router.post('/itensquadro/editar', auth.validar, ctrl.editarItemQuadro);
 router.post('/atividade/alterar', auth.validar, ctrl.gravarAtividade)
 router.post('/atividade/excluir', auth.validar, ctrl.excluir);
 router.get('/disciplina/:turmaId/:disciplinaId/:atividadeId/corrige', auth.validar, ctrl.atividadeAlunos);
+router.get('/relatorios',auth.validar,ctrl.viewRelatorio)
+router.get("/filtrar", auth.validar, ctrl.filtrar);
 
 module.exports = router;
